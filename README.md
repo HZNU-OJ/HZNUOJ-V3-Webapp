@@ -1,4 +1,4 @@
-# umi project
+# HZNU Online Judge WebApp 
 
 ## Getting Started
 
