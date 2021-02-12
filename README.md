@@ -1,1 +1,15 @@
-# HZNUOJ-v3-webapp-react
+# umi project
+
+## Getting Started
+
+Install dependencies,
+
+```bash
+$ yarn
+```
+
+Start the dev server,
+
+```bash
+$ yarn start
+```
