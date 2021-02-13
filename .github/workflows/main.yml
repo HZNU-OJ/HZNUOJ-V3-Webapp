@@ -40,6 +40,7 @@ jobs:
           sed -i "s|publicPath: '/'|publicPath: '//cdn.jsdelivr.net/gh/HZNU-OJ/HZNUOJ-V3-WebApp@${{ env.VERSION_ID }}/'|" customConfig.ts
           sed -i "s|favicon: '/favicon.png'|favicon: '//cdn.jsdelivr.net/gh/HZNU-OJ/HZNUOJ-V3-WebApp@${{ env.VERSION_ID }}/favicon.png'|" customConfig.ts
           cat customConfig.ts
+          bash scripts/get_amazeui.sh
           npm install
           npm run build
 

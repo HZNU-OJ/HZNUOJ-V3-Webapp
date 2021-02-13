@@ -18,3 +18,7 @@
 /src/.umi-production
 /src/.umi-test
 /.env.local
+
+# amazeui
+/public/amazeui
+/public/jquery
