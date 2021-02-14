@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, Checkbox, message, Row, Col, Result } from 'antd';
 import {
-  UserOutlined,
+  SafetyOutlined,
   LockOutlined,
   MailOutlined,
   NumberOutlined,
@@ -89,7 +89,7 @@ const ForgotPassword: React.FC<{}> = () => {
                   <Col span={15}>
                     <Input
                       prefix={
-                        <NumberOutlined className="site-form-item-icon" />
+                        <SafetyOutlined className="site-form-item-icon" />
                       }
                       placeholder="E-mail Verify Code"
                     />
@@ -157,7 +157,7 @@ const ForgotPassword: React.FC<{}> = () => {
                 >
                   <Row gutter={[16, 0]}>
                     <Col style={{ textAlign: 'left' }} span={8}>
-                      <a href="/register">Login</a>
+                      <a href="/login">Login</a>
                     </Col>
                     <Col style={{ textAlign: 'center' }} span={0}></Col>
                     <Col style={{ textAlign: 'right' }} span={16}>

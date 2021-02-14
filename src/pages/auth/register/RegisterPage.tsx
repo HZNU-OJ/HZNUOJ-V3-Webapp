@@ -4,7 +4,7 @@ import {
   UserOutlined,
   LockOutlined,
   MailOutlined,
-  NumberOutlined,
+  SafetyOutlined,
 } from '@ant-design/icons';
 import { Link, history, useModel } from 'umi';
 import { getPageQuery } from '@/utils/utils';
@@ -128,7 +128,7 @@ const Register: React.FC<{}> = () => {
                   <Col span={15}>
                     <Input
                       prefix={
-                        <NumberOutlined className="site-form-item-icon" />
+                        <SafetyOutlined className="site-form-item-icon" />
                       }
                       placeholder="E-mail Verify Code"
                     />
