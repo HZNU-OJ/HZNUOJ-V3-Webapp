@@ -1,3 +1,13 @@
+<!--
+  _    _ _______   _ _    _  ____       _  __      ______  
+ | |  | |___  / \ | | |  | |/ __ \     | | \ \    / /___ \ 
+ | |__| |  / /|  \| | |  | | |  | |    | |  \ \  / /  __) |
+ |  __  | / / | . ` | |  | | |  | |_   | |   \ \/ /  |__ < 
+ | |  | |/ /__| |\  | |__| | |__| | |__| |    \  /   ___) |
+ |_|  |_/_____|_| \_|\____/ \____/ \____/      \/   |____/ 
+                                                           
+                                                           
+-->
 <!doctype html>
 <html>
 
@@ -7,16 +17,49 @@
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="format-detection" content="telephone=no">
+  <style>
+    .fixed-footer {
+      position: absolute;
+      bottom: 0;
+    }
+  </style>
   <link rel="stylesheet" href="<%= context.config.publicPath %>amazeui/css/amazeui.min.css">
 </head>
 
-<body>
+<body style="position: relative;">
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root"></div>
+  <div class="amz-toolbar" id="go-top" style="display: none; position: fixed; bottom: 15px; right: 15px;">
+    <a data-am-smooth-scroll href="#" title="go to top" class="am-icon-btn am-icon-arrow-up"></a>
+  </div>
 </body>
-
 
 <script src="<%= context.config.publicPath %>jquery/jquery.min.js"></script>
 <script src="<%= context.config.publicPath %>amazeui/js/amazeui.min.js"></script>
+
+<script>
+  (function () {
+    $(window).on("scroll load", () => {
+      if ($(window).scrollTop() >= 400) {
+        $("#go-top").fadeIn("fast");
+      } else {
+        $("#go-top").fadeOut("fast");
+      }
+    });
+  })();
+  $(function () {
+    function footerPosition() {
+      $("footer").removeClass("fixed-footer");
+      var contentHeight = document.body.scrollHeight; // 网页正文全文高度
+      var winHeight = window.innerHeight; // 可视窗口高度，不包括浏览器顶部工具栏
+      if (!(contentHeight > winHeight)) {
+        //当网页正文高度小于可视窗口高度时，为 footer 添加类 fixed-bottom
+        $("footer").addClass("fixed-footer");
+      }
+    }
+    footerPosition();
+    $(window).resize(footerPosition);
+  });
+</script>
 
 </html>

@@ -1,7 +1,7 @@
 import React from 'react';
 import './Header.less';
 
-function topBar(brand: string) {
+function topBar(brand: string, current: string) {
   return {
     __html: `
     <header class="am-topbar-inverse am-topbar-fixed-top" style="font-size: 16px;">
@@ -11,8 +11,8 @@ function topBar(brand: string) {
       <span class="am-icon-bars"></span>
     </button>
     <div class="am-container h-header">
-      <h1 class="am-topbar-brand">
-        <a href="/">${brand}</a>
+      <h1 class="am-topbar-brand" >
+        <a href="/" >${brand}</a>
       </h1>
       <div class="am-collapse am-topbar-collapse" id="collapse-head">
         <ul class="am-nav am-nav-pills am-topbar-nav">
@@ -23,15 +23,9 @@ function topBar(brand: string) {
           <li><a href="">F.A.Q.</a></li>
         </ul>
         <div class="am-topbar-right" style="padding-right: 0px;">
-        <ul class="am-nav am-nav-pills am-topbar-nav">
-        <li class="am-dropdown" data-am-dropdown>
-        <a class="am-dropdown-toggle" data-am-dropdown-toggle >Enter <span class="am-icon-caret-down"></span></a>
-        <ul class="am-dropdown-content">
-        <li><a href=""><span class="am-icon-user"></span> Login</a></li>
-        <li><a href=""><span class="am-icon-pencil"></span> Register</a></li>
-        </ul>
-        </li>
-        </ul>
+          <ul class="am-nav am-nav-pills am-topbar-nav">
+            <li class=""><a href="/login">Enter</a></li>
+          </ul>
         </div>
       </div>
     </div>
