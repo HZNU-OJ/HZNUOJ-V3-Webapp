@@ -1,11 +1,11 @@
-import styles from './index.less';
+import styles from './IndexPage.less';
 import BasicLayout from '@/layouts/Basic';
 import React from 'react';
 
-class Index extends React.Component {
-  componentWillMount() {}
+class IndexPage extends React.Component {
+  UNSAFE_componentWillMount() {}
 
-  componentWillReceiveProps(nextProps: any) {}
+  UNSAFE_componentWillReceiveProps(nextProps: any) {}
 
   state = {};
 
@@ -15,23 +15,7 @@ class Index extends React.Component {
 
   render() {
     return (
-      <BasicLayout>
-        test
-        <br />
-        test
-        <br />
-        test
-        <br />
-        test
-        <br />
-        test
-        <br />
-        test
-        <br />
-        test
-        <br />
-        test
-        <br />
+      <BasicLayout current={''}>
         test
         <br />
         test
@@ -92,4 +76,4 @@ class Index extends React.Component {
   }
 }
 
-export default Index;
+export default IndexPage;

@@ -5,7 +5,7 @@ import style from './Basic.less';
 export default (props: any) => {
   return (
     <>
-      <Header />
+      <Header current={props.current} />
       <div className={style.root}>
         <div className={style.secondRoot}>
           <div className={style.main}>{props.children}</div>

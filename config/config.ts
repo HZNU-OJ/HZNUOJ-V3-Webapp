@@ -1,5 +1,6 @@
 import { defineConfig } from 'umi';
 import customConfig from '../customConfig';
+import routes from './routes';
 
 export default defineConfig({
   nodeModulesTransform: {
@@ -11,5 +12,6 @@ export default defineConfig({
   hash: true,
   favicon: customConfig.favicon,
   fastRefresh: {},
+  routes: routes,
   publicPath: customConfig.publicPath,
 });

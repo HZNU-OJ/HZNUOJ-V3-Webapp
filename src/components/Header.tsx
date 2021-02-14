@@ -1,7 +1,29 @@
 import React from 'react';
 import './Header.less';
+export interface topBarItem {
+  id: string;
+  name: string;
+  link: string;
+}
+
+function topBarItemRender(current: string, itemList: topBarItem[]): string {
+  let html = '';
+  itemList.forEach((item: topBarItem) => {
+    html += `<li class="${current === item.id ? 'am-active' : ''}"><a href="${
+      item.link
+    }">${item.name}</a></li>`;
+  });
+  return html;
+}
 
 function topBar(brand: string, current: string) {
+  const leftItemList = [
+    { id: 'problemSet', name: 'Problem Set', link: '/p' },
+    { id: 'contests', name: 'Contests', link: '/c' },
+    { id: 'submissions', name: 'Submissions', link: '/s' },
+    { id: 'members', name: 'Members', link: '/m' },
+  ];
+  const rightItemList = [{ id: 'enter', name: 'Enter', link: '/login' }];
   return {
     __html: `
     <header class="am-topbar-inverse am-topbar-fixed-top" style="font-size: 16px;">
@@ -11,42 +33,55 @@ function topBar(brand: string, current: string) {
       <span class="am-icon-bars"></span>
     </button>
     <div class="am-container h-header">
-      <h1 class="am-topbar-brand" >
+      <h1 class="am-topbar-brand">
         <a href="/" >${brand}</a>
       </h1>
       <div class="am-collapse am-topbar-collapse" id="collapse-head">
         <ul class="am-nav am-nav-pills am-topbar-nav">
-          <li class="am-active"><a href="">Problem Set</a></li>
-          <li><a href="">Contests</a></li>
-          <li><a href="">Submissions</a></li>
-          <li><a href="">Members</a></li>
-          <li><a href="">F.A.Q.</a></li>
+          ${topBarItemRender(current, leftItemList)}
         </ul>
         <div class="am-topbar-right" style="padding-right: 0px;">
           <ul class="am-nav am-nav-pills am-topbar-nav">
-            <li class=""><a href="/login">Enter</a></li>
+          ${topBarItemRender(current, rightItemList)}
           </ul>
         </div>
       </div>
     </div>
-  </header>    
+  </header>
     `,
   };
 }
 
 class Header extends React.Component {
-  componentWillMount() {}
+  UNSAFE_componentWillMount() {
+    this.setState({
+      current: this.props.current,
+    });
+  }
 
-  componentWillReceiveProps(nextProps: any) {}
+  UNSAFE_componentWillReceiveProps(nextProps: any) {
+    this.setState({
+      current: nextProps.current,
+    });
+  }
 
-  state = {};
+  state = {
+    current: '',
+  };
 
   constructor(props: any) {
     super(props);
   }
 
   render() {
-    return <div dangerouslySetInnerHTML={topBar('HZNU Online Judge')}></div>;
+    return (
+      <div
+        dangerouslySetInnerHTML={topBar(
+          'HZNU Online Judge',
+          this.state.current,
+        )}
+      ></div>
+    );
   }
 }
 
