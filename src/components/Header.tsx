@@ -21,7 +21,7 @@ function topBar(brand: string, current: string) {
     { id: 'problemSet', name: 'Problem Set', link: '/p' },
     { id: 'contests', name: 'Contests', link: '/c' },
     { id: 'submissions', name: 'Submissions', link: '/s' },
-    { id: 'members', name: 'Members', link: '/m' },
+    { id: 'users', name: 'Users', link: '/u' },
   ];
   const rightItemList = [{ id: 'enter', name: 'Enter', link: '/login' }];
   return {
@@ -51,7 +51,6 @@ function topBar(brand: string, current: string) {
     `,
   };
 }
-
 class Header extends React.Component {
   UNSAFE_componentWillMount() {
     this.setState({

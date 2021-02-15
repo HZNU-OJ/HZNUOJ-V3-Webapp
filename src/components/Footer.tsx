@@ -6,7 +6,7 @@ export default () => {
   return (
     <footer className={style.footer}>
       <div className={style.name}>Hangzhou Normal U Online Judge V3</div>
-      <div className={style.version}>WebApp: {packages.version}</div>
+      <div className={style.version}>WebApp: {packages.version} | API: NaN</div>
       <div className={style.icon}>
         <a
           className={style.github}
