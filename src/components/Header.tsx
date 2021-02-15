@@ -22,6 +22,7 @@ function topBar(brand: string, current: string) {
     { id: 'contests', name: 'Contests', link: '/c' },
     { id: 'submissions', name: 'Submissions', link: '/s' },
     { id: 'users', name: 'Users', link: '/u' },
+    { id: 'discussion', name: 'Discussion', link: '/d' },
   ];
   const rightItemList = [{ id: 'enter', name: 'Enter', link: '/login' }];
   return {
