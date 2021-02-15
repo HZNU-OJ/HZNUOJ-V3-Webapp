@@ -1,5 +1,5 @@
 {
-  "version": "v0.0.9",
+  "version": "v0.0.10",
   "private": true,
   "scripts": {
     "start": "umi dev",
@@ -24,6 +24,8 @@
     "@ant-design/pro-layout": "^6.5.0",
     "@umijs/preset-react": "1.x",
     "antd": "^4.12.3",
+    "monaco-editor-webpack-plugin": "^3.0.0",
+    "react-monaco-editor": "^0.42.0",
     "umi": "^3.3.7"
   },
   "devDependencies": {
