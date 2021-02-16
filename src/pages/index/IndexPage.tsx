@@ -3,7 +3,7 @@ import BasicLayout from '@/layouts/Basic';
 import React from 'react';
 import { Row, Col } from 'antd';
 import TopUsers from './components/TopUsers';
-import Statics from './components/Statics';
+import Statics from './components/SubmissionStatics';
 import Announcement from './components/Announcement';
 import PayAttention from './components/PayAttention';
 class IndexPage extends React.Component {

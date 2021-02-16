@@ -1,5 +1,5 @@
 {
-  "version": "v0.0.12",
+  "version": "v0.0.13",
   "private": true,
   "scripts": {
     "start": "umi dev",
@@ -24,7 +24,10 @@
     "@ant-design/pro-layout": "^6.5.0",
     "@umijs/preset-react": "1.x",
     "antd": "^4.12.3",
+    "highcharts": "^9.0.1",
+    "highcharts-react-official": "^3.0.0",
     "monaco-editor-webpack-plugin": "^3.0.0",
+    "react-highlight-words": "^0.17.0",
     "react-monaco-editor": "^0.42.0",
     "umi": "^3.3.7"
   },

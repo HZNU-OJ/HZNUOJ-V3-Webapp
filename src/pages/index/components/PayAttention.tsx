@@ -4,7 +4,7 @@ export default () => {
       <div className="am-panel-hd" style={{ padding: '2px 5px', fontSize: 16 }}>
         Pay Attention
       </div>
-      <div className="am-panel-bd">dd</div>
+      <div className="am-panel-bd">Hsueh- is so handsome.</div>
     </div>
   );
 };
