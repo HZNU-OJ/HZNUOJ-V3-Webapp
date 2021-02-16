@@ -1,4 +1,5 @@
 import { Tooltip } from 'antd';
+import style from './Announcement.less';
 
 function getData() {
   const announcemnets = [
@@ -39,15 +40,15 @@ function getData() {
 export default () => {
   return (
     <div className="am-panel am-panel-primary" style={{ fontSize: 15 }}>
-      <div className="am-panel-hd" style={{ padding: '2px 5px' }}>
+      <div className="am-panel-hd" style={{ padding: '2px 5px', fontSize: 16 }}>
         Announcement
       </div>
       <div className="am-panel-bd" style={{ padding: '5px' }}>
         <table className="am-table">
           <thead>
             <tr>
-              <th style={{ textAlign: 'left', width: '80%' }}>Title</th>
-              <th style={{ textAlign: 'right', width: '20%' }}>Date</th>
+              <th className={style.tableTitle}>Title</th>
+              <th className={style.tableDate}>Date</th>
             </tr>
           </thead>
           <tbody>{getData()}</tbody>
