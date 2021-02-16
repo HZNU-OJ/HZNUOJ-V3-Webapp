@@ -18,8 +18,9 @@ function topBarItemRender(current: string, itemList: topBarItem[]): string {
 
 function topBar(brand: string, current: string) {
   const leftItemList = [
-    { id: 'problemSet', name: 'Problem Set', link: '/p' },
     { id: 'contests', name: 'Contests', link: '/c' },
+    { id: 'gym', name: 'Gym', link: '/g' },
+    { id: 'problemSet', name: 'Problem Set', link: '/p' },
     { id: 'submissions', name: 'Submissions', link: '/s' },
     { id: 'users', name: 'Users', link: '/u' },
     { id: 'discussion', name: 'Discussion', link: '/d' },
@@ -27,7 +28,7 @@ function topBar(brand: string, current: string) {
   const rightItemList = [{ id: 'enter', name: 'Enter', link: '/login' }];
   return {
     __html: `
-    <header class="am-topbar-inverse am-topbar-fixed-top" style="font-size: 16px;">
+    <header class="am-topbar-inverse am-topbar-fixed-toped" style="font-size: 16px; margin-top: 0px;">
     <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-primary am-show-sm-only"
       data-am-collapse="{target: '#collapse-head'}">
       <span class="am-sr-only">导航切换</span>
