@@ -1,6 +1,7 @@
 import Loading from '@/components/Loading';
+import React from 'react';
 
-export default () => {
+const GlobalLoading: React.FC<{}> = (props) => {
   return (
     <div
       style={{
@@ -14,3 +15,5 @@ export default () => {
     </div>
   );
 };
+
+export default GlobalLoading;

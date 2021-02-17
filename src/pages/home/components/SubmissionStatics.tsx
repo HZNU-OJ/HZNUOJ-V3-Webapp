@@ -1,5 +1,6 @@
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+import React from 'react';
 
 function getChartObj() {
   return {
@@ -81,7 +82,7 @@ function getChartObj() {
   };
 }
 
-export default () => {
+const SubmissionStatics: React.FC<{}> = (props) => {
   return (
     <div className="am-panel am-panel-primary" style={{ fontSize: 15 }}>
       <div className="am-panel-hd" style={{ padding: '2px 5px', fontSize: 16 }}>
@@ -93,3 +94,5 @@ export default () => {
     </div>
   );
 };
+
+export { SubmissionStatics };

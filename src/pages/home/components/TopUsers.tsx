@@ -3,6 +3,7 @@ import {
   getRatingSpan,
   getRatingName,
 } from '@/components/Rating';
+import React from 'react';
 
 function getTopUsersData() {
   const ratings = [3749, 2600, 2400, 2300, 2100, 1900, 1600, 1400, 1200, 800];
@@ -22,7 +23,7 @@ function getTopUsersData() {
   return html;
 }
 
-export default () => {
+const TopUsers: React.FC<{}> = (props) => {
   return (
     <div className="am-panel am-panel-primary" style={{ fontSize: 15 }}>
       <div className="am-panel-hd" style={{ padding: '2px 5px', fontSize: 16 }}>
@@ -41,3 +42,5 @@ export default () => {
     </div>
   );
 };
+
+export { TopUsers };

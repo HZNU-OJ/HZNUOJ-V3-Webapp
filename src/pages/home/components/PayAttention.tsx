@@ -1,4 +1,6 @@
-export default () => {
+import React from 'react';
+
+const PayAttention: React.FC<{}> = (props) => {
   return (
     <div className="am-panel am-panel-primary" style={{ fontSize: 15 }}>
       <div className="am-panel-hd" style={{ padding: '2px 5px', fontSize: 16 }}>
@@ -8,3 +10,5 @@ export default () => {
     </div>
   );
 };
+
+export { PayAttention };

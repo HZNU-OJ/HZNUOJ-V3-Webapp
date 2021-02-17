@@ -1,6 +1,7 @@
 import style from './Loading.less';
+import React from 'react';
 
-export default () => {
+const Loading: React.FC<{}> = (props) => {
   return (
     <div className={[style.loader21, style.loader].join(' ')}>
       <div className={style['loader-21']}>
@@ -13,3 +14,5 @@ export default () => {
     </div>
   );
 };
+
+export default Loading;

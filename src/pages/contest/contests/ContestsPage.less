@@ -1,0 +1,42 @@
+.root {
+  width: 100%;
+  padding-top: 20px;
+}
+
+.loading {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Table {
+  :global {
+    .ant-table-thead > td {
+      background-color: #000;
+    }
+
+    .ant-table-tbody
+      > tr.ant-table-row-hover:not(.ant-table-expanded-row):not(.ant-table-row-selected)
+      > td,
+    .ant-table-tbody
+      > tr:hover:not(.ant-table-expanded-row):not(.ant-table-row-selected)
+      > td,
+    .ant-table-thead
+      > tr.ant-table-row-hover:not(.ant-table-expanded-row):not(.ant-table-row-selected)
+      > td,
+    .ant-table-thead
+      > tr:hover:not(.ant-table-expanded-row):not(.ant-table-row-selected)
+      > td {
+      background: rgb(221, 230, 235);
+    }
+
+    .ant-table-tbody > tr > td {
+      height: 32px;
+    }
+  }
+}
+
+.tableRoot {
+  width: 100%;
+}

@@ -1,8 +1,9 @@
 import style from './Footer.less';
 import packages from '@/../package.json';
 import GithubIcon from '@/icons/Github';
+import React from 'react';
 
-export default () => {
+const Footer: React.FC<{}> = (props) => {
   return (
     <footer className={style.footer}>
       <div className={style.name}>Hangzhou Normal U Online Judge V3</div>
@@ -21,3 +22,5 @@ export default () => {
     </footer>
   );
 };
+
+export default Footer;

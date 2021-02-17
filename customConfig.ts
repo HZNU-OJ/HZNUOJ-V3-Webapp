@@ -5,7 +5,7 @@ export default {
     baidu: '',
   },
   favicon: '/favicon.png',
-  title: '',
+  title: 'HZNU Online Judge',
   metas: [
     {
       name: 'keywords',

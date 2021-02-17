@@ -1,7 +1,7 @@
 export default [
   {
     path: '/',
-    component: '@/pages/index/IndexPage',
+    component: '@/pages/home/HomePage',
   },
   {
     path: '/login',
@@ -14,5 +14,9 @@ export default [
   {
     path: '/forgot-password',
     component: '@/pages/auth/forgot-password/ForgotPasswordPage',
+  },
+  {
+    path: '/contests',
+    component: '@/pages/contest/contests/ContestsPage',
   },
 ];

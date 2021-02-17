@@ -1,5 +1,6 @@
 import { Tooltip } from 'antd';
 import style from './Announcement.less';
+import React from 'react';
 
 function getData() {
   const announcemnets = [
@@ -37,7 +38,7 @@ function getData() {
   return html;
 }
 
-export default () => {
+const Announcement: React.FC<{}> = (props) => {
   return (
     <div className="am-panel am-panel-primary" style={{ fontSize: 15 }}>
       <div className="am-panel-hd" style={{ padding: '2px 5px', fontSize: 16 }}>
@@ -57,3 +58,5 @@ export default () => {
     </div>
   );
 };
+
+export { Announcement };
