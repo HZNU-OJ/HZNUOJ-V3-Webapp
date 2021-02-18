@@ -17,23 +17,23 @@ interface ContestItem {
 class ContestsPage extends React.Component {
   getTableColumns() {
     return [
-      {
-        title: '#',
-        dataIndex: 'id',
-        key: 'id',
-        width: '50px',
-        align: 'left',
-        fixed: 'left',
-        sorter: (a: contestItem, b: contestItem) => a.id - b.id,
-      },
+      // {
+      //   title: '#',
+      //   dataIndex: 'id',
+      //   key: 'id',
+      //   width: '80px',
+      //   align: 'left',
+      //   fixed: 'left',
+      //   sorter: (a: ContestItem, b: ContestItem) => a.id - b.id,
+      // },
       {
         title: 'Contest Name',
         dataIndex: 'contestName',
         key: 'contestName',
-        width: '200px',
-        align: 'left',
+        width: '320px',
+        align: 'center',
         fixed: 'left',
-        ...this.getColumnSearchProps('contestName'),
+        ...this.getColumnSearchProps('contestName', 'ContestName'),
         render: (contestName: string) => {
           return (
             <Tooltip placement="top" title={contestName}>
@@ -46,14 +46,14 @@ class ContestsPage extends React.Component {
         title: 'Start',
         dataIndex: 'start',
         key: 'start',
-        width: '1000px',
+        width: '200px',
         align: 'center',
       },
       {
         title: 'Length',
         dataIndex: 'length',
         key: 'length',
-        width: '1000px',
+        width: '200px',
         align: 'center',
       },
       {
@@ -62,120 +62,29 @@ class ContestsPage extends React.Component {
         key: 'status',
         width: '100px',
         align: 'center',
-        fixed: 'right',
+      },
+      {
+        title: 'Standings',
+        dataIndex: 'standings',
+        key: 'standings',
+        width: '100px',
+        align: 'center',
       },
     ];
   }
 
   getTableDataSource(): ContestItem[] {
-    const dataSource = [
-      {
-        id: 1,
-        contestName: 'ddd',
+    const dataSource: ContestItem[] = [];
+    for (let i = 1; i <= 100; ++i) {
+      dataSource.push({
+        id: i,
+        contestName: `2020 Intelligent Video Coding Contest ${i}`,
         start: 2,
         length: 3,
         status: 4,
-      },
-      {
-        id: 1,
-        contestName: 'ddd',
-        start: 2,
-        length: 3,
-        status: 4,
-      },
-      {
-        id: 1,
-        contestName: 'ddd',
-        start: 2,
-        length: 3,
-        status: 4,
-      },
-      {
-        id: 1,
-        contestName: 'ddd',
-        start: 2,
-        length: 3,
-        status: 4,
-      },
-      {
-        id: 1,
-        contestName: 'ddd',
-        start: 2,
-        length: 3,
-        status: 4,
-      },
-      {
-        id: 1,
-        contestName: 'ddd',
-        start: 2,
-        length: 3,
-        status: 4,
-      },
-      {
-        id: 1,
-        contestName: 'ddd',
-        start: 2,
-        length: 3,
-        status: 4,
-      },
-      {
-        id: 1,
-        contestName: 'ddd',
-        start: 2,
-        length: 3,
-        status: 4,
-      },
-      {
-        id: 1,
-        contestName: 'ddd',
-        start: 2,
-        length: 3,
-        status: 4,
-      },
-      {
-        id: 1,
-        contestName: 'ddd',
-        start: 2,
-        length: 3,
-        status: 4,
-      },
-      {
-        id: 1,
-        contestName: 'ddd',
-        start: 2,
-        length: 3,
-        status: 4,
-      },
-      {
-        id: 1,
-        contestName: 'ddd',
-        start: 2,
-        length: 3,
-        status: 4,
-      },
-      {
-        id: 1,
-        contestName: 'ddd',
-        start: 2,
-        length: 3,
-        status: 4,
-      },
-      {
-        id: 1,
-        contestName: 'ddd',
-        start: 2,
-        length: 3,
-        status: 4,
-      },
-      {
-        id: 1,
-        contestName: 'ddd',
-        start: 2,
-        length: 3,
-        status: 4,
-      },
-    ];
-    return dataSource as ContestItem[];
+      });
+    }
+    return dataSource;
   }
 
   async UNSAFE_componentWillMount() {
@@ -195,7 +104,7 @@ class ContestsPage extends React.Component {
     title: '',
   };
 
-  getColumnSearchProps = (dataIndex) => ({
+  getColumnSearchProps = (dataIndex: string, title?: string) => ({
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
@@ -207,7 +116,7 @@ class ContestsPage extends React.Component {
           ref={(node) => {
             this.searchInput = node;
           }}
-          placeholder={`Search ${dataIndex}`}
+          placeholder={`Search ${title || dataIndex}`}
           value={selectedKeys[0]}
           onChange={(e) =>
             setSelectedKeys(e.target.value ? [e.target.value] : [])
@@ -268,7 +177,7 @@ class ContestsPage extends React.Component {
     });
   };
 
-  handleReset = (clearFilters) => {
+  handleReset = (clearFilters: any) => {
     clearFilters();
     this.setState({ searchText: '' });
   };
@@ -288,17 +197,18 @@ class ContestsPage extends React.Component {
               <div className={style.tableRoot}>
                 <Table
                   size="small"
-                  scroll={{ x: 1500 }}
+                  scroll={{ x: 920 }}
                   sticky
                   columns={this.getTableColumns()}
                   dataSource={this.getTableDataSource()}
                   className={style.Table}
+                  rowKey={(record) => record.id}
                   pagination={{
                     hideOnSinglePage: true,
                     showQuickJumper: true,
                     showSizeChanger: true,
                     defaultPageSize: 32,
-                    pageSizeOptions: ['8', '16', '32', '64', '128'],
+                    pageSizeOptions: ['8', '16', '32', '64', '128', '256'],
                   }}
                 />
               </div>

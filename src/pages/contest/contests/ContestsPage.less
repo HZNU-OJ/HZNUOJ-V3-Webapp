@@ -12,10 +12,6 @@
 
 .Table {
   :global {
-    .ant-table-thead > td {
-      background-color: #000;
-    }
-
     .ant-table-tbody
       > tr.ant-table-row-hover:not(.ant-table-expanded-row):not(.ant-table-row-selected)
       > td,
@@ -33,6 +29,11 @@
 
     .ant-table-tbody > tr > td {
       height: 32px;
+    }
+
+    .ant-table-thead > tr > th {
+      background: #3e90cc;
+      color: #fff;
     }
   }
 }
