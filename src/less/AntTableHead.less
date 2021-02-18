@@ -1,0 +1,41 @@
+.Table {
+  :global {
+    .ant-table-tbody
+      > tr.ant-table-row-hover:not(.ant-table-expanded-row):not(.ant-table-row-selected)
+      > td,
+    .ant-table-tbody
+      > tr:hover:not(.ant-table-expanded-row):not(.ant-table-row-selected)
+      > td,
+    .ant-table-thead
+      > tr.ant-table-row-hover:not(.ant-table-expanded-row):not(.ant-table-row-selected)
+      > td,
+    .ant-table-thead
+      > tr:hover:not(.ant-table-expanded-row):not(.ant-table-row-selected)
+      > td {
+      background: rgb(221, 230, 235);
+    }
+
+    .ant-table-column-has-sorters:hover {
+      color: #000;
+    }
+
+    .ant-table-thead > tr > th {
+      background: #3e90cc;
+      color: #fff;
+      font-size: 15px;
+    }
+
+    .ant-table-tbody > tr > td {
+      min-height: 32px;
+    }
+
+    .ant-table-filter-trigger.active {
+      color: #fff;
+    }
+
+    .ant-table-column-sorter-up.active,
+    .ant-table-column-sorter-down.active {
+      color: #fff;
+    }
+  }
+}

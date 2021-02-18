@@ -1,65 +1,149 @@
 import React from 'react';
 import Highlighter from 'react-highlight-words';
 import { Table, Input, Space, Button, Tooltip } from 'antd';
+import { ColumnsType } from 'antd/es/table';
 import { SearchOutlined } from '@ant-design/icons';
 import style from './ContestsPage.less';
 import Loading from '@/components/Loading';
 import BasicLayout from '@/layouts/Basic';
+import ContestStatusStyle from '@/less/ContestStatus.less';
+import AntTableHead from '@/less/AntTableHead.less';
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
+dayjs.locale('zh-cn');
 
 interface ContestItem {
   id: number;
   contestName: string;
+  writers: string;
   start: number;
-  length: number;
-  status: number;
+  end: number;
+  status: string;
+  register: string;
+  mode: string;
+}
+
+enum ContestStatus {
+  pending = 'PENDING',
+  running = 'RUNNING',
+  frozen = 'FROZEN',
+  finished = 'FINISHED',
+}
+
+enum ContestMode {
+  icpc = 'ICPC',
+  ioi = 'IOI',
+  codeForces = 'CodeForces',
+}
+
+function Frozen2Running(status: string) {
+  return status.replace('FROZEN', 'RUNNING');
+}
+
+function getTableDataSource(): ContestItem[] {
+  const dataSource: ContestItem[] = [];
+  for (let i = 1; i <= 100; ++i) {
+    dataSource.push({
+      id: i,
+      contestName: `2020 Intelligent Video Coding Contest ${i}`,
+      writers: ['Dup4', 'Hsueh-', 'ltslts'].join(', '),
+      start: 1613656156 + i * 100,
+      end: 1613656156 + 10 * i * 100,
+      status: Frozen2Running(
+        [
+          ContestStatus.pending,
+          ContestStatus.running,
+          ContestStatus.frozen,
+          ContestStatus.finished,
+        ][i - 1 > 2 ? 3 : i - 1],
+      ),
+      register: '',
+      mode: 'ICPC',
+    });
+  }
+  return dataSource;
 }
 
 class ContestsPage extends React.Component {
-  getTableColumns() {
-    return [
-      // {
-      //   title: '#',
-      //   dataIndex: 'id',
-      //   key: 'id',
-      //   width: '80px',
-      //   align: 'left',
-      //   fixed: 'left',
-      //   sorter: (a: ContestItem, b: ContestItem) => a.id - b.id,
-      // },
+  getTableColumns(): ColumnsType<ContestItem> {
+    const columns: ColumnsType<ContestItem> = [
       {
         title: 'Contest Name',
         dataIndex: 'contestName',
         key: 'contestName',
         width: '320px',
         align: 'center',
-        fixed: 'left',
-        ...this.getColumnSearchProps('contestName', 'ContestName'),
+        ...this.getColumnSearchProps('contestName'),
         render: (contestName: string) => {
           return (
             <Tooltip placement="top" title={contestName}>
-              <span className={'h-ellipsis'}>{contestName}</span>
+              <a href="/" className={['h-ellipsis'].join(' ')}>
+                {contestName}
+              </a>
             </Tooltip>
           );
         },
       },
       {
+        title: 'Writers',
+        dataIndex: 'writers',
+        key: 'writers',
+        width: '100px',
+        align: 'center',
+        ...this.getColumnSearchProps('writers'),
+      },
+      {
         title: 'Start',
         dataIndex: 'start',
         key: 'start',
-        width: '200px',
+        width: '160px',
         align: 'center',
+        sorter: (a, b) => a.start - b.start,
+        render: (start: string) => {
+          return dayjs.unix(parseInt(start)).format('YYYY-MM-DD HH:mm:ss');
+        },
       },
       {
-        title: 'Length',
-        dataIndex: 'length',
-        key: 'length',
-        width: '200px',
+        title: 'End',
+        dataIndex: 'end',
+        key: 'end',
+        width: '160px',
         align: 'center',
+        sorter: (a, b) => a.end - b.end,
+        render: (end: string) => {
+          return dayjs.unix(parseInt(end)).format('YYYY-MM-DD HH:mm:ss');
+        },
       },
       {
         title: 'Status',
         dataIndex: 'status',
         key: 'status',
+        width: '100px',
+        align: 'center',
+        filters: [
+          { text: ContestStatus.pending, value: ContestStatus.pending },
+          { text: ContestStatus.running, value: ContestStatus.running },
+          { text: ContestStatus.finished, value: ContestStatus.finished },
+        ],
+        onFilter: (status, record) => record.status === status,
+        render: (status: string) => {
+          return (
+            <div>
+              <div
+                className={[
+                  ContestStatusStyle.label,
+                  ContestStatusStyle[status],
+                ].join(' ')}
+              ></div>
+              <b className={ContestStatusStyle[`${status}-text`]}>{status}</b>
+            </div>
+          );
+        },
+      },
+      {
+        title: 'Register',
+        dataIndex: 'register',
+        key: 'register',
         width: '100px',
         align: 'center',
       },
@@ -70,21 +154,21 @@ class ContestsPage extends React.Component {
         width: '100px',
         align: 'center',
       },
+      {
+        title: 'Mode',
+        dataIndex: 'mode',
+        key: 'mode',
+        width: '100px',
+        align: 'center',
+        filters: [
+          { text: ContestMode.icpc, value: ContestMode.icpc },
+          { text: ContestMode.ioi, value: ContestMode.ioi },
+          { text: ContestMode.codeForces, value: ContestMode.codeForces },
+        ],
+        onFilter: (mode, record) => record.mode === mode,
+      },
     ];
-  }
-
-  getTableDataSource(): ContestItem[] {
-    const dataSource: ContestItem[] = [];
-    for (let i = 1; i <= 100; ++i) {
-      dataSource.push({
-        id: i,
-        contestName: `2020 Intelligent Video Coding Contest ${i}`,
-        start: 2,
-        length: 3,
-        status: 4,
-      });
-    }
-    return dataSource;
+    return columns;
   }
 
   async UNSAFE_componentWillMount() {
@@ -99,12 +183,9 @@ class ContestsPage extends React.Component {
 
   state = {
     loaded: false,
-    columns: [],
-    tableData: [],
-    title: '',
   };
 
-  getColumnSearchProps = (dataIndex: string, title?: string) => ({
+  getColumnSearchProps = (dataIndex: string) => ({
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
@@ -116,7 +197,7 @@ class ContestsPage extends React.Component {
           ref={(node) => {
             this.searchInput = node;
           }}
-          placeholder={`Search ${title || dataIndex}`}
+          placeholder={`Search ${dataIndex}`}
           value={selectedKeys[0]}
           onChange={(e) =>
             setSelectedKeys(e.target.value ? [e.target.value] : [])
@@ -147,7 +228,7 @@ class ContestsPage extends React.Component {
       </div>
     ),
     filterIcon: (filtered) => (
-      <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
+      <SearchOutlined style={{ color: filtered ? '#fff' : undefined }} />
     ),
     onFilter: (value, record) =>
       record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
@@ -169,7 +250,7 @@ class ContestsPage extends React.Component {
       ),
   });
 
-  handleSearch = (selectedKeys, confirm, dataIndex) => {
+  handleSearch = (selectedKeys: any, confirm: any, dataIndex: string) => {
     confirm();
     this.setState({
       searchText: selectedKeys[0],
@@ -193,26 +274,24 @@ class ContestsPage extends React.Component {
           )}
 
           {this.state.loaded === true && (
-            <>
-              <div className={style.tableRoot}>
-                <Table
-                  size="small"
-                  scroll={{ x: 920 }}
-                  sticky
-                  columns={this.getTableColumns()}
-                  dataSource={this.getTableDataSource()}
-                  className={style.Table}
-                  rowKey={(record) => record.id}
-                  pagination={{
-                    hideOnSinglePage: true,
-                    showQuickJumper: true,
-                    showSizeChanger: true,
-                    defaultPageSize: 32,
-                    pageSizeOptions: ['8', '16', '32', '64', '128', '256'],
-                  }}
-                />
-              </div>
-            </>
+            <div className={style.tableRoot}>
+              <Table<ContestItem>
+                size="small"
+                scroll={{ x: 920 }}
+                sticky
+                columns={this.getTableColumns()}
+                dataSource={getTableDataSource()}
+                className={AntTableHead.Table}
+                rowKey={(record) => record.id}
+                pagination={{
+                  hideOnSinglePage: true,
+                  showQuickJumper: true,
+                  showSizeChanger: true,
+                  defaultPageSize: 32,
+                  pageSizeOptions: ['8', '16', '32', '64', '128', '256'],
+                }}
+              />
+            </div>
           )}
         </div>
       </BasicLayout>
