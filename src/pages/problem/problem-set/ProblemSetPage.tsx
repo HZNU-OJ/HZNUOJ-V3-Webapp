@@ -6,9 +6,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import style from './ProblemSetPage.less';
 import Loading from '@/components/Loading';
 import BasicLayout from '@/layouts/Basic';
-import ContestStatusStyle from '@/less/ContestStatus.less';
 import AntTableHead from '@/less/AntTableHead.less';
-import { formatUnixTimeStamp } from '@/utils/formatDateTime';
 
 interface ProblemItem {
   id: number;
@@ -185,7 +183,7 @@ class ContestsPage extends React.Component {
             <div className={style.tableRoot}>
               <Table<ProblemItem>
                 size="small"
-                scroll={{ x: 800 }}
+                scroll={{ x: 920 }}
                 sticky
                 columns={this.getTableColumns()}
                 dataSource={getTableDataSource()}

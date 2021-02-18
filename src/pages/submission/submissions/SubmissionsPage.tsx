@@ -3,176 +3,75 @@ import Highlighter from 'react-highlight-words';
 import { Table, Input, Space, Button, Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { SearchOutlined } from '@ant-design/icons';
-import style from './ContestsPage.less';
+import style from './SubmissionsPage.less';
 import Loading from '@/components/Loading';
 import BasicLayout from '@/layouts/Basic';
-import ContestStatusStyle from '@/less/ContestStatus.less';
 import AntTableHead from '@/less/AntTableHead.less';
-import { formatUnixTimeStamp } from '@/utils/formatDateTime';
 
-interface ContestItem {
+interface ProblemItem {
   id: number;
-  contestName: string;
-  writers: string;
-  start: number;
-  end: number;
-  status: string;
-  register: string;
-  mode: string;
+  problem: string;
+  submissions: number;
+  acceptance: number;
 }
 
-enum ContestStatus {
-  pending = 'PENDING',
-  running = 'RUNNING',
-  frozen = 'FROZEN',
-  finished = 'FINISHED',
-}
-
-function contestTimeRender(unixTimeStamp: string | number) {
-  const shortTimeFormat = 'MM/DD HH:mm';
-  const longTimeFormat = 'YYYY-MM-DD HH:mm:ss';
-  return (
-    <Tooltip
-      placement="top"
-      title={formatUnixTimeStamp(unixTimeStamp, longTimeFormat)}
-    >
-      {formatUnixTimeStamp(unixTimeStamp, shortTimeFormat)}
-    </Tooltip>
-  );
-}
-
-enum ContestMode {
-  icpc = 'ICPC',
-  ioi = 'IOI',
-  codeForces = 'CodeForces',
-}
-
-function Frozen2Running(status: string) {
-  return status.replace('FROZEN', 'RUNNING');
-}
-
-function getTableDataSource(): ContestItem[] {
-  const dataSource: ContestItem[] = [];
+function getTableDataSource(): ProblemItem[] {
+  const dataSource: ProblemItem[] = [];
   for (let i = 1; i <= 100; ++i) {
     dataSource.push({
       id: i,
-      contestName: `2020 Intelligent Video Coding Contest ${i}`,
-      writers: ['Dup4', 'Hsueh-', 'ltslts'].join(', '),
-      start: 1613656156 + i * 100,
-      end: 1613656156 + 10 * i * 100,
-      status: Frozen2Running(
-        [
-          ContestStatus.pending,
-          ContestStatus.running,
-          ContestStatus.frozen,
-          ContestStatus.finished,
-        ][i - 1 > 2 ? 3 : i - 1],
-      ),
-      register: '',
-      mode: 'ICPC',
+      problem: 'A + B Problem',
+      submissions: i * 1000,
+      acceptance: (i * 367) % 10000,
     });
   }
   return dataSource;
 }
 
 class ContestsPage extends React.Component {
-  getTableColumns(): ColumnsType<ContestItem> {
-    const columns: ColumnsType<ContestItem> = [
+  getTableColumns(): ColumnsType<ProblemItem> {
+    const columns: ColumnsType<ProblemItem> = [
       {
-        title: 'Contest Name',
-        dataIndex: 'contestName',
-        key: 'contestName',
-        width: '320px',
+        title: '#',
+        dataIndex: 'id',
+        key: 'id',
+        width: '60px',
         align: 'center',
-        ...this.getColumnSearchProps('contestName'),
-        render: (contestName: string) => {
+        sorter: (a, b) => a.id - b.id,
+      },
+      {
+        title: 'Problem',
+        dataIndex: 'problem',
+        key: 'problem',
+        width: '540px',
+        align: 'left',
+        ...this.getColumnSearchProps('problem'),
+        render: (problem: string) => {
           return (
-            <Tooltip placement="top" title={contestName}>
+            <Tooltip placement="top" title={problem}>
               <a href="/" className={['h-ellipsis'].join(' ')}>
-                {contestName}
+                {problem}
               </a>
             </Tooltip>
           );
         },
       },
       {
-        title: 'Writers',
-        dataIndex: 'writers',
-        key: 'writers',
+        title: 'Submissions',
+        dataIndex: 'submissions',
+        key: 'submissions',
         width: '100px',
         align: 'center',
-        ...this.getColumnSearchProps('writers'),
       },
       {
-        title: 'Start',
-        dataIndex: 'start',
-        key: 'start',
-        width: '160px',
-        align: 'center',
-        sorter: (a, b) => a.start - b.start,
-        render: contestTimeRender,
-      },
-      {
-        title: 'End',
-        dataIndex: 'end',
-        key: 'end',
-        width: '160px',
-        align: 'center',
-        sorter: (a, b) => a.end - b.end,
-        render: contestTimeRender,
-      },
-      {
-        title: 'Status',
-        dataIndex: 'status',
-        key: 'status',
+        title: 'Acceptance',
+        dataIndex: 'acceptance',
+        key: 'acceptance',
         width: '100px',
         align: 'center',
-        filters: [
-          { text: ContestStatus.pending, value: ContestStatus.pending },
-          { text: ContestStatus.running, value: ContestStatus.running },
-          { text: ContestStatus.finished, value: ContestStatus.finished },
-        ],
-        onFilter: (status, record) => record.status === status,
-        render: (status: string) => {
-          return (
-            <div>
-              <div
-                className={[
-                  ContestStatusStyle.label,
-                  ContestStatusStyle[status],
-                ].join(' ')}
-              ></div>
-              <b className={ContestStatusStyle[`${status}-text`]}>{status}</b>
-            </div>
-          );
+        render: (acceptance: number) => {
+          return `${acceptance / 100}%`;
         },
-      },
-      {
-        title: 'Register',
-        dataIndex: 'register',
-        key: 'register',
-        width: '100px',
-        align: 'center',
-      },
-      {
-        title: 'Standings',
-        dataIndex: 'standings',
-        key: 'standings',
-        width: '100px',
-        align: 'center',
-      },
-      {
-        title: 'Mode',
-        dataIndex: 'mode',
-        key: 'mode',
-        width: '100px',
-        align: 'center',
-        filters: [
-          { text: ContestMode.icpc, value: ContestMode.icpc },
-          { text: ContestMode.ioi, value: ContestMode.ioi },
-          { text: ContestMode.codeForces, value: ContestMode.codeForces },
-        ],
-        onFilter: (mode, record) => record.mode === mode,
       },
     ];
     return columns;
@@ -272,7 +171,7 @@ class ContestsPage extends React.Component {
 
   render() {
     return (
-      <BasicLayout current={'contests'}>
+      <BasicLayout current={'submissions'}>
         <div className={style.root}>
           {this.state.loaded === false && (
             <div className={style.loading}>
@@ -282,7 +181,7 @@ class ContestsPage extends React.Component {
 
           {this.state.loaded === true && (
             <div className={style.tableRoot}>
-              <Table<ContestItem>
+              <Table<ProblemItem>
                 size="small"
                 scroll={{ x: 920 }}
                 sticky

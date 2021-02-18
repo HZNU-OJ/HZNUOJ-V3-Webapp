@@ -23,4 +23,8 @@ export default [
     path: '/problemset',
     component: '@/pages/problem/problem-set/ProblemSetPage',
   },
+  {
+    path: '/submissions',
+    component: '@/pages/submission/submissions/SubmissionsPage',
+  },
 ];
