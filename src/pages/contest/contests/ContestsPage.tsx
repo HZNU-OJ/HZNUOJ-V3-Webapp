@@ -8,9 +8,7 @@ import Loading from '@/components/Loading';
 import BasicLayout from '@/layouts/Basic';
 import ContestStatusStyle from '@/less/ContestStatus.less';
 import AntTableHead from '@/less/AntTableHead.less';
-import dayjs from 'dayjs';
-import 'dayjs/locale/zh-cn';
-dayjs.locale('zh-cn');
+import { formatUnixTimeStamp } from '@/utils/formatDateTime';
 
 interface ContestItem {
   id: number;
@@ -29,6 +27,8 @@ enum ContestStatus {
   frozen = 'FROZEN',
   finished = 'FINISHED',
 }
+
+const timeFormat = 'YYYY-MM-DD HH:mm:ss';
 
 enum ContestMode {
   icpc = 'ICPC',
@@ -100,7 +100,7 @@ class ContestsPage extends React.Component {
         align: 'center',
         sorter: (a, b) => a.start - b.start,
         render: (start: string) => {
-          return dayjs.unix(parseInt(start)).format('YYYY-MM-DD HH:mm:ss');
+          return formatUnixTimeStamp(start, timeFormat);
         },
       },
       {
@@ -111,7 +111,7 @@ class ContestsPage extends React.Component {
         align: 'center',
         sorter: (a, b) => a.end - b.end,
         render: (end: string) => {
-          return dayjs.unix(parseInt(end)).format('YYYY-MM-DD HH:mm:ss');
+          return formatUnixTimeStamp(end, timeFormat);
         },
       },
       {
