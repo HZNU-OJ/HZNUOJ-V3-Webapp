@@ -20,7 +20,7 @@ function topBarItemRender(current: string, itemList: topBarItem[]): string {
 function topBar(brand: string, current: string) {
   const leftItemList = [
     { id: 'contests', name: 'Contests', link: '/contests' },
-    { id: 'problemSet', name: 'Problem Set', link: '/p' },
+    { id: 'problemSet', name: 'Problem Set', link: '/problemset' },
     { id: 'submissions', name: 'Submissions', link: '/s' },
     { id: 'users', name: 'Users', link: '/u' },
     { id: 'discussion', name: 'Discussion', link: '/d' },

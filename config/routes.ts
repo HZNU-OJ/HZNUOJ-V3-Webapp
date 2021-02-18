@@ -19,4 +19,8 @@ export default [
     path: '/contests',
     component: '@/pages/contest/contests/ContestsPage',
   },
+  {
+    path: '/problemset',
+    component: '@/pages/problem/problem-set/ProblemSetPage',
+  },
 ];
