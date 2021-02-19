@@ -1,5 +1,5 @@
 import Footer from '@/components/Footer';
-import style from './Basic.less';
+import style from './Basic.module.less';
 import React, { useState } from 'react';
 interface topBarItem {
   id: string;
@@ -22,7 +22,7 @@ function topBar(brand: string, current: string) {
     { id: 'contests', name: 'Contests', link: '/contests' },
     { id: 'problemSet', name: 'Problem Set', link: '/problemset' },
     { id: 'submissions', name: 'Submissions', link: '/submissions' },
-    { id: 'users', name: 'Users', link: '/u' },
+    { id: 'users', name: 'Users', link: '/users' },
     { id: 'discussion', name: 'Discussion', link: '/d' },
   ];
   const rightItemList = [{ id: 'enter', name: 'Enter', link: '/login' }];

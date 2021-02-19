@@ -1,5 +1,5 @@
 import { Tooltip } from 'antd';
-import style from './Announcement.less';
+import style from './Announcement.module.less';
 import React from 'react';
 
 function getData() {

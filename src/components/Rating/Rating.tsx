@@ -1,4 +1,4 @@
-import style from './Rating.less';
+import style from './Rating.module.less';
 import { Tooltip } from 'antd';
 
 function getRankClassName(rank: string): string {

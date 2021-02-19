@@ -1,4 +1,4 @@
-import style from './Footer.less';
+import style from './Footer.module.less';
 import packages from '@/../package.json';
 import GithubIcon from '@/icons/Github';
 import React from 'react';

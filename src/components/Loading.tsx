@@ -1,4 +1,4 @@
-import style from './Loading.less';
+import style from './Loading.module.less';
 import React from 'react';
 
 const Loading: React.FC<{}> = (props) => {

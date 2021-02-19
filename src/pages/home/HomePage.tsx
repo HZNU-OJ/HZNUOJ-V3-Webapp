@@ -1,4 +1,4 @@
-import style from './HomePage.less';
+import style from './HomePage.module.less';
 import BasicLayout from '@/layouts/Basic';
 import React from 'react';
 import { Row, Col } from 'antd';

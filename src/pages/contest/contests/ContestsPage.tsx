@@ -3,10 +3,10 @@ import Highlighter from 'react-highlight-words';
 import { Table, Input, Space, Button, Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { SearchOutlined } from '@ant-design/icons';
-import style from './ContestsPage.less';
+import style from './ContestsPage.module.less';
 import Loading from '@/components/Loading';
 import BasicLayout from '@/layouts/Basic';
-import AntTableHead from '@/less/AntTableHead.less';
+import AntTableHead from '@/less/AntTableHead.module.less';
 import { formatUnixTimeStamp } from '@/utils/formatDateTime';
 import { ContestStatus } from '@/interface/Contest';
 import { StatusBadge } from '../components';
@@ -20,6 +20,17 @@ interface ContestItem {
   status: string;
   register: string;
   mode: string;
+}
+
+enum ContestTableHeadTitle {
+  id = '#',
+  contestName = 'Contest Name',
+  writers = 'Writers',
+  start = 'Start',
+  end = 'End',
+  status = 'Status',
+  register = 'Register',
+  mode = 'Mode',
 }
 
 function contestTimeRender(unixTimeStamp: string | number) {
@@ -73,7 +84,7 @@ class ContestsPage extends React.Component {
   getTableColumns(): ColumnsType<ContestItem> {
     const columns: ColumnsType<ContestItem> = [
       {
-        title: 'Contest Name',
+        title: ContestTableHeadTitle.contestName,
         dataIndex: 'contestName',
         key: 'contestName',
         width: '320px',
@@ -90,7 +101,7 @@ class ContestsPage extends React.Component {
         },
       },
       {
-        title: 'Writers',
+        title: ContestTableHeadTitle.writers,
         dataIndex: 'writers',
         key: 'writers',
         width: '100px',
@@ -98,7 +109,7 @@ class ContestsPage extends React.Component {
         ...this.getColumnSearchProps('writers'),
       },
       {
-        title: 'Start',
+        title: ContestTableHeadTitle.start,
         dataIndex: 'start',
         key: 'start',
         width: '160px',
@@ -107,7 +118,7 @@ class ContestsPage extends React.Component {
         render: contestTimeRender,
       },
       {
-        title: 'End',
+        title: ContestTableHeadTitle.end,
         dataIndex: 'end',
         key: 'end',
         width: '160px',
@@ -116,7 +127,7 @@ class ContestsPage extends React.Component {
         render: contestTimeRender,
       },
       {
-        title: 'Status',
+        title: ContestTableHeadTitle.status,
         dataIndex: 'status',
         key: 'status',
         width: '100px',

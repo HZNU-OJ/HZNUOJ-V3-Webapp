@@ -27,4 +27,8 @@ export default [
     path: '/submissions',
     component: '@/pages/submission/submissions/SubmissionsPage',
   },
+  {
+    path: '/users',
+    component: '@/pages/user/users/UsersPage',
+  },
 ];

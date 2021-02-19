@@ -3,10 +3,10 @@ import Highlighter from 'react-highlight-words';
 import { Table, Input, Space, Button, Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { SearchOutlined } from '@ant-design/icons';
-import style from './SubmissionsPage.less';
+import style from './SubmissionsPage.module.less';
 import Loading from '@/components/Loading';
 import BasicLayout from '@/layouts/Basic';
-import AntTableHead from '@/less/AntTableHead.less';
+import AntTableHead from '@/less/AntTableHead.module.less';
 import { formatUnixTimeStamp } from '@/utils/formatDateTime';
 
 import {
@@ -83,7 +83,7 @@ function getTableDataSource(): SubmissionItem[] {
   return dataSource;
 }
 
-class ContestsPage extends React.Component {
+class SubmissionsPage extends React.Component {
   getTableColumns(): ColumnsType<SubmissionItem> {
     const columns: ColumnsType<SubmissionItem> = [
       {
@@ -293,4 +293,4 @@ class ContestsPage extends React.Component {
   }
 }
 
-export default ContestsPage;
+export default SubmissionsPage;

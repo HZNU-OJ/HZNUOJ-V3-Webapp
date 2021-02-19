@@ -3,82 +3,83 @@ import Highlighter from 'react-highlight-words';
 import { Table, Input, Space, Button, Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { SearchOutlined } from '@ant-design/icons';
-import style from './ProblemSetPage.module.less';
+import style from './UsersPage.module.less';
 import Loading from '@/components/Loading';
 import BasicLayout from '@/layouts/Basic';
 import AntTableHead from '@/less/AntTableHead.module.less';
 
-interface ProblemItem {
-  id: number;
-  problem: string;
-  submissions: number;
-  acceptance: number;
+interface UserItem {
+  rank: number;
+  username: string;
+  organization: string;
+  acCount: number;
+  rating: number;
 }
 
-enum ProblemTableHeadTitle {
-  id = '#',
-  problem = 'Problem',
-  submissions = 'Submissions',
-  acceptance = 'Acceptance',
+enum UsersTableHeadTitle {
+  rank = 'Rank',
+  username = 'Username',
+  organization = 'Organization',
+  acCount = 'AC.Count',
+  rating = 'Rating',
 }
 
-function getTableDataSource(): ProblemItem[] {
-  const dataSource: ProblemItem[] = [];
+function getTableDataSource(): UserItem[] {
+  const dataSource: UserItem[] = [];
   for (let i = 1; i <= 100; ++i) {
     dataSource.push({
-      id: i,
-      problem: 'A + B Problem',
-      submissions: i * 1000,
-      acceptance: (i * 367) % 10000,
+      rank: i,
+      username: 'Dup4',
+      organization: 'Hangzhou Normal U',
+      acCount: i * 100,
+      rating: i * 200,
     });
   }
   return dataSource;
 }
 
 class ContestsPage extends React.Component {
-  getTableColumns(): ColumnsType<ProblemItem> {
-    const columns: ColumnsType<ProblemItem> = [
+  getTableColumns(): ColumnsType<UserItem> {
+    const columns: ColumnsType<UserItem> = [
       {
-        title: ProblemTableHeadTitle.id,
-        dataIndex: 'id',
-        key: 'id',
+        title: UsersTableHeadTitle.rank,
+        dataIndex: 'rank',
+        key: 'rank',
         width: '60px',
         align: 'left',
-        sorter: (a, b) => a.id - b.id,
+        sorter: (a, b) => a.rank - b.rank,
       },
       {
-        title: ProblemTableHeadTitle.problem,
-        dataIndex: 'problem',
-        key: 'problem',
-        width: '540px',
+        title: UsersTableHeadTitle.username,
+        dataIndex: 'username',
+        key: 'username',
+        width: '80px',
         align: 'left',
-        ...this.getColumnSearchProps('problem'),
-        render: (problem: string) => {
-          return (
-            <Tooltip placement="top" title={problem}>
-              <a href="/" className={['h-ellipsis'].join(' ')}>
-                {problem}
-              </a>
-            </Tooltip>
-          );
-        },
+        ...this.getColumnSearchProps('username'),
       },
       {
-        title: ProblemTableHeadTitle.submissions,
-        dataIndex: 'submissions',
-        key: 'submissions',
-        width: '120px',
-        align: 'right',
+        title: UsersTableHeadTitle.organization,
+        dataIndex: 'organization',
+        key: 'organization',
+        width: '160px',
+        align: 'center',
+        ...this.getColumnSearchProps('organization'),
       },
       {
-        title: ProblemTableHeadTitle.acceptance,
-        dataIndex: 'acceptance',
-        key: 'acceptance',
-        width: '100px',
-        align: 'right',
-        render: (acceptance: number) => {
-          return `${acceptance / 100}%`;
-        },
+        title: UsersTableHeadTitle.acCount,
+        dataIndex: 'acCount',
+        key: 'acCount',
+        width: '60px',
+        align: 'center',
+        sorter: (a, b) => a.acCount - b.acCount,
+      },
+      {
+        title: UsersTableHeadTitle.rating,
+        dataIndex: 'rating',
+        key: 'rating',
+        width: '60px',
+        align: 'center',
+        sorter: (a, b) => a.rating - b.rating,
       },
     ];
     return columns;
@@ -178,7 +179,7 @@ class ContestsPage extends React.Component {
 
   render() {
     return (
-      <BasicLayout current={'problemSet'}>
+      <BasicLayout current={'users'}>
         <div className={style.root}>
           {this.state.loaded === false && (
             <div className={style.loading}>
@@ -188,14 +189,14 @@ class ContestsPage extends React.Component {
 
           {this.state.loaded === true && (
             <div className={style.tableRoot}>
-              <Table<ProblemItem>
+              <Table<UserItem>
                 size="small"
-                scroll={{ x: 1000 }}
+                scroll={{ x: 920 }}
                 sticky
                 columns={this.getTableColumns()}
                 dataSource={getTableDataSource()}
                 className={AntTableHead.table}
-                rowKey={(record) => record.id}
+                rowKey={(record) => record.rank}
                 pagination={{
                   hideOnSinglePage: true,
                   showQuickJumper: true,
