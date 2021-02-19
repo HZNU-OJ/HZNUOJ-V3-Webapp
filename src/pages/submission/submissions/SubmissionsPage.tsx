@@ -7,71 +7,159 @@ import style from './SubmissionsPage.less';
 import Loading from '@/components/Loading';
 import BasicLayout from '@/layouts/Basic';
 import AntTableHead from '@/less/AntTableHead.less';
+import { formatUnixTimeStamp } from '@/utils/formatDateTime';
 
-interface ProblemItem {
+import {
+  SubmissionStatusType,
+  SubmissionLangType,
+  SubmissionLangTypeTitle,
+  SubmissionStatusTypeTitle,
+} from '@/interface/Submission';
+
+interface SubmissionItem {
   id: number;
+  status: string;
+  who: string;
+  when: number;
   problem: string;
-  submissions: number;
-  acceptance: number;
+  time: number;
+  memory: number;
+  lang: string;
+  codeLength: number;
 }
 
-function getTableDataSource(): ProblemItem[] {
-  const dataSource: ProblemItem[] = [];
+enum SubmissionTableHeadTitle {
+  id = '#',
+  status = 'Status',
+  who = 'Who',
+  when = 'When',
+  problem = 'Problem',
+  time = 'Time',
+  memory = 'Memory',
+  lang = 'Lang',
+  codeLength = 'Code Length',
+}
+
+function submissionDateRender(unixTimeStamp: string | number) {
+  const shortTimeFormat = 'MM/DD HH:mm';
+  const longTimeFormat = 'YYYY-MM-DD HH:mm:ss';
+  return (
+    <Tooltip
+      placement="top"
+      title={formatUnixTimeStamp(unixTimeStamp, longTimeFormat)}
+    >
+      {formatUnixTimeStamp(unixTimeStamp, shortTimeFormat)}
+    </Tooltip>
+  );
+}
+
+function submissionTimeRender(time: number) {
+  return `${time} ms`;
+}
+
+function submissionMemoryRender(memory: number) {
+  return `${memory} kb`;
+}
+
+function submissionCodeLengthRender(codeLength: number) {
+  return `${codeLength} B`;
+}
+
+function getTableDataSource(): SubmissionItem[] {
+  const dataSource: SubmissionItem[] = [];
   for (let i = 1; i <= 100; ++i) {
     dataSource.push({
       id: i,
-      problem: 'A + B Problem',
-      submissions: i * 1000,
-      acceptance: (i * 367) % 10000,
+      status: SubmissionStatusTypeTitle[i % SubmissionStatusTypeTitle.length],
+      who: 'Dup4',
+      when: 1613656156 + i * 100,
+      problem: '#1. A + B Problem',
+      time: 123 * i,
+      memory: 321 * i,
+      lang: SubmissionLangTypeTitle[i % SubmissionLangTypeTitle.length],
+      codeLength: 222 * i,
     });
   }
   return dataSource;
 }
 
 class ContestsPage extends React.Component {
-  getTableColumns(): ColumnsType<ProblemItem> {
-    const columns: ColumnsType<ProblemItem> = [
+  getTableColumns(): ColumnsType<SubmissionItem> {
+    const columns: ColumnsType<SubmissionItem> = [
       {
-        title: '#',
+        title: SubmissionTableHeadTitle.id,
         dataIndex: 'id',
         key: 'id',
-        width: '60px',
-        align: 'center',
+        width: '40px',
+        align: 'left',
         sorter: (a, b) => a.id - b.id,
       },
       {
-        title: 'Problem',
+        title: SubmissionTableHeadTitle.problem,
         dataIndex: 'problem',
         key: 'problem',
-        width: '540px',
+        width: '120px',
         align: 'left',
         ...this.getColumnSearchProps('problem'),
-        render: (problem: string) => {
-          return (
-            <Tooltip placement="top" title={problem}>
-              <a href="/" className={['h-ellipsis'].join(' ')}>
-                {problem}
-              </a>
-            </Tooltip>
-          );
-        },
       },
       {
-        title: 'Submissions',
-        dataIndex: 'submissions',
-        key: 'submissions',
-        width: '100px',
+        title: SubmissionTableHeadTitle.status,
+        dataIndex: 'status',
+        key: 'status',
+        width: '120px',
         align: 'center',
       },
       {
-        title: 'Acceptance',
-        dataIndex: 'acceptance',
-        key: 'acceptance',
-        width: '100px',
+        title: SubmissionTableHeadTitle.when,
+        dataIndex: 'when',
+        key: 'when',
+        width: '60px',
+        align: 'left',
+        sorter: (a, b) => a.when - b.when,
+        render: submissionDateRender,
+      },
+      {
+        title: SubmissionTableHeadTitle.who,
+        dataIndex: 'who',
+        key: 'who',
+        width: '60px',
+        align: 'left',
+        ...this.getColumnSearchProps('who'),
+        render: (who: string) => <a href="">{who}</a>,
+      },
+      {
+        title: SubmissionTableHeadTitle.lang,
+        dataIndex: 'lang',
+        key: 'lang',
+        width: '60px',
         align: 'center',
-        render: (acceptance: number) => {
-          return `${acceptance / 100}%`;
-        },
+      },
+      {
+        title: SubmissionTableHeadTitle.time,
+        dataIndex: 'time',
+        key: 'time',
+        width: '60px',
+        align: 'center',
+        sorter: (a, b) => a.time - b.time,
+        render: submissionTimeRender,
+      },
+      {
+        title: SubmissionTableHeadTitle.memory,
+        dataIndex: 'memory',
+        key: 'memory',
+        width: '60px',
+        align: 'center',
+        sorter: (a, b) => a.memory - b.memory,
+        render: submissionMemoryRender,
+      },
+      {
+        title: SubmissionTableHeadTitle.codeLength,
+        dataIndex: 'codeLength',
+        key: 'codeLength',
+        width: '80px',
+        align: 'center',
+        sorter: (a, b) => a.codeLength - b.codeLength,
+        render: submissionCodeLengthRender,
       },
     ];
     return columns;
@@ -181,9 +269,9 @@ class ContestsPage extends React.Component {
 
           {this.state.loaded === true && (
             <div className={style.tableRoot}>
-              <Table<ProblemItem>
+              <Table<SubmissionItem>
                 size="small"
-                scroll={{ x: 920 }}
+                scroll={{ x: 1300 }}
                 sticky
                 columns={this.getTableColumns()}
                 dataSource={getTableDataSource()}
@@ -193,7 +281,7 @@ class ContestsPage extends React.Component {
                   hideOnSinglePage: true,
                   showQuickJumper: true,
                   showSizeChanger: true,
-                  defaultPageSize: 32,
+                  defaultPageSize: 16,
                   pageSizeOptions: ['8', '16', '32', '64', '128', '256'],
                 }}
               />
