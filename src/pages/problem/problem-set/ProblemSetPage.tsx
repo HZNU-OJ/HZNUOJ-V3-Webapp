@@ -36,7 +36,7 @@ class ContestsPage extends React.Component {
         dataIndex: 'id',
         key: 'id',
         width: '60px',
-        align: 'center',
+        align: 'left',
         sorter: (a, b) => a.id - b.id,
       },
       {
@@ -60,15 +60,15 @@ class ContestsPage extends React.Component {
         title: 'Submissions',
         dataIndex: 'submissions',
         key: 'submissions',
-        width: '100px',
-        align: 'center',
+        width: '120px',
+        align: 'right',
       },
       {
         title: 'Acceptance',
         dataIndex: 'acceptance',
         key: 'acceptance',
         width: '100px',
-        align: 'center',
+        align: 'right',
         render: (acceptance: number) => {
           return `${acceptance / 100}%`;
         },
@@ -183,7 +183,7 @@ class ContestsPage extends React.Component {
             <div className={style.tableRoot}>
               <Table<ProblemItem>
                 size="small"
-                scroll={{ x: 920 }}
+                scroll={{ x: 1000 }}
                 sticky
                 columns={this.getTableColumns()}
                 dataSource={getTableDataSource()}
