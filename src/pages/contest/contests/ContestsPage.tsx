@@ -6,9 +6,10 @@ import { SearchOutlined } from '@ant-design/icons';
 import style from './ContestsPage.less';
 import Loading from '@/components/Loading';
 import BasicLayout from '@/layouts/Basic';
-import ContestStatusStyle from '@/less/ContestStatus.less';
 import AntTableHead from '@/less/AntTableHead.less';
 import { formatUnixTimeStamp } from '@/utils/formatDateTime';
+import { ContestStatus } from '@/interface/Contest';
+import { StatusBadge } from '../components';
 
 interface ContestItem {
   id: number;
@@ -19,13 +20,6 @@ interface ContestItem {
   status: string;
   register: string;
   mode: string;
-}
-
-enum ContestStatus {
-  pending = 'PENDING',
-  running = 'RUNNING',
-  frozen = 'FROZEN',
-  finished = 'FINISHED',
 }
 
 function contestTimeRender(unixTimeStamp: string | number) {
@@ -133,19 +127,7 @@ class ContestsPage extends React.Component {
           { text: ContestStatus.finished, value: ContestStatus.finished },
         ],
         onFilter: (status, record) => record.status === status,
-        render: (status: string) => {
-          return (
-            <div>
-              <div
-                className={[
-                  ContestStatusStyle.label,
-                  ContestStatusStyle[status],
-                ].join(' ')}
-              ></div>
-              <b className={ContestStatusStyle[`${status}-text`]}>{status}</b>
-            </div>
-          );
-        },
+        render: StatusBadge,
       },
       {
         title: 'Register',
@@ -288,7 +270,7 @@ class ContestsPage extends React.Component {
                 sticky
                 columns={this.getTableColumns()}
                 dataSource={getTableDataSource()}
-                className={AntTableHead.Table}
+                className={AntTableHead.table}
                 rowKey={(record) => record.id}
                 pagination={{
                   hideOnSinglePage: true,

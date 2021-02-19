@@ -187,7 +187,7 @@ class ContestsPage extends React.Component {
                 sticky
                 columns={this.getTableColumns()}
                 dataSource={getTableDataSource()}
-                className={AntTableHead.Table}
+                className={AntTableHead.table}
                 rowKey={(record) => record.id}
                 pagination={{
                   hideOnSinglePage: true,
