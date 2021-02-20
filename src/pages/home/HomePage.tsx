@@ -8,6 +8,7 @@ import {
   Announcement,
   PayAttention,
 } from './components';
+import { useScreenWidthWithin } from '@/utils/hooks';
 
 const HomePage: React.FC<{}> = (props) => {
   return (

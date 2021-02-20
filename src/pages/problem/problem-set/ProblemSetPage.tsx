@@ -1,12 +1,14 @@
-import React from 'react';
-import Highlighter from 'react-highlight-words';
-import { Table, Input, Space, Button, Tooltip } from 'antd';
+import React, { useState, useEffect } from 'react';
+
+import { Table, Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import { SearchOutlined } from '@ant-design/icons';
-import style from './ProblemSetPage.module.less';
 import Loading from '@/components/Loading';
 import BasicLayout from '@/layouts/Basic';
-import AntTableHead from '@/less/AntTableHead.module.less';
+
+import style from './ProblemSetPage.module.less';
+import AntTableHeadStyles from '@/less/AntTableHead.module.less';
+
+import { useTableSearch } from '@/utils/hooks';
 
 interface ProblemItem {
   id: number;
@@ -35,181 +37,90 @@ function getTableDataSource(): ProblemItem[] {
   return dataSource;
 }
 
-class ContestsPage extends React.Component {
-  getTableColumns(): ColumnsType<ProblemItem> {
-    const columns: ColumnsType<ProblemItem> = [
-      {
-        title: ProblemTableHeadTitle.id,
-        dataIndex: 'id',
-        key: 'id',
-        width: '60px',
-        align: 'left',
-        sorter: (a, b) => a.id - b.id,
-      },
-      {
-        title: ProblemTableHeadTitle.problem,
-        dataIndex: 'problem',
-        key: 'problem',
-        width: '540px',
-        align: 'left',
-        ...this.getColumnSearchProps('problem'),
-        render: (problem: string) => {
-          return (
-            <Tooltip placement="top" title={problem}>
-              <a href="/" className={['h-ellipsis'].join(' ')}>
-                {problem}
-              </a>
-            </Tooltip>
-          );
-        },
-      },
-      {
-        title: ProblemTableHeadTitle.submissions,
-        dataIndex: 'submissions',
-        key: 'submissions',
-        width: '120px',
-        align: 'right',
-      },
-      {
-        title: ProblemTableHeadTitle.acceptance,
-        dataIndex: 'acceptance',
-        key: 'acceptance',
-        width: '100px',
-        align: 'right',
-        render: (acceptance: number) => {
-          return `${acceptance / 100}%`;
-        },
-      },
-    ];
-    return columns;
-  }
+const ProblemSetPage: React.FC<{}> = (props) => {
+  const [loaded, setLoaded] = useState(false);
 
-  async UNSAFE_componentWillMount() {
-    this.setState({
-      loaded: true,
-    });
-  }
+  useEffect(() => {
+    setLoaded(true);
+  }, []);
 
-  constructor(props: any) {
-    super(props);
-  }
-
-  state = {
-    loaded: false,
-  };
-
-  getColumnSearchProps = (dataIndex: string) => ({
-    filterDropdown: ({
-      setSelectedKeys,
-      selectedKeys,
-      confirm,
-      clearFilters,
-    }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          ref={(node) => {
-            this.searchInput = node;
-          }}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() =>
-            this.handleSearch(selectedKeys, confirm, dataIndex)
-          }
-          style={{ width: 188, marginBottom: 8, display: 'block' }}
-        />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Search
-          </Button>
-          <Button
-            onClick={() => this.handleReset(clearFilters)}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Reset
-          </Button>
-        </Space>
-      </div>
-    ),
-    filterIcon: (filtered) => (
-      <SearchOutlined style={{ color: filtered ? '#fff' : undefined }} />
-    ),
-    onFilter: (value, record) =>
-      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
-    onFilterDropdownVisibleChange: (visible) => {
-      if (visible) {
-        setTimeout(() => this.searchInput.select());
-      }
+  const columns: ColumnsType<ProblemItem> = [
+    {
+      title: ProblemTableHeadTitle.id,
+      dataIndex: 'id',
+      key: 'id',
+      width: '60px',
+      align: 'left',
+      sorter: (a, b) => a.id - b.id,
     },
-    render: (text) =>
-      this.state.searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-          searchWords={[this.state.searchText]}
-          autoEscape
-          textToHighlight={text.toString()}
-        />
-      ) : (
-        text
-      ),
-  });
+    {
+      title: ProblemTableHeadTitle.problem,
+      dataIndex: 'problem',
+      key: 'problem',
+      width: '540px',
+      align: 'left',
+      ...useTableSearch('problem', ProblemTableHeadTitle.problem),
+      render: (problem: string) => {
+        return (
+          <Tooltip placement="top" title={problem}>
+            <a href="/" className={['h-ellipsis'].join(' ')}>
+              {problem}
+            </a>
+          </Tooltip>
+        );
+      },
+    },
+    {
+      title: ProblemTableHeadTitle.submissions,
+      dataIndex: 'submissions',
+      key: 'submissions',
+      width: '120px',
+      align: 'right',
+    },
+    {
+      title: ProblemTableHeadTitle.acceptance,
+      dataIndex: 'acceptance',
+      key: 'acceptance',
+      width: '100px',
+      align: 'right',
+      render: (acceptance: number) => {
+        return `${acceptance / 100}%`;
+      },
+    },
+  ];
 
-  handleSearch = (selectedKeys: any, confirm: any, dataIndex: string) => {
-    confirm();
-    this.setState({
-      searchText: selectedKeys[0],
-      searchedColumn: dataIndex,
-    });
-  };
+  return (
+    <BasicLayout current={'problemSet'}>
+      <div className={style.root}>
+        {loaded === false && (
+          <div className={style.loading}>
+            <Loading />
+          </div>
+        )}
 
-  handleReset = (clearFilters: any) => {
-    clearFilters();
-    this.setState({ searchText: '' });
-  };
+        {loaded === true && (
+          <div className={style.tableRoot}>
+            <Table<ProblemItem>
+              size="small"
+              scroll={{ x: 1000 }}
+              sticky
+              columns={columns}
+              dataSource={getTableDataSource()}
+              className={AntTableHeadStyles.table}
+              rowKey={(record) => record.id}
+              pagination={{
+                hideOnSinglePage: true,
+                showQuickJumper: true,
+                showSizeChanger: true,
+                defaultPageSize: 32,
+                pageSizeOptions: ['8', '16', '32', '64', '128', '256'],
+              }}
+            />
+          </div>
+        )}
+      </div>
+    </BasicLayout>
+  );
+};
 
-  render() {
-    return (
-      <BasicLayout current={'problemSet'}>
-        <div className={style.root}>
-          {this.state.loaded === false && (
-            <div className={style.loading}>
-              <Loading />
-            </div>
-          )}
-
-          {this.state.loaded === true && (
-            <div className={style.tableRoot}>
-              <Table<ProblemItem>
-                size="small"
-                scroll={{ x: 1000 }}
-                sticky
-                columns={this.getTableColumns()}
-                dataSource={getTableDataSource()}
-                className={AntTableHead.table}
-                rowKey={(record) => record.id}
-                pagination={{
-                  hideOnSinglePage: true,
-                  showQuickJumper: true,
-                  showSizeChanger: true,
-                  defaultPageSize: 32,
-                  pageSizeOptions: ['8', '16', '32', '64', '128', '256'],
-                }}
-              />
-            </div>
-          )}
-        </div>
-      </BasicLayout>
-    );
-  }
-}
-
-export default ContestsPage;
+export default ProblemSetPage;
