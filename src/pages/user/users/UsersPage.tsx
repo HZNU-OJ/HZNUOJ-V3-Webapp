@@ -10,6 +10,7 @@ import AntTableHead from '@/less/AntTableHead.module.less';
 
 interface UserItem {
   rank: number;
+  avatar: string;
   username: string;
   organization: string;
   acCount: number;
@@ -18,6 +19,7 @@ interface UserItem {
 
 enum UsersTableHeadTitle {
   rank = 'Rank',
+  avatar = 'Avatar',
   username = 'Username',
   organization = 'Organization',
   acCount = 'AC.Count',
@@ -29,6 +31,10 @@ function getTableDataSource(): UserItem[] {
   for (let i = 1; i <= 100; ++i) {
     dataSource.push({
       rank: i,
+      avatar: [
+        'https://gravatar.loli.net/avatar/acf809998db9d18f454494decdfa1e0a?size=32&default=404',
+        'https://q1.qlogo.cn/g?b=qq&nk=494143072&s=5',
+      ][i % 2],
       username: 'Dup4',
       organization: 'Hangzhou Normal U',
       acCount: i * 100,
@@ -45,9 +51,19 @@ class ContestsPage extends React.Component {
         title: UsersTableHeadTitle.rank,
         dataIndex: 'rank',
         key: 'rank',
-        width: '60px',
+        width: '30px',
         align: 'left',
         sorter: (a, b) => a.rank - b.rank,
+      },
+      {
+        title: UsersTableHeadTitle.avatar,
+        dataIndex: 'avatar',
+        key: 'avatar',
+        width: '32px',
+        align: 'center',
+        render: (avatarUrl: string) => (
+          <img style={{ margin: -8 }} width={32} src={avatarUrl} alt="" />
+        ),
       },
       {
         title: UsersTableHeadTitle.username,
