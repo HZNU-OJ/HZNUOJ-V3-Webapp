@@ -48,10 +48,6 @@ jobs:
         with:
           src: './dist/index.html'
 
-      - name: Enable 404.html
-        run: |
-          cp ./dist/index.html ./dist/404.html
-          
       - name: Release
         uses: JamesIves/github-pages-deploy-action@3.6.2
         with:
