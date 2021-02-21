@@ -1,13 +1,16 @@
-import React from "react";
-import Highlighter from "react-highlight-words";
-import { Table, Input, Space, Button, Tooltip } from "antd";
+import React, { useState, useEffect } from "react";
+import { Table, Tooltip } from "antd";
 import { ColumnsType } from "antd/es/table";
-import { SearchOutlined } from "@ant-design/icons";
-import style from "./SubmissionsPage.module.less";
+
 import Loading from "@/components/Loading";
 import BasicLayout from "@/layouts/Basic";
-import AntTableHead from "@/less/AntTableHead.module.less";
+
 import { formatUnixTimeStamp } from "@/utils/formatDateTime";
+
+import { useTableFilter, useTableSearch } from "@/utils/hooks";
+
+import styles from "./SubmissionsPage.module.less";
+import AntTableHeadStyles from "@/less/AntTableHead.module.less";
 
 import {
   SubmissionStatusType,
@@ -83,214 +86,144 @@ function getTableDataSource(): SubmissionItem[] {
   return dataSource;
 }
 
-class SubmissionsPage extends React.Component {
-  getTableColumns(): ColumnsType<SubmissionItem> {
-    const columns: ColumnsType<SubmissionItem> = [
-      {
-        title: SubmissionTableHeadTitle.id,
-        dataIndex: "id",
-        key: "id",
-        width: "40px",
-        align: "left",
-        sorter: (a, b) => a.id - b.id,
-      },
-      {
-        title: SubmissionTableHeadTitle.problem,
-        dataIndex: "problem",
-        key: "problem",
-        width: "120px",
-        align: "left",
-        ...this.getColumnSearchProps("problem"),
-      },
-      {
-        title: SubmissionTableHeadTitle.status,
-        dataIndex: "status",
-        key: "status",
-        width: "120px",
-        align: "center",
-      },
-      {
-        title: SubmissionTableHeadTitle.when,
-        dataIndex: "when",
-        key: "when",
-        width: "60px",
-        align: "left",
-        sorter: (a, b) => a.when - b.when,
-        render: submissionDateRender,
-      },
-      {
-        title: SubmissionTableHeadTitle.who,
-        dataIndex: "who",
-        key: "who",
-        width: "60px",
-        align: "left",
-        ...this.getColumnSearchProps("who"),
-        render: (who: string) => <a href="">{who}</a>,
-      },
-      {
-        title: SubmissionTableHeadTitle.lang,
-        dataIndex: "lang",
-        key: "lang",
-        width: "60px",
-        align: "center",
-      },
-      {
-        title: SubmissionTableHeadTitle.time,
-        dataIndex: "time",
-        key: "time",
-        width: "60px",
-        align: "center",
-        sorter: (a, b) => a.time - b.time,
-        render: submissionTimeRender,
-      },
-      {
-        title: SubmissionTableHeadTitle.memory,
-        dataIndex: "memory",
-        key: "memory",
-        width: "60px",
-        align: "center",
-        sorter: (a, b) => a.memory - b.memory,
-        render: submissionMemoryRender,
-      },
-      {
-        title: SubmissionTableHeadTitle.codeLength,
-        dataIndex: "codeLength",
-        key: "codeLength",
-        width: "80px",
-        align: "center",
-        sorter: (a, b) => a.codeLength - b.codeLength,
-        render: submissionCodeLengthRender,
-      },
-    ];
-    return columns;
-  }
+const SubmissionsPage: React.FC<{}> = (props) => {
+  const [loaded, setLoaded] = useState(false);
 
-  async UNSAFE_componentWillMount() {
-    this.setState({
-      loaded: true,
-    });
-  }
+  useEffect(() => {
+    setLoaded(true);
+  }, []);
 
-  constructor(props: any) {
-    super(props);
-  }
-
-  state = {
-    loaded: false,
-  };
-
-  getColumnSearchProps = (dataIndex: string) => ({
-    filterDropdown: ({
-      setSelectedKeys,
-      selectedKeys,
-      confirm,
-      clearFilters,
-    }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          ref={(node) => {
-            this.searchInput = node;
-          }}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() =>
-            this.handleSearch(selectedKeys, confirm, dataIndex)
-          }
-          style={{ width: 188, marginBottom: 8, display: "block" }}
-        />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Search
-          </Button>
-          <Button
-            onClick={() => this.handleReset(clearFilters)}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Reset
-          </Button>
-        </Space>
-      </div>
-    ),
-    filterIcon: (filtered) => (
-      <SearchOutlined style={{ color: filtered ? "#fff" : undefined }} />
-    ),
-    onFilter: (value, record) =>
-      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
-    onFilterDropdownVisibleChange: (visible) => {
-      if (visible) {
-        setTimeout(() => this.searchInput.select());
-      }
+  const columns: ColumnsType<SubmissionItem> = [
+    {
+      title: SubmissionTableHeadTitle.id,
+      dataIndex: "id",
+      key: "id",
+      width: "40px",
+      align: "left",
+      sorter: (a, b) => a.id - b.id,
     },
-    render: (text) =>
-      this.state.searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
-          searchWords={[this.state.searchText]}
-          autoEscape
-          textToHighlight={text.toString()}
-        />
-      ) : (
-        text
+    {
+      title: SubmissionTableHeadTitle.problem,
+      dataIndex: "problem",
+      key: "problem",
+      width: "120px",
+      align: "left",
+      ...useTableSearch("problem", SubmissionTableHeadTitle.problem),
+    },
+    {
+      title: SubmissionTableHeadTitle.status,
+      dataIndex: "status",
+      key: "status",
+      width: "120px",
+      align: "center",
+      ...useTableFilter(
+        "status",
+        SubmissionTableHeadTitle.status,
+        SubmissionStatusTypeTitle.map((item: string) => {
+          return {
+            title: <b>{item}</b>,
+            value: item,
+          };
+        }),
       ),
-  });
+    },
+    {
+      title: SubmissionTableHeadTitle.when,
+      dataIndex: "when",
+      key: "when",
+      width: "60px",
+      align: "left",
+      sorter: (a, b) => a.when - b.when,
+      render: submissionDateRender,
+    },
+    {
+      title: SubmissionTableHeadTitle.who,
+      dataIndex: "who",
+      key: "who",
+      width: "60px",
+      align: "left",
+      ...useTableSearch("who", SubmissionTableHeadTitle.who),
+      render: (who: string) => <a href="">{who}</a>,
+    },
+    {
+      title: SubmissionTableHeadTitle.lang,
+      dataIndex: "lang",
+      key: "lang",
+      width: "60px",
+      align: "center",
+      ...useTableFilter(
+        "lang",
+        SubmissionTableHeadTitle.lang,
+        SubmissionLangTypeTitle.map((item: string) => {
+          return {
+            title: <b>{item}</b>,
+            value: item,
+          };
+        }),
+        160,
+      ),
+    },
+    {
+      title: SubmissionTableHeadTitle.time,
+      dataIndex: "time",
+      key: "time",
+      width: "60px",
+      align: "center",
+      sorter: (a, b) => a.time - b.time,
+      render: submissionTimeRender,
+    },
+    {
+      title: SubmissionTableHeadTitle.memory,
+      dataIndex: "memory",
+      key: "memory",
+      width: "60px",
+      align: "center",
+      sorter: (a, b) => a.memory - b.memory,
+      render: submissionMemoryRender,
+    },
+    {
+      title: SubmissionTableHeadTitle.codeLength,
+      dataIndex: "codeLength",
+      key: "codeLength",
+      width: "80px",
+      align: "center",
+      sorter: (a, b) => a.codeLength - b.codeLength,
+      render: submissionCodeLengthRender,
+    },
+  ];
 
-  handleSearch = (selectedKeys: any, confirm: any, dataIndex: string) => {
-    confirm();
-    this.setState({
-      searchText: selectedKeys[0],
-      searchedColumn: dataIndex,
-    });
-  };
+  return (
+    <BasicLayout current={"submissions"}>
+      <div className={styles.root}>
+        {loaded === false && (
+          <div className={styles.loading}>
+            <Loading />
+          </div>
+        )}
 
-  handleReset = (clearFilters: any) => {
-    clearFilters();
-    this.setState({ searchText: "" });
-  };
-
-  render() {
-    return (
-      <BasicLayout current={"submissions"}>
-        <div className={style.root}>
-          {this.state.loaded === false && (
-            <div className={style.loading}>
-              <Loading />
-            </div>
-          )}
-
-          {this.state.loaded === true && (
-            <div className={style.tableRoot}>
-              <Table<SubmissionItem>
-                size="small"
-                scroll={{ x: 1300 }}
-                sticky
-                columns={this.getTableColumns()}
-                dataSource={getTableDataSource()}
-                className={AntTableHead.table}
-                rowKey={(record) => record.id}
-                pagination={{
-                  hideOnSinglePage: true,
-                  showQuickJumper: true,
-                  showSizeChanger: true,
-                  defaultPageSize: 16,
-                  pageSizeOptions: ["8", "16", "32", "64", "128", "256"],
-                }}
-              />
-            </div>
-          )}
-        </div>
-      </BasicLayout>
-    );
-  }
-}
+        {loaded === true && (
+          <div className={styles.tableRoot}>
+            <Table<SubmissionItem>
+              size="small"
+              scroll={{ x: 1300 }}
+              sticky
+              columns={columns}
+              dataSource={getTableDataSource()}
+              className={AntTableHeadStyles.table}
+              rowKey={(record) => record.id}
+              pagination={{
+                hideOnSinglePage: true,
+                showQuickJumper: true,
+                showSizeChanger: true,
+                defaultPageSize: 16,
+                pageSizeOptions: ["8", "16", "32", "64", "128", "256"],
+              }}
+            />
+          </div>
+        )}
+      </div>
+    </BasicLayout>
+  );
+};
 
 export default SubmissionsPage;
