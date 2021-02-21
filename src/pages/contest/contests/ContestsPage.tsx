@@ -11,7 +11,7 @@ import AntTableHeadStyles from "@/less/AntTableHead.module.less";
 
 import { formatUnixTimeStamp } from "@/utils/formatDateTime";
 
-import { useTableSearch } from "@/utils/hooks";
+import { useTableSearch, useTableFilter } from "@/utils/hooks";
 
 interface ContestItem {
   id: number;
@@ -139,12 +139,21 @@ const ContestsPage: React.FC<{}> = (props) => {
       key: "status",
       width: "100px",
       align: "center",
-      filters: [
-        { text: ContestStatus.pending, value: ContestStatus.pending },
-        { text: ContestStatus.running, value: ContestStatus.running },
-        { text: ContestStatus.finished, value: ContestStatus.finished },
-      ],
-      onFilter: (status, record) => record.status === status,
+      ...useTableFilter(
+        "status",
+        "Status",
+        [
+          ContestStatus.pending,
+          ContestStatus.running,
+          ContestStatus.finished,
+        ].map((item: string) => {
+          return {
+            title: StatusBadge(item),
+            value: item,
+          };
+        }),
+        160,
+      ),
       render: StatusBadge,
     },
     {
@@ -167,12 +176,19 @@ const ContestsPage: React.FC<{}> = (props) => {
       key: "mode",
       width: "100px",
       align: "center",
-      filters: [
-        { text: ContestMode.icpc, value: ContestMode.icpc },
-        { text: ContestMode.ioi, value: ContestMode.ioi },
-        { text: ContestMode.codeForces, value: ContestMode.codeForces },
-      ],
-      onFilter: (mode, record) => record.mode === mode,
+      ...useTableFilter(
+        "mode",
+        "Mode",
+        [ContestMode.icpc, ContestMode.ioi, ContestMode.codeForces].map(
+          (item: string) => {
+            return {
+              title: <b>{item}</b>,
+              value: item,
+            };
+          },
+        ),
+        160,
+      ),
     },
   ];
 

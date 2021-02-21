@@ -49,7 +49,7 @@ export function useTableSearch(dataIndex: string, dataName?: string) {
         </Space>
       </div>
     ),
-    filterIcon: (filtered: any) => (
+    filterIcon: (filtered: boolean) => (
       <SearchOutlined style={{ color: filtered ? "#fff" : undefined }} />
     ),
     onFilter: (value: any, record: any) =>

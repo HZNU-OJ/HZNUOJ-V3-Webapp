@@ -1,31 +1,38 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Input, Space, Button, TreeSelect } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import React, { useState, useRef, ReactNode } from "react";
+import { Space, Button, TreeSelect } from "antd";
 import Highlighter from "react-highlight-words";
 
 import { FilterOutlined } from "@ant-design/icons";
 
-const SHOW_PARENT = TreeSelect.SHOW_PARENT;
+import "./useTableFilter.less";
 
-export function useTableFilter(dataIndex: string, dataName?: string) {
+interface TreeSelectedItem {
+  title: ReactNode;
+  value: string;
+}
+
+export function useTableFilter(
+  dataIndex: string,
+  dataName: string,
+  treeData: TreeSelectedItem[],
+  width: number = 227,
+) {
   dataName = dataName ?? dataIndex;
 
-  const [selectedKeys, setSelectedKeys] = useState("");
-  const [searchedColumn, setSearchedColumn] = useState("");
+  const [filterText, setFilterText] = useState("");
+  const [filteredColumn, setFilteredColumn] = useState("");
 
-  // treeSelect Component => Use treeData to generate a tree structure from JSON data.
-  const itemSelection = (
-    treeData: any,
-    dataIndex: any,
-    selectedKeys: any,
-    setSelectedKeys: any,
-  ) => {
-    // Check the configuration here: https://ant.design/components/tree-select-cn/
+  const filterInput = useRef(null);
+
+  const { SHOW_PARENT } = TreeSelect;
+
+  const itemSelection = (selectedKeys: any, setSelectedKeys: any) => {
+    // check configuration here: https://ant.design/components/tree-select-cn/
     const tProps = {
       treeData,
       value: selectedKeys,
       defaultValue: [],
-      placeholder: `Select ${dataIndex}`,
+      placeholder: `Select ${dataName}`,
       autoClearSearchValue: false,
       treeCheckable: true,
       maxTagCount: 0,
@@ -33,71 +40,61 @@ export function useTableFilter(dataIndex: string, dataName?: string) {
       treeDefaultExpandAll: true,
       showCheckedStrategy: SHOW_PARENT,
       getPopupContainer: (triggerNode) => triggerNode.parentNode,
-      size: "small",
       className: "tree-select",
-      dropdownMatchSelectWidth: 217,
+      size: "small",
+      showSearch: false,
+      dropdownMatchSelectWidth: width,
       dropdownClassName: "common-treeSelect-dropdown",
       onChange: (value: any) => {
         setSelectedKeys(value);
       },
     };
 
-    return <TreeSelect {...tProps} />;
+    return <TreeSelect ref={filterInput} {...tProps} />;
   };
 
-  const getColumnSearchProps = (dataIndex: string, dataName: string) => ({
+  const getColumnFilterProps = () => ({
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
       confirm,
       clearFilters,
     }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          ref={searchInput}
-          placeholder={`Search ${dataName}`}
-          value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-          style={{ width: 188, marginBottom: 8, display: "block" }}
-        />
+      <div className={"h-table-filter-dropdown"}>
+        {itemSelection(selectedKeys, setSelectedKeys)}
         <Space>
-          <Button
-            type="primary"
-            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Search
-          </Button>
           <Button
             onClick={() => handleReset(clearFilters)}
             size="small"
-            style={{ width: 90 }}
+            style={{ width: 60 }}
           >
             Reset
+          </Button>
+          <Button
+            type="primary"
+            onClick={() => handleFilter(selectedKeys, confirm, dataIndex)}
+            size="small"
+            style={{ width: 60 }}
+          >
+            OK
           </Button>
         </Space>
       </div>
     ),
-    filterIcon: (filtered: any) => (
-      <SearchOutlined style={{ color: filtered ? "#fff" : undefined }} />
+    filterIcon: (filtered: boolean) => (
+      <FilterOutlined style={{ color: filtered ? "#fff" : undefined }} />
     ),
     onFilter: (value: any, record: any) =>
       record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
     onFilterDropdownVisibleChange: (visible: boolean) => {
       if (visible) {
-        setTimeout(() => searchInput.current.select());
       }
     },
     render: (text: any) =>
-      searchedColumn === dataIndex ? (
+      filteredColumn === dataIndex ? (
         <Highlighter
           highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
-          searchWords={[selectedKeys]}
+          searchWords={[filterText]}
           autoEscape
           textToHighlight={text.toString()}
         />
@@ -106,16 +103,16 @@ export function useTableFilter(dataIndex: string, dataName?: string) {
       ),
   });
 
-  const handleSearch = (selectedKeys: any, confirm: any, dataIndex: string) => {
+  const handleFilter = (selectedKeys: any, confirm: any, dataIndex: string) => {
     confirm();
-    setSelectedKeys(selectedKeys[0]);
-    setSearchedColumn(dataIndex);
+    setFilterText(selectedKeys[0]);
+    setFilteredColumn(dataIndex);
   };
 
   const handleReset = (clearFilters: any) => {
     clearFilters();
-    setSelectedKeys("");
+    setFilterText("");
   };
 
-  return getColumnSearchProps(dataIndex, dataName);
+  return getColumnFilterProps();
 }
