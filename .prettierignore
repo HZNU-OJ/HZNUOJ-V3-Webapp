@@ -6,3 +6,8 @@ package.json
 .umi
 .umi-production
 .umi-test
+
+/dist
+/public
+/scripts
+/node_modules
