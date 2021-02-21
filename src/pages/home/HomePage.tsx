@@ -1,18 +1,18 @@
-import style from './HomePage.module.less';
-import BasicLayout from '@/layouts/Basic';
-import React from 'react';
-import { Row, Col } from 'antd';
+import style from "./HomePage.module.less";
+import BasicLayout from "@/layouts/Basic";
+import React from "react";
+import { Row, Col } from "antd";
 import {
   TopUsers,
   SubmissionStatics,
   Announcement,
   PayAttention,
-} from './components';
-import { useScreenWidthWithin } from '@/utils/hooks';
+} from "./components";
+import { useScreenWidthWithin } from "@/utils/hooks";
 
 const HomePage: React.FC<{}> = (props) => {
   return (
-    <BasicLayout current={''}>
+    <BasicLayout current={""}>
       <div className={style.root}>
         <Row gutter={16} align="top">
           <Col xs={24} sm={24} md={24} lg={17} xl={17}>

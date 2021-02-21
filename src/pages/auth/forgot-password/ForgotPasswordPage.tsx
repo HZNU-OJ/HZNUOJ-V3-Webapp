@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
-import { Form, Input, Button, Checkbox, message, Row, Col, Result } from 'antd';
+import React, { useState } from "react";
+import { Form, Input, Button, Checkbox, message, Row, Col, Result } from "antd";
 import {
   SafetyOutlined,
   LockOutlined,
   MailOutlined,
   NumberOutlined,
-} from '@ant-design/icons';
-import { Link, history, useModel } from 'umi';
-import { getPageQuery } from '@/utils/utils';
-import style from '../auth.less';
-import BasicLayout from '@/layouts/Basic';
+} from "@ant-design/icons";
+import { Link, history, useModel } from "umi";
+import { getPageQuery } from "@/utils/utils";
+import style from "../auth.less";
+import BasicLayout from "@/layouts/Basic";
 
 const ForgotPassword: React.FC<{}> = () => {
   const [loading, setLoading] = useState(0);
-  const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [veryCodeLoading, setVeryCodeLoading] = useState(0);
   const [status, setStatus] = useState(0);
 
@@ -55,7 +55,7 @@ const ForgotPassword: React.FC<{}> = () => {
             <Form
               name="normal_forgot-password"
               style={{
-                width: '100%',
+                width: "100%",
                 marginTop: 20,
               }}
               onFinish={onFinish}
@@ -63,7 +63,7 @@ const ForgotPassword: React.FC<{}> = () => {
               <Form.Item
                 name="email"
                 rules={[
-                  { required: true, message: 'Please input your Email!' },
+                  { required: true, message: "Please input your Email!" },
                 ]}
               >
                 <Input
@@ -81,7 +81,7 @@ const ForgotPassword: React.FC<{}> = () => {
                 rules={[
                   {
                     required: true,
-                    message: 'Please input your E-mail Verify Code!',
+                    message: "Please input your E-mail Verify Code!",
                   },
                 ]}
               >
@@ -98,7 +98,7 @@ const ForgotPassword: React.FC<{}> = () => {
                   <Col span={9}>
                     <Button
                       style={{
-                        width: '100%',
+                        width: "100%",
                       }}
                       loading={veryCodeLoading > 0}
                       onClick={sendEmailVeryCode}
@@ -114,7 +114,7 @@ const ForgotPassword: React.FC<{}> = () => {
               <Form.Item
                 name="password"
                 rules={[
-                  { required: true, message: 'Please input your Password!' },
+                  { required: true, message: "Please input your Password!" },
                 ]}
               >
                 <Input
@@ -127,7 +127,7 @@ const ForgotPassword: React.FC<{}> = () => {
               <Form.Item
                 name="rptpassword"
                 rules={[
-                  { required: true, message: 'Please confirm your Password!' },
+                  { required: true, message: "Please confirm your Password!" },
                 ]}
               >
                 <Input
@@ -140,7 +140,7 @@ const ForgotPassword: React.FC<{}> = () => {
               <Form.Item>
                 <Button
                   style={{
-                    width: '100%',
+                    width: "100%",
                   }}
                   loading={loading > 0}
                   type="primary"
@@ -156,11 +156,11 @@ const ForgotPassword: React.FC<{}> = () => {
                   }}
                 >
                   <Row gutter={[16, 0]}>
-                    <Col style={{ textAlign: 'left' }} span={8}>
+                    <Col style={{ textAlign: "left" }} span={8}>
                       <a href="/login">Login</a>
                     </Col>
-                    <Col style={{ textAlign: 'center' }} span={0}></Col>
-                    <Col style={{ textAlign: 'right' }} span={16}>
+                    <Col style={{ textAlign: "center" }} span={0}></Col>
+                    <Col style={{ textAlign: "right" }} span={16}>
                       <a href="/register">Register</a>
                     </Col>
                   </Row>
@@ -174,7 +174,7 @@ const ForgotPassword: React.FC<{}> = () => {
           <Result
             status="success"
             title="Congratulations on your successful reset password!"
-            subTitle={'Username: ' + username + ' ' + ' Email: ' + email}
+            subTitle={"Username: " + username + " " + " Email: " + email}
             extra={[
               <Button type="primary" key="login" href="/user/login">
                 Go Login

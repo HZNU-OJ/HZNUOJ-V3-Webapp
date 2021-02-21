@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { Table, Tooltip } from 'antd';
-import { ColumnsType } from 'antd/es/table';
-import Loading from '@/components/Loading';
-import BasicLayout from '@/layouts/Basic';
-import { ContestStatus } from '@/interface/Contest';
-import { StatusBadge } from '../components';
+import React, { useState, useEffect } from "react";
+import { Table, Tooltip } from "antd";
+import { ColumnsType } from "antd/es/table";
+import Loading from "@/components/Loading";
+import BasicLayout from "@/layouts/Basic";
+import { ContestStatus } from "@/interface/Contest";
+import { StatusBadge } from "../components";
 
-import style from './ContestsPage.module.less';
-import AntTableHeadStyles from '@/less/AntTableHead.module.less';
+import style from "./ContestsPage.module.less";
+import AntTableHeadStyles from "@/less/AntTableHead.module.less";
 
-import { formatUnixTimeStamp } from '@/utils/formatDateTime';
+import { formatUnixTimeStamp } from "@/utils/formatDateTime";
 
-import { useTableSearch } from '@/utils/hooks';
+import { useTableSearch } from "@/utils/hooks";
 
 interface ContestItem {
   id: number;
@@ -25,19 +25,19 @@ interface ContestItem {
 }
 
 enum ContestTableHeadTitle {
-  id = '#',
-  contestName = 'Contest Name',
-  writers = 'Writers',
-  start = 'Start',
-  end = 'End',
-  status = 'Status',
-  register = 'Register',
-  mode = 'Mode',
+  id = "#",
+  contestName = "Contest Name",
+  writers = "Writers",
+  start = "Start",
+  end = "End",
+  status = "Status",
+  register = "Register",
+  mode = "Mode",
 }
 
 function contestTimeRender(unixTimeStamp: string | number) {
-  const shortTimeFormat = 'MM/DD HH:mm';
-  const longTimeFormat = 'YYYY-MM-DD HH:mm:ss';
+  const shortTimeFormat = "MM/DD HH:mm";
+  const longTimeFormat = "YYYY-MM-DD HH:mm:ss";
   return (
     <Tooltip
       placement="top"
@@ -49,13 +49,13 @@ function contestTimeRender(unixTimeStamp: string | number) {
 }
 
 enum ContestMode {
-  icpc = 'ICPC',
-  ioi = 'IOI',
-  codeForces = 'CodeForces',
+  icpc = "ICPC",
+  ioi = "IOI",
+  codeForces = "CodeForces",
 }
 
 function Frozen2Running(status: string) {
-  return status.replace('FROZEN', 'RUNNING');
+  return status.replace("FROZEN", "RUNNING");
 }
 
 function getTableDataSource(): ContestItem[] {
@@ -64,7 +64,7 @@ function getTableDataSource(): ContestItem[] {
     dataSource.push({
       id: i,
       contestName: `2020 Intelligent Video Coding Contest ${i}`,
-      writers: ['Dup4', 'Hsueh-', 'ltslts'].join(', '),
+      writers: ["Dup4", "Hsueh-", "ltslts"].join(", "),
       start: 1613656156 + i * 100,
       end: 1613656156 + 10 * i * 100,
       status: Frozen2Running(
@@ -75,8 +75,8 @@ function getTableDataSource(): ContestItem[] {
           ContestStatus.finished,
         ][i - 1 > 2 ? 3 : i - 1],
       ),
-      register: '',
-      mode: 'ICPC',
+      register: "",
+      mode: "ICPC",
     });
   }
   return dataSource;
@@ -92,15 +92,15 @@ const ContestsPage: React.FC<{}> = (props) => {
   const columns: ColumnsType<ContestItem> = [
     {
       title: ContestTableHeadTitle.contestName,
-      dataIndex: 'contestName',
-      key: 'contestName',
-      width: '320px',
-      align: 'center',
-      ...useTableSearch('contestName', ContestTableHeadTitle.contestName),
+      dataIndex: "contestName",
+      key: "contestName",
+      width: "320px",
+      align: "center",
+      ...useTableSearch("contestName", ContestTableHeadTitle.contestName),
       render: (contestName: string) => {
         return (
           <Tooltip placement="top" title={contestName}>
-            <a href="/" className={['h-ellipsis'].join(' ')}>
+            <a href="/" className={["h-ellipsis"].join(" ")}>
               {contestName}
             </a>
           </Tooltip>
@@ -109,36 +109,36 @@ const ContestsPage: React.FC<{}> = (props) => {
     },
     {
       title: ContestTableHeadTitle.writers,
-      dataIndex: 'writers',
-      key: 'writers',
-      width: '100px',
-      align: 'center',
-      ...useTableSearch('writers', ContestTableHeadTitle.writers),
+      dataIndex: "writers",
+      key: "writers",
+      width: "100px",
+      align: "center",
+      ...useTableSearch("writers", ContestTableHeadTitle.writers),
     },
     {
       title: ContestTableHeadTitle.start,
-      dataIndex: 'start',
-      key: 'start',
-      width: '160px',
-      align: 'center',
+      dataIndex: "start",
+      key: "start",
+      width: "160px",
+      align: "center",
       sorter: (a, b) => a.start - b.start,
       render: contestTimeRender,
     },
     {
       title: ContestTableHeadTitle.end,
-      dataIndex: 'end',
-      key: 'end',
-      width: '160px',
-      align: 'center',
+      dataIndex: "end",
+      key: "end",
+      width: "160px",
+      align: "center",
       sorter: (a, b) => a.end - b.end,
       render: contestTimeRender,
     },
     {
       title: ContestTableHeadTitle.status,
-      dataIndex: 'status',
-      key: 'status',
-      width: '100px',
-      align: 'center',
+      dataIndex: "status",
+      key: "status",
+      width: "100px",
+      align: "center",
       filters: [
         { text: ContestStatus.pending, value: ContestStatus.pending },
         { text: ContestStatus.running, value: ContestStatus.running },
@@ -148,25 +148,25 @@ const ContestsPage: React.FC<{}> = (props) => {
       render: StatusBadge,
     },
     {
-      title: 'Register',
-      dataIndex: 'register',
-      key: 'register',
-      width: '100px',
-      align: 'center',
+      title: "Register",
+      dataIndex: "register",
+      key: "register",
+      width: "100px",
+      align: "center",
     },
     {
-      title: 'Standings',
-      dataIndex: 'standings',
-      key: 'standings',
-      width: '100px',
-      align: 'center',
+      title: "Standings",
+      dataIndex: "standings",
+      key: "standings",
+      width: "100px",
+      align: "center",
     },
     {
-      title: 'Mode',
-      dataIndex: 'mode',
-      key: 'mode',
-      width: '100px',
-      align: 'center',
+      title: "Mode",
+      dataIndex: "mode",
+      key: "mode",
+      width: "100px",
+      align: "center",
       filters: [
         { text: ContestMode.icpc, value: ContestMode.icpc },
         { text: ContestMode.ioi, value: ContestMode.ioi },
@@ -177,7 +177,7 @@ const ContestsPage: React.FC<{}> = (props) => {
   ];
 
   return (
-    <BasicLayout current={'contests'}>
+    <BasicLayout current={"contests"}>
       <div className={style.root}>
         {loaded === false && (
           <div className={style.loading}>
@@ -200,7 +200,7 @@ const ContestsPage: React.FC<{}> = (props) => {
                 showQuickJumper: true,
                 showSizeChanger: true,
                 defaultPageSize: 32,
-                pageSizeOptions: ['8', '16', '32', '64', '128', '256'],
+                pageSizeOptions: ["8", "16", "32", "64", "128", "256"],
               }}
             />
           </div>

@@ -1,6 +1,6 @@
 {
   "name": "hznuoj-v3-webapp",
-  "version": "0.0.26",
+  "version": "0.0.27",
   "description": "The WebApp of HZNUOJ V3",
   "repository": "https://github.com/HZNU-OJ/HZNUOJ-V3-WebApp",
   "author": "Dup4",
@@ -9,7 +9,7 @@
     "start": "umi dev",
     "build": "umi build",
     "postinstall": "umi generate tmp",
-    "prettier": "prettier --write 'src/*.{js,jsx,tsx,ts,less,md,json}'",
+    "prettier": "prettier --write 'src/**/*.{js,jsx,tsx,less,md,json}' && prettier --write --parser=typescript 'src/**/*.ts?(x)'",
     "test": "umi-test",
     "test:coverage": "umi-test --coverage"
   },

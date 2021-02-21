@@ -1,5 +1,5 @@
-import { Badge } from 'antd';
-import { ContestStatusColor } from '@/interface/Contest';
+import { Badge } from "antd";
+import { ContestStatusColor } from "@/interface/Contest";
 
 export const StatusBadge = (status: string) => {
   return (

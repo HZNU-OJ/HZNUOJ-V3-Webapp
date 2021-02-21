@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Input, Space, Button } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
-import Highlighter from 'react-highlight-words';
+import React, { useState, useEffect, useRef } from "react";
+import { Input, Space, Button } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
+import Highlighter from "react-highlight-words";
 
 export function useTableSearch(dataIndex: string, dataName?: string) {
   dataName = dataName ?? dataIndex;
 
-  const [searchText, setSearchText] = useState('');
-  const [searchedColumn, setSearchedColumn] = useState('');
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
 
   const searchInput = useRef(null);
 
@@ -27,7 +27,7 @@ export function useTableSearch(dataIndex: string, dataName?: string) {
             setSelectedKeys(e.target.value ? [e.target.value] : [])
           }
           onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-          style={{ width: 188, marginBottom: 8, display: 'block' }}
+          style={{ width: 188, marginBottom: 8, display: "block" }}
         />
         <Space>
           <Button
@@ -50,7 +50,7 @@ export function useTableSearch(dataIndex: string, dataName?: string) {
       </div>
     ),
     filterIcon: (filtered: any) => (
-      <SearchOutlined style={{ color: filtered ? '#fff' : undefined }} />
+      <SearchOutlined style={{ color: filtered ? "#fff" : undefined }} />
     ),
     onFilter: (value: any, record: any) =>
       record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
@@ -62,7 +62,7 @@ export function useTableSearch(dataIndex: string, dataName?: string) {
     render: (text: any) =>
       searchedColumn === dataIndex ? (
         <Highlighter
-          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
           searchWords={[searchText]}
           autoEscape
           textToHighlight={text.toString()}
@@ -80,7 +80,7 @@ export function useTableSearch(dataIndex: string, dataName?: string) {
 
   const handleReset = (clearFilters: any) => {
     clearFilters();
-    setSearchText('');
+    setSearchText("");
   };
 
   return getColumnSearchProps(dataIndex, dataName);
