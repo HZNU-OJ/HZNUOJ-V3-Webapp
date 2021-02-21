@@ -1,4 +1,4 @@
-# HZNU Online Judge WebApp 
+# HZNU Online Judge V3 WebApp 
 
 ## Getting Started
 
