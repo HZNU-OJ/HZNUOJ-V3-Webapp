@@ -1,4 +1,4 @@
-import validator from 'validator';
+import validator from "validator";
 
 export function isValidUrl(url: string): boolean {
   /* eslint no-useless-escape:0 import/prefer-default-export:0 */
@@ -28,8 +28,8 @@ export function isValidDisplayId(displayId: string): boolean {
 }
 
 export function isValidFilename(filename: string): boolean {
-  const forbiddenCharacters = ['/', '\x00'];
-  const reservedFilenames = ['.', '..'];
+  const forbiddenCharacters = ["/", "\x00"];
+  const reservedFilenames = [".", ".."];
   return (
     forbiddenCharacters.every((ch) => filename.indexOf(ch) === -1) &&
     !reservedFilenames.includes(filename)
@@ -37,5 +37,5 @@ export function isValidFilename(filename: string): boolean {
 }
 
 export function stripInvalidCharactersInEmailVerificationCode(str: string) {
-  return str.replace(/[^\d]/g, '');
+  return str.replace(/[^\d]/g, "");
 }

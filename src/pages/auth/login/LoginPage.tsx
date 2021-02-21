@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { Form, Input, Button, Checkbox, message, Row, Col } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { Link, history, useModel } from 'umi';
-import { getPageQuery } from '@/utils/utils';
-import BasicLayout from '@/layouts/Basic';
-import style from '../auth.less';
+import React, { useState } from "react";
+import { Form, Input, Button, Checkbox, message, Row, Col } from "antd";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { Link, history, useModel } from "umi";
+import { getPageQuery } from "@/utils/utils";
+import BasicLayout from "@/layouts/Basic";
+import style from "../auth.less";
 
 const replaceGoto = () => {
   const urlParams = new URL(window.location.href);
@@ -15,23 +15,23 @@ const replaceGoto = () => {
     if (redirectUrlParams.origin === urlParams.origin) {
       redirect = redirect.substr(urlParams.origin.length);
       if (redirect.match(/^\/.*#/)) {
-        redirect = redirect.substr(redirect.indexOf('#') + 1);
+        redirect = redirect.substr(redirect.indexOf("#") + 1);
       }
     } else {
-      window.location.href = '/user/settings';
+      window.location.href = "/user/settings";
       return;
     }
   }
-  history.replace(redirect || '/user/settings');
+  history.replace(redirect || "/user/settings");
 };
 
 const LoginPage: React.FC<{}> = () => {
-  const { refresh } = useModel('@@initialState');
+  const { refresh } = useModel("@@initialState");
   const [loading, setLoading] = useState(0);
 
   let token = window.localStorage.wikiAuthToken;
-  if (token && token != '') {
-    history.replace('/user/settings');
+  if (token && token != "") {
+    history.replace("/user/settings");
     return null;
   }
 
@@ -61,7 +61,7 @@ const LoginPage: React.FC<{}> = () => {
               rules={[
                 {
                   required: true,
-                  message: 'Please input your Username/E-mail!',
+                  message: "Please input your Username/E-mail!",
                 },
               ]}
             >
@@ -73,7 +73,7 @@ const LoginPage: React.FC<{}> = () => {
             <Form.Item
               name="password"
               rules={[
-                { required: true, message: 'Please input your Password!' },
+                { required: true, message: "Please input your Password!" },
               ]}
             >
               <Input
@@ -86,7 +86,7 @@ const LoginPage: React.FC<{}> = () => {
             <Form.Item>
               <Button
                 style={{
-                  width: '100%',
+                  width: "100%",
                 }}
                 loading={loading > 0}
                 type="primary"
@@ -102,11 +102,11 @@ const LoginPage: React.FC<{}> = () => {
                 }}
               >
                 <Row gutter={[16, 0]}>
-                  <Col style={{ textAlign: 'left' }} span={8}>
+                  <Col style={{ textAlign: "left" }} span={8}>
                     <a href="/register">Register</a>
                   </Col>
-                  <Col style={{ textAlign: 'center' }} span={0}></Col>
-                  <Col style={{ textAlign: 'right' }} span={16}>
+                  <Col style={{ textAlign: "center" }} span={0}></Col>
+                  <Col style={{ textAlign: "right" }} span={16}>
                     <a href="/forgot-password">Forgot password?</a>
                   </Col>
                 </Row>

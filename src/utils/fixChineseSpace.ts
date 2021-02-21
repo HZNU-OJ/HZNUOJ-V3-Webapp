@@ -4,11 +4,11 @@ export default function fixChineseSpace(str: string) {
   return [...str]
     .map(
       (char, i) =>
-        (i > 0 && isChinese(str[i]) && isLatin(str[i - 1]) ? ' ' : '') +
+        (i > 0 && isChinese(str[i]) && isLatin(str[i - 1]) ? " " : "") +
         char +
         (i < str.length - 1 && isChinese(str[i]) && isLatin(str[i + 1])
-          ? ' '
-          : ''),
+          ? " "
+          : ""),
     )
-    .join('');
+    .join("");
 }

@@ -1,7 +1,7 @@
-import style from './Footer.module.less';
-import packages from '@/../package.json';
-import GithubIcon from '@/icons/Github';
-import React from 'react';
+import style from "./Footer.module.less";
+import packages from "@/../package.json";
+import GithubIcon from "@/icons/Github";
+import React from "react";
 
 const Footer: React.FC<{}> = (props) => {
   return (

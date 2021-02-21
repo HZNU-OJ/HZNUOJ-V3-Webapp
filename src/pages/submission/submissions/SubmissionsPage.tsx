@@ -1,20 +1,20 @@
-import React from 'react';
-import Highlighter from 'react-highlight-words';
-import { Table, Input, Space, Button, Tooltip } from 'antd';
-import { ColumnsType } from 'antd/es/table';
-import { SearchOutlined } from '@ant-design/icons';
-import style from './SubmissionsPage.module.less';
-import Loading from '@/components/Loading';
-import BasicLayout from '@/layouts/Basic';
-import AntTableHead from '@/less/AntTableHead.module.less';
-import { formatUnixTimeStamp } from '@/utils/formatDateTime';
+import React from "react";
+import Highlighter from "react-highlight-words";
+import { Table, Input, Space, Button, Tooltip } from "antd";
+import { ColumnsType } from "antd/es/table";
+import { SearchOutlined } from "@ant-design/icons";
+import style from "./SubmissionsPage.module.less";
+import Loading from "@/components/Loading";
+import BasicLayout from "@/layouts/Basic";
+import AntTableHead from "@/less/AntTableHead.module.less";
+import { formatUnixTimeStamp } from "@/utils/formatDateTime";
 
 import {
   SubmissionStatusType,
   SubmissionLangType,
   SubmissionLangTypeTitle,
   SubmissionStatusTypeTitle,
-} from '@/interface/Submission';
+} from "@/interface/Submission";
 
 interface SubmissionItem {
   id: number;
@@ -29,20 +29,20 @@ interface SubmissionItem {
 }
 
 enum SubmissionTableHeadTitle {
-  id = '#',
-  status = 'Status',
-  who = 'Who',
-  when = 'When',
-  problem = 'Problem',
-  time = 'Time',
-  memory = 'Memory',
-  lang = 'Lang',
-  codeLength = 'Code Length',
+  id = "#",
+  status = "Status",
+  who = "Who",
+  when = "When",
+  problem = "Problem",
+  time = "Time",
+  memory = "Memory",
+  lang = "Lang",
+  codeLength = "Code Length",
 }
 
 function submissionDateRender(unixTimeStamp: string | number) {
-  const shortTimeFormat = 'MM/DD HH:mm';
-  const longTimeFormat = 'YYYY-MM-DD HH:mm:ss';
+  const shortTimeFormat = "MM/DD HH:mm";
+  const longTimeFormat = "YYYY-MM-DD HH:mm:ss";
   return (
     <Tooltip
       placement="top"
@@ -71,9 +71,9 @@ function getTableDataSource(): SubmissionItem[] {
     dataSource.push({
       id: i,
       status: SubmissionStatusTypeTitle[i % SubmissionStatusTypeTitle.length],
-      who: 'Dup4',
+      who: "Dup4",
       when: 1613656156 + i * 100,
-      problem: '#1. A + B Problem',
+      problem: "#1. A + B Problem",
       time: 123 * i,
       memory: 321 * i,
       lang: SubmissionLangTypeTitle[i % SubmissionLangTypeTitle.length],
@@ -88,76 +88,76 @@ class SubmissionsPage extends React.Component {
     const columns: ColumnsType<SubmissionItem> = [
       {
         title: SubmissionTableHeadTitle.id,
-        dataIndex: 'id',
-        key: 'id',
-        width: '40px',
-        align: 'left',
+        dataIndex: "id",
+        key: "id",
+        width: "40px",
+        align: "left",
         sorter: (a, b) => a.id - b.id,
       },
       {
         title: SubmissionTableHeadTitle.problem,
-        dataIndex: 'problem',
-        key: 'problem',
-        width: '120px',
-        align: 'left',
-        ...this.getColumnSearchProps('problem'),
+        dataIndex: "problem",
+        key: "problem",
+        width: "120px",
+        align: "left",
+        ...this.getColumnSearchProps("problem"),
       },
       {
         title: SubmissionTableHeadTitle.status,
-        dataIndex: 'status',
-        key: 'status',
-        width: '120px',
-        align: 'center',
+        dataIndex: "status",
+        key: "status",
+        width: "120px",
+        align: "center",
       },
       {
         title: SubmissionTableHeadTitle.when,
-        dataIndex: 'when',
-        key: 'when',
-        width: '60px',
-        align: 'left',
+        dataIndex: "when",
+        key: "when",
+        width: "60px",
+        align: "left",
         sorter: (a, b) => a.when - b.when,
         render: submissionDateRender,
       },
       {
         title: SubmissionTableHeadTitle.who,
-        dataIndex: 'who',
-        key: 'who',
-        width: '60px',
-        align: 'left',
-        ...this.getColumnSearchProps('who'),
+        dataIndex: "who",
+        key: "who",
+        width: "60px",
+        align: "left",
+        ...this.getColumnSearchProps("who"),
         render: (who: string) => <a href="">{who}</a>,
       },
       {
         title: SubmissionTableHeadTitle.lang,
-        dataIndex: 'lang',
-        key: 'lang',
-        width: '60px',
-        align: 'center',
+        dataIndex: "lang",
+        key: "lang",
+        width: "60px",
+        align: "center",
       },
       {
         title: SubmissionTableHeadTitle.time,
-        dataIndex: 'time',
-        key: 'time',
-        width: '60px',
-        align: 'center',
+        dataIndex: "time",
+        key: "time",
+        width: "60px",
+        align: "center",
         sorter: (a, b) => a.time - b.time,
         render: submissionTimeRender,
       },
       {
         title: SubmissionTableHeadTitle.memory,
-        dataIndex: 'memory',
-        key: 'memory',
-        width: '60px',
-        align: 'center',
+        dataIndex: "memory",
+        key: "memory",
+        width: "60px",
+        align: "center",
         sorter: (a, b) => a.memory - b.memory,
         render: submissionMemoryRender,
       },
       {
         title: SubmissionTableHeadTitle.codeLength,
-        dataIndex: 'codeLength',
-        key: 'codeLength',
-        width: '80px',
-        align: 'center',
+        dataIndex: "codeLength",
+        key: "codeLength",
+        width: "80px",
+        align: "center",
         sorter: (a, b) => a.codeLength - b.codeLength,
         render: submissionCodeLengthRender,
       },
@@ -199,7 +199,7 @@ class SubmissionsPage extends React.Component {
           onPressEnter={() =>
             this.handleSearch(selectedKeys, confirm, dataIndex)
           }
-          style={{ width: 188, marginBottom: 8, display: 'block' }}
+          style={{ width: 188, marginBottom: 8, display: "block" }}
         />
         <Space>
           <Button
@@ -222,7 +222,7 @@ class SubmissionsPage extends React.Component {
       </div>
     ),
     filterIcon: (filtered) => (
-      <SearchOutlined style={{ color: filtered ? '#fff' : undefined }} />
+      <SearchOutlined style={{ color: filtered ? "#fff" : undefined }} />
     ),
     onFilter: (value, record) =>
       record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
@@ -234,7 +234,7 @@ class SubmissionsPage extends React.Component {
     render: (text) =>
       this.state.searchedColumn === dataIndex ? (
         <Highlighter
-          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
           searchWords={[this.state.searchText]}
           autoEscape
           textToHighlight={text.toString()}
@@ -254,12 +254,12 @@ class SubmissionsPage extends React.Component {
 
   handleReset = (clearFilters: any) => {
     clearFilters();
-    this.setState({ searchText: '' });
+    this.setState({ searchText: "" });
   };
 
   render() {
     return (
-      <BasicLayout current={'submissions'}>
+      <BasicLayout current={"submissions"}>
         <div className={style.root}>
           {this.state.loaded === false && (
             <div className={style.loading}>
@@ -282,7 +282,7 @@ class SubmissionsPage extends React.Component {
                   showQuickJumper: true,
                   showSizeChanger: true,
                   defaultPageSize: 16,
-                  pageSizeOptions: ['8', '16', '32', '64', '128', '256'],
+                  pageSizeOptions: ["8", "16", "32", "64", "128", "256"],
                 }}
               />
             </div>

@@ -1,6 +1,6 @@
-import Footer from '@/components/Footer';
-import style from './Basic.module.less';
-import React, { useState } from 'react';
+import Footer from "@/components/Footer";
+import style from "./Basic.module.less";
+import React, { useState } from "react";
 interface topBarItem {
   id: string;
   name: string;
@@ -8,9 +8,9 @@ interface topBarItem {
 }
 
 function topBarItemRender(current: string, itemList: topBarItem[]): string {
-  let html = '';
+  let html = "";
   itemList.forEach((item: topBarItem) => {
-    html += `<li class="${current === item.id ? 'am-active' : ''}"><a href="${
+    html += `<li class="${current === item.id ? "am-active" : ""}"><a href="${
       item.link
     }">${item.name}</a></li>`;
   });
@@ -19,13 +19,13 @@ function topBarItemRender(current: string, itemList: topBarItem[]): string {
 
 function topBar(brand: string, current: string) {
   const leftItemList = [
-    { id: 'contests', name: 'Contests', link: '/contests' },
-    { id: 'problemSet', name: 'Problem Set', link: '/problemset' },
-    { id: 'submissions', name: 'Submissions', link: '/submissions' },
-    { id: 'users', name: 'Users', link: '/users' },
-    { id: 'discussion', name: 'Discussion', link: '/d' },
+    { id: "contests", name: "Contests", link: "/contests" },
+    { id: "problemSet", name: "Problem Set", link: "/problemset" },
+    { id: "submissions", name: "Submissions", link: "/submissions" },
+    { id: "users", name: "Users", link: "/users" },
+    { id: "discussion", name: "Discussion", link: "/d" },
   ];
-  const rightItemList = [{ id: 'enter', name: 'Enter', link: '/login' }];
+  const rightItemList = [{ id: "enter", name: "Enter", link: "/login" }];
   return {
     __html: `
     <header class="am-topbar-inverse am-topbar-fixed-toped" style="font-size: 16px; margin-top: 0px;">
@@ -34,7 +34,7 @@ function topBar(brand: string, current: string) {
       <span class="am-sr-only">导航切换</span>
       <span class="am-icon-bars"></span>
     </button>
-    <div class="am-container ${style['h-header']}">
+    <div class="am-container ${style["h-header"]}">
       <h1 class="am-topbar-brand">
         <a href="/" >${brand}</a>
       </h1>
@@ -61,7 +61,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = (props) => {
   return (
     <div
-      dangerouslySetInnerHTML={topBar('HZNU Online Judge', props.current)}
+      dangerouslySetInnerHTML={topBar("HZNU Online Judge", props.current)}
     ></div>
   );
 };

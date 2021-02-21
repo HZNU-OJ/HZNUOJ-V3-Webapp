@@ -1,4 +1,4 @@
-export * from './Rating';
+export * from "./Rating";
 
 function getWinProbability(ra: number, rb: number) {
   return 1.0 / (1.0 + Math.pow(10.0, (rb - ra) / 400.0));
