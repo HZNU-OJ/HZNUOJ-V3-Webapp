@@ -1,28 +1,28 @@
-import { defineConfig } from 'umi';
-import customConfig from '../customConfig';
-import routes from './routes';
-import MonacoWebpackPlugin from 'monaco-editor-webpack-plugin';
+import { defineConfig } from "umi";
+import customConfig from "../customConfig";
+import routes from "./routes";
+import MonacoWebpackPlugin from "monaco-editor-webpack-plugin";
 
 export default defineConfig({
   dynamicImport: {
-    loading: '@/components/GlobalLoading',
+    loading: "@/components/GlobalLoading",
   },
-  chunks: ['basic', 'vendors.umi', 'umi'],
+  chunks: ["basic", "vendors.umi", "umi"],
   chainWebpack: (config, { webpack }) => {
     config.merge({
       optimization: {
         splitChunks: {
-          chunks: 'all',
+          chunks: "all",
           minSize: 30000,
           maxSize: 0,
           name: true,
           minChunks: 1,
           maxAsyncRequests: 10,
           maxInitialRequests: 5,
-          automaticNameDelimiter: '.',
+          automaticNameDelimiter: ".",
           cacheGroups: {
             basic: {
-              name: 'basic',
+              name: "basic",
               test({ resource }) {
                 return /(@antd|antd|@ant-design|react)/.test(resource);
               },
@@ -40,7 +40,7 @@ export default defineConfig({
       },
     });
     //更多配置 https://github.com/Microsoft/monaco-editor-webpack-plugin#options
-    config.plugin('monaco-editor-webpack-plugin').use(MonacoWebpackPlugin, [
+    config.plugin("monaco-editor-webpack-plugin").use(MonacoWebpackPlugin, [
       // 按需配置
       {
         languages: customConfig.monacoEditorSupportedLanguages,
@@ -51,10 +51,11 @@ export default defineConfig({
   },
   devServer: {
     port: 8000,
-    host: '0.0.0.0',
+    host: "0.0.0.0",
   },
+  base: customConfig.base,
   nodeModulesTransform: {
-    type: 'none',
+    type: "none",
   },
   metas: customConfig.metas,
   title: false,
