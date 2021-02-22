@@ -30,7 +30,6 @@ jobs:
         env:
           VERSION_ID: ${{ steps.get-version-id.outputs.version-id }}  
         run: |
-          sed -i "s|baidu: ''|baidu: '${{ secrets.BAIDU_ANALYTICS_ID }}'|" customConfig.ts 
           cat customConfig.ts
           bash scripts/get_amazeui.sh
           npm install
@@ -41,14 +40,9 @@ jobs:
         with:
           src: './dist/index.html'
 
-      - name: Enable 404.html
-        run: |
-          cp ./dist/index.html ./dist/404.html
-          
-      - name: Release
-        uses: JamesIves/github-pages-deploy-action@3.6.2
+      - name: Invoke workflow in another repo with inputs
+        uses: benc-uk/workflow-dispatch@v1
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: preview # The branch the action should deploy to.
-          FOLDER: dist # The folder the action should deploy.
-          CLEAN: true # Automatically remove deleted files from the deploy branch
+          workflow: Update And Commit
+          repo: HZNU-OJ/HZNUOJ-V3-WebApp
+          token: ${{ secrets.GH_TOKEN }}
