@@ -9,7 +9,7 @@
     "start": "cross-env umi dev",
     "start:no-mock": "cross-env MOCK=none umi dev",
     "start:no-ui": "cross-env UMI_UI=none umi dev",
-    "build": "umi build",
+    "build": "cross-env NODE_OPTIONS=--max-old-space-size=4096 umi build",
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write 'src/**/*.{js,jsx,tsx,less,md,json}' && prettier --write --parser=typescript 'src/**/*.ts?(x)'",
     "test": "umi-test",
