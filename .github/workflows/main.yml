@@ -9,6 +9,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+
+      - name: Invoke workflow in another repo with inputs
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: Sync
+          repo: HZNU-OJ/HZNUOJ-V3-WebApp-Preview
+          token: ${{ secrets.GH_TOKEN }}
+
       - name: Checkout
         uses: actions/checkout@v2.3.1 # If you're using actions/checkout@v2 you must set persist-credentials to false in most cases for the deployment to work correctly.
         with:
@@ -39,10 +47,3 @@ jobs:
         uses: Dup4/minify-html-action@v9
         with:
           src: './dist/index.html'
-
-      - name: Invoke workflow in another repo with inputs
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: Sync
-          repo: HZNU-OJ/HZNUOJ-V3-WebApp-Preview
-          token: ${{ secrets.GH_TOKEN }}
