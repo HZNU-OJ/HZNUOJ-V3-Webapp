@@ -43,6 +43,6 @@ jobs:
       - name: Invoke workflow in another repo with inputs
         uses: benc-uk/workflow-dispatch@v1
         with:
-          workflow: Update And Commit
+          workflow: Preview
           repo: HZNU-OJ/HZNUOJ-V3-WebApp-Preview
           token: ${{ secrets.GH_TOKEN }}
