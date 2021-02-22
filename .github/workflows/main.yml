@@ -44,5 +44,5 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: Update And Commit
-          repo: HZNU-OJ/HZNUOJ-V3-WebApp
+          repo: HZNU-OJ/HZNUOJ-V3-WebApp-Preview
           token: ${{ secrets.GH_TOKEN }}
