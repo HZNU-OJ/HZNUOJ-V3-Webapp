@@ -40,6 +40,11 @@ export default [
     exact: true,
   },
   {
+    path: "/disscussion/:id",
+    component: "@/pages/discussion/view/DiscussionViewPage",
+    exact: true,
+  },
+  {
     path: "/403",
     component: "@/pages/403",
     exact: true,
