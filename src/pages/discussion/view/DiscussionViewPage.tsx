@@ -1,41 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MarkdownContent from "@/markdown/MarkdownContent";
 import { useParams } from "umi";
 
 import styles from "./DiscussionViewPage.module.less";
 
-const markdownContent = `
+import { getJSON } from "@/utils";
 
-# H1
-## H2
-### H3
-#### H4
-##### H5
-
-
-$$
-\\begin{eqnarray*}
-f(x) = 2^x
-\\end{eqnarray*}
-$$
-
-- 2
-- 3
-
-@Dup4
-
-
-\`\`\`cpp
-#include <bits/stdc++.h>
-using namespace std;
-\`\`\`
-
-$f(x) = 3^x$
-
-有 $n$ 个人物
-
-https://wi-ki.top
-`;
+const markdownContent = ``;
 
 interface DiscussionViewPageParams {
   id: string;
@@ -43,13 +14,29 @@ interface DiscussionViewPageParams {
 
 const DiscussionViewPage: React.FC<{}> = (props) => {
   const params = useParams() as DiscussionViewPageParams;
+
+  const [loaded, setLoaded] = useState(false);
+  const [content, setContent] = useState("");
+
+  useEffect(() => {
+    const contentRemote = getJSON("");
+    setLoaded(true);
+  }, []);
+
   console.log(params.id);
+
   return (
-    <div className={styles.root}>
-      <div className={styles.secondRoot}>
-        <MarkdownContent content={markdownContent} />
-      </div>
-    </div>
+    <>
+      {loaded == false && <></>}
+
+      {loaded === true && (
+        <div className={styles.root}>
+          <div className={styles.secondRoot}>
+            <MarkdownContent content={markdownContent} />
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
