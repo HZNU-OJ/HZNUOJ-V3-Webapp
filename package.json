@@ -1,6 +1,6 @@
 {
   "name": "hznuoj-v3-webapp",
-  "version": "0.0.29.4",
+  "version": "0.0.29.5",
   "description": "The WebApp of HZNUOJ V3",
   "repository": "https://github.com/HZNU-OJ/HZNUOJ-V3-WebApp",
   "author": "Dup4",
@@ -56,6 +56,7 @@
     "@umijs/preset-ui": "^2.2.9",
     "@umijs/test": "^3.3.7",
     "cross-env": "^7.0.3",
+    "dtsgenerator": "^3.7.1",
     "lint-staged": "^10.0.7",
     "prettier": "^2.2.0",
     "react": "17.x",
