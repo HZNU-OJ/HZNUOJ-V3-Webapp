@@ -1,7 +1,9 @@
 import { defineConfig } from "umi";
 import customConfig from "../customConfig";
-import routes from "./routes";
 import MonacoWebpackPlugin from "monaco-editor-webpack-plugin";
+
+import routes from "./routes";
+import proxy from "./proxy";
 
 export default defineConfig({
   dynamicImport: {
@@ -65,4 +67,5 @@ export default defineConfig({
   fastRefresh: {},
   routes: routes,
   publicPath: customConfig.publicPath,
+  proxy: proxy,
 });
