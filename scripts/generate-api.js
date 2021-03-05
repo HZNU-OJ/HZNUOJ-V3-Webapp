@@ -11,7 +11,8 @@ if (!apiUrl) {
   process.exit(2);
 }
 
-const skipTags = ["App", "CORS"];
+// const skipTags = ["App", "CORS"];
+const skipTags = ["CORS"];
 const namespaceName = "ApiTypes";
 const generatedMessage = "// This file is generated automatically, do NOT modify it.\n\n";
 

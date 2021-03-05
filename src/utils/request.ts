@@ -58,8 +58,11 @@ const errorHandler = (error: { response: Response }): Response => {
  */
 const request = extend({
   errorHandler, // 默认错误处理
-  prefix: "/",
+  prefix: "",
   timeout: 60000,
+  headers: {
+    "Content-Type": "application/json",
+  },
   // credentials: 'include', // 默认请求是否带上cookie
 });
 

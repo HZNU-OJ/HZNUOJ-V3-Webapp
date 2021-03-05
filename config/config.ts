@@ -65,7 +65,7 @@ export default defineConfig({
   hash: true,
   favicon: customConfig.favicon,
   fastRefresh: {},
-  routes: routes,
   publicPath: customConfig.publicPath,
+  routes: routes,
   proxy: proxy,
 });

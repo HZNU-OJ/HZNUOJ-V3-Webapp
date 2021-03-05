@@ -17,6 +17,7 @@ export default {
       content: "HZNU Online Judge",
     },
   ],
+  apiEndpoint: "/",
   monacoEditorSupportedLanguages: [
     "abap",
     "apex",
