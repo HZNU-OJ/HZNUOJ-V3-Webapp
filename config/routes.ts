@@ -20,6 +20,11 @@ export default [
     exact: true,
   },
   {
+    path: "/logout",
+    component: "@/pages/auth/logout/LogoutPage",
+    exact: true,
+  },
+  {
     path: "/contests",
     component: "@/pages/contest/contests/ContestsPage",
     exact: true,

@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Checkbox, message, Row, Col } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { Link, history, useModel } from "umi";
 import { getPageQuery } from "@/utils/utils";
 import BasicLayout from "@/layouts/Basic";
-import style from "../auth.less";
+
+import style from "../auth.module.less";
+
+import { useAuthToken } from "@/utils/hooks";
+
+import { isEmail } from "class-validator";
+import api from "@/api";
 
 const replaceGoto = () => {
   const urlParams = new URL(window.location.href);
@@ -25,28 +31,47 @@ const replaceGoto = () => {
   history.replace(redirect || "/user/settings");
 };
 
-const LoginPage: React.FC<{}> = () => {
-  const { refresh } = useModel("@@initialState");
-  const [loading, setLoading] = useState(0);
+interface LoginFormProps {
+  usernameOrEmail: string;
+  password: string;
+}
 
-  let token = window.localStorage.wikiAuthToken;
-  if (token && token != "") {
-    history.replace("/user/settings");
+const LoginPage: React.FC<{}> = () => {
+  const { getToken, signIn } = useAuthToken();
+
+  const [loading, setLoading] = useState(false);
+
+  if (getToken() != "") {
+    message.warning("Already Login!");
+    history.replace("/");
     return null;
   }
 
-  const onFinish = async function (values: any) {
-    // await setLoading(1);
-    // user.login(values, async function (response: any) {
-    //     if (response && response.status == '1') {
-    //         message.success('登录成功！');
-    //         await refresh();
-    //         replaceGoto();
-    //     } else {
-    //         message.error((response && response.message) || '账号或密码错误，请重试！');
-    //     }
-    //     setLoading(0);
-    // });
+  async function loginAction(formProps: LoginFormProps) {
+    const { requestError, response } = await api.auth.login({
+      [isEmail(formProps.usernameOrEmail)
+        ? "email"
+        : "username"]: formProps.usernameOrEmail,
+      password: formProps.password,
+    });
+
+    if (response.error) {
+      if (response.error === "WRONG_PASSWORD") {
+        message.error("Password Error!");
+      } else {
+        message.error("Login failed!");
+      }
+    } else if (response.token && response.username) {
+      signIn(response.token);
+      message.success(`Welcome back,${response.username}!`);
+      history.replace("/");
+    }
+  }
+
+  const onFinish = async function (formProps: LoginFormProps) {
+    setLoading(true);
+    await loginAction(formProps);
+    setLoading(false);
   };
 
   return (
@@ -57,7 +82,7 @@ const LoginPage: React.FC<{}> = () => {
 
           <Form name="normal_login" className={style.form} onFinish={onFinish}>
             <Form.Item
-              name="username"
+              name="usernameOrEmail"
               rules={[
                 {
                   required: true,
@@ -88,7 +113,7 @@ const LoginPage: React.FC<{}> = () => {
                 style={{
                   width: "100%",
                 }}
-                loading={loading > 0}
+                loading={loading === true}
                 type="primary"
                 htmlType="submit"
                 className="login-form-button"

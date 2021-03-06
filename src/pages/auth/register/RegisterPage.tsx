@@ -6,47 +6,148 @@ import {
   MailOutlined,
   SafetyOutlined,
 } from "@ant-design/icons";
-import { Link, history, useModel } from "umi";
-import { getPageQuery } from "@/utils/utils";
 import BasicLayout from "@/layouts/Basic";
-import style from "../auth.less";
+import style from "../auth.module.less";
+
+import {
+  isValidUsername,
+  isValidEmail,
+  isValidPassword,
+  stripInvalidCharactersInEmailVerificationCode,
+} from "@/utils/validators";
+
+import api from "@/api";
+import { useRecaptcha } from "@/utils/hooks";
+
+interface RegisterFormProps {
+  email: string;
+  password: string;
+  rptpassword: string;
+  username: string;
+  emailVerificationCode: string;
+}
 
 const Register: React.FC<{}> = () => {
-  const [loading, setLoading] = useState(0);
+  const RATE_LIMITED_SEC = 60;
+
+  const [steps, setSteps] = useState(0);
+
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
-  const [veryCodeLoading, setVeryCodeLoading] = useState(0);
-  const [status, setStatus] = useState(0);
 
-  const onFinish = async function (values: any) {
-    // await setLoading(1);
-    // user.register(values, async function (response: any) {
-    //     if (response && response.status == '1') {
-    //         message.success('注册成功！');
-    //         setStatus("1");
-    //     } else {
-    //         message.error((response && response.message) || '注册失败，请重试！');
-    //     }
-    //     setLoading(0);
-    // });
-  };
+  const [registerLoading, setRegisterLoading] = useState(false);
+  const [
+    SendEmailVerificationCodeLoading,
+    setSendEmailVerificationCodeLoading,
+  ] = useState(false);
 
-  const sendEmailVeryCode = async function () {
-    // await setVeryCodeLoading(1);
-    // user.sendEmailVeryCode({email:email}, async function(response:any) {
-    //     if (response && response.status == "1") {
-    //         message.success(response.message || "发送成功！");
-    //     } else {
-    //         message.error((response && response.message) || "发送失败!");
-    //     }
-    //    setVeryCodeLoading(0);
-    // });
-  };
+  const recaptcha = useRecaptcha();
+
+  async function registerAction(formProps: RegisterFormProps) {
+    if (!isValidUsername(formProps.username)) {
+      message.error("Username Invalid!");
+      return;
+    }
+
+    if (formProps.password !== formProps.rptpassword) {
+      message.error("The two passwords entered are inconsistent!");
+      return;
+    }
+
+    if (!isValidPassword(formProps.password)) {
+      message.error("Password Invalid!");
+      return;
+    }
+
+    {
+      // check email and username availability
+      const { requestError, response } = await api.auth.checkAvailability({
+        username: formProps.username,
+        email: formProps.email,
+      });
+
+      if (response) {
+        let valid = true;
+        if (!response.emailAvailable) {
+          message.warning("Email has been used!");
+          valid = false;
+        }
+        if (!response.usernameAvailable) {
+          message.warning("Username has been used!");
+          valid = false;
+        }
+        if (!valid) return;
+      }
+    }
+
+    {
+      // register
+      const { requestError, response } = await api.auth.register(
+        {
+          username: formProps.username,
+          email: formProps.email,
+          emailVerificationCode: stripInvalidCharactersInEmailVerificationCode(
+            formProps.emailVerificationCode,
+          ),
+          password: formProps.password,
+        },
+        recaptcha("Register"),
+      );
+
+      if (requestError) {
+        message.error("Register failed, please try again!");
+      }
+
+      if (response) {
+        message.success("Register successfully!");
+        setSteps(1);
+      }
+    }
+  }
+
+  async function onFinish(formProps: RegisterFormProps) {
+    setRegisterLoading(true);
+    await registerAction(formProps);
+    setRegisterLoading(false);
+  }
+
+  async function sendEmailVerificationCode() {
+    if (!isValidEmail(email)) {
+      message.error("Email invalid!");
+      return;
+    }
+
+    setSendEmailVerificationCodeLoading(true);
+    const { requestError, response } = await api.auth.sendEmailVerificationCode(
+      {
+        email: email,
+        type: "Register",
+        locale: "en_US",
+      },
+      recaptcha("SendEmailVerifactionCode_Register"),
+    );
+
+    if (requestError) {
+      message.error("Sent failed, please try agein.");
+    } else if (response.error) {
+      if (response.error === "RATE_LIMITED") {
+        message.warning("Sent too frequently!");
+      } else if (response.error === "DUPLICATE_EMAIL") {
+        message.warning("Email has been used!");
+      } else {
+        message.warning("Sent failed!");
+      }
+    } else {
+      message.success("Sent successfully!");
+    }
+
+    setSendEmailVerificationCodeLoading(false);
+  }
 
   return (
     <BasicLayout current="enter">
       <div className={style.root}>
-        {status === 0 && (
+        {steps === 0 && (
           <div className={style.secondRoot}>
             <span className={style.title}>Register new account</span>
 
@@ -116,7 +217,7 @@ const Register: React.FC<{}> = () => {
               </Form.Item>
 
               <Form.Item
-                name="verycode"
+                name="emailVerificationCode"
                 rules={[
                   {
                     required: true,
@@ -139,8 +240,8 @@ const Register: React.FC<{}> = () => {
                       style={{
                         width: "100%",
                       }}
-                      loading={veryCodeLoading > 0}
-                      onClick={sendEmailVeryCode}
+                      loading={SendEmailVerificationCodeLoading === true}
+                      onClick={sendEmailVerificationCode}
                       type="primary"
                       className="login-form-button"
                     >
@@ -155,7 +256,7 @@ const Register: React.FC<{}> = () => {
                   style={{
                     width: "100%",
                   }}
-                  loading={loading > 0}
+                  loading={registerLoading === true}
                   type="primary"
                   htmlType="submit"
                   className="login-form-button"
@@ -183,11 +284,11 @@ const Register: React.FC<{}> = () => {
           </div>
         )}
 
-        {status === 1 && (
+        {steps === 1 && (
           <Result
             status="success"
             title="Congratulations on your successful registration!"
-            subTitle={"Username: " + username + " " + " Email: " + email}
+            subTitle={`Username: ${username} | Email: ${email}`}
             extra={[
               <Button type="primary" key="login" href="/login">
                 Go Login

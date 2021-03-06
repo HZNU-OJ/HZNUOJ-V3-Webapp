@@ -1,54 +1,120 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Checkbox, message, Row, Col, Result } from "antd";
-import {
-  SafetyOutlined,
-  LockOutlined,
-  MailOutlined,
-  NumberOutlined,
-} from "@ant-design/icons";
+import { SafetyOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Link, history, useModel } from "umi";
-import { getPageQuery } from "@/utils/utils";
-import style from "../auth.less";
+import style from "../auth.module.less";
 import BasicLayout from "@/layouts/Basic";
 
+import { useRecaptcha } from "@/utils/hooks";
+
+import {
+  isValidEmail,
+  isValidPassword,
+  stripInvalidCharactersInEmailVerificationCode,
+} from "@/utils/validators";
+
+import api from "@/api";
+
+interface ForgotPasswordFormProps {
+  email: string;
+  password: string;
+  rptpassword: string;
+  emailVerificationCode: string;
+}
+
 const ForgotPassword: React.FC<{}> = () => {
-  const [loading, setLoading] = useState(0);
+  const RATE_LIMITED_SEC = 60;
+
+  const [steps, setSteps] = useState(0);
+
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [veryCodeLoading, setVeryCodeLoading] = useState(0);
-  const [status, setStatus] = useState(0);
 
-  const onFinish = async function (values: any) {
-    // setLoading(1);
-    // user.resetPassword(values, async function (response: any) {
-    //   if (response && response.status == '1') {
-    //     console.log(response);
-    //     message.success('重置成功！');
-    //     setUsername(response.username);
-    //     setStatus("1");
-    //   } else {
-    //     message.error((response && response.message) || '重置失败，请重试！');
-    //   }
-    //   setLoading(0);
-    // });
-  };
+  const [resetPasswordLoading, setResetPasswordLoading] = useState(false);
+  const [
+    SendEmailVerificationCodeLoading,
+    setSendEmailVerificationCodeLoading,
+  ] = useState(false);
 
-  const sendEmailVeryCode = async function () {
-    // setVeryCodeLoading(1);
-    // user.sendEmailVeryCode({ email: email }, async function (response: any) {
-    //   if (response && response.status == "1") {
-    //     message.success(response.message || "发送成功！");
-    //   } else {
-    //     message.error((response && response.message) || "发送失败!");
-    //   }
-    //   setVeryCodeLoading(0);
-    // });
-  };
+  const recaptcha = useRecaptcha();
+
+  async function resetPasswordAction(formProps: ForgotPasswordFormProps) {
+    if (formProps.password !== formProps.rptpassword) {
+      message.error("The two passwords entered are inconsistent!");
+      return;
+    }
+
+    if (!isValidPassword(formProps.password)) {
+      message.error("Password Invalid!");
+      return;
+    }
+
+    {
+      // reset password
+      const { requestError, response } = await api.auth.resetPassword(
+        {
+          email: formProps.email,
+          newPassword: formProps.password,
+          emailVerificationCode: stripInvalidCharactersInEmailVerificationCode(
+            formProps.emailVerificationCode,
+          ),
+        },
+        recaptcha("ResetPassword"),
+      );
+
+      if (requestError) {
+        message.error("Reset Password failed, please try again!");
+      }
+
+      if (response) {
+        message.success("Reset Password successfully!");
+        setSteps(1);
+      }
+    }
+  }
+
+  async function onFinish(formProps: ForgotPasswordFormProps) {
+    setResetPasswordLoading(true);
+    await resetPasswordAction(formProps);
+    setResetPasswordLoading(false);
+  }
+
+  async function sendEmailVerificationCode() {
+    if (!isValidEmail(email)) {
+      message.error("Email invalid!");
+      return;
+    }
+
+    setSendEmailVerificationCodeLoading(true);
+    const { requestError, response } = await api.auth.sendEmailVerificationCode(
+      {
+        email: email,
+        type: "ResetPassword",
+        locale: "en_US",
+      },
+      recaptcha("SendEmailVerifactionCode_ResetPassword"),
+    );
+
+    if (requestError) {
+      message.error("Sent failed, please try agein.");
+    } else if (response.error) {
+      if (response.error === "RATE_LIMITED") {
+        message.warning("Sent too frequently!");
+      } else if (response.error === "NO_SUCH_USER") {
+        message.warning("No such user!");
+      } else {
+        message.warning("Sent failed!");
+      }
+    } else {
+      message.success("Sent successfully!");
+    }
+
+    setSendEmailVerificationCodeLoading(false);
+  }
 
   return (
     <BasicLayout current="enter">
       <div className={style.root}>
-        {status === 0 && (
+        {steps === 0 && (
           <div className={style.secondRoot}>
             <span className={style.title}>Reset your password</span>
 
@@ -77,7 +143,7 @@ const ForgotPassword: React.FC<{}> = () => {
               </Form.Item>
 
               <Form.Item
-                name="verycode"
+                name="emailVerificationCode"
                 rules={[
                   {
                     required: true,
@@ -100,8 +166,8 @@ const ForgotPassword: React.FC<{}> = () => {
                       style={{
                         width: "100%",
                       }}
-                      loading={veryCodeLoading > 0}
-                      onClick={sendEmailVeryCode}
+                      loading={SendEmailVerificationCodeLoading === true}
+                      onClick={sendEmailVerificationCode}
                       type="primary"
                       className="login-form-button"
                     >
@@ -142,7 +208,7 @@ const ForgotPassword: React.FC<{}> = () => {
                   style={{
                     width: "100%",
                   }}
-                  loading={loading > 0}
+                  loading={resetPasswordLoading === true}
                   type="primary"
                   htmlType="submit"
                   className="login-form-button"
@@ -170,13 +236,13 @@ const ForgotPassword: React.FC<{}> = () => {
           </div>
         )}
 
-        {status === 1 && (
+        {steps === 1 && (
           <Result
             status="success"
             title="Congratulations on your successful reset password!"
-            subTitle={"Username: " + username + " " + " Email: " + email}
+            subTitle={`Email: ${email}`}
             extra={[
-              <Button type="primary" key="login" href="/user/login">
+              <Button type="primary" key="login" href="/login">
                 Go Login
               </Button>,
             ]}

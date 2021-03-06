@@ -6,12 +6,18 @@ import React, { useEffect, useState } from "react";
 import api from "@/api";
 
 const Footer: React.FC<{}> = (props) => {
-  const [apiVersion, setApiVersion] = useState("NaN");
+  const [apiVersion, setApiVersion] = useState("Loading");
 
-  (async function getApiVersion() {
+  async function getApiVersion() {
     const { requestError, response } = await api.app.getVersion();
-    setApiVersion(response.version);
-  })();
+    if (response) {
+      setApiVersion(response.version);
+    }
+  }
+
+  useEffect(() => {
+    getApiVersion();
+  }, []);
 
   return (
     <footer className={style.footer}>

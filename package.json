@@ -1,6 +1,6 @@
 {
   "name": "hznuoj-v3-webapp",
-  "version": "0.0.29.6",
+  "version": "0.0.30",
   "description": "The WebApp of HZNUOJ V3",
   "repository": "https://github.com/HZNU-OJ/HZNUOJ-V3-WebApp",
   "author": "Dup4",
@@ -44,6 +44,7 @@
     "markdown-it-merge-cells": "^1.0.1",
     "mathjax-full": "^3.1.2",
     "monaco-editor-webpack-plugin": "^3.0.0",
+    "react-google-recaptcha-v3": "^1.8.0",
     "react-highlight-words": "^0.17.0",
     "react-monaco-editor": "^0.42.0",
     "twemoji": "^13.0.1",
