@@ -4,6 +4,8 @@ import customConfig from "@/../customConfig";
 
 // import _request from "@/utils/request";
 
+import { useAuthToken } from "@/utils/hooks";
+
 import { message } from "antd";
 
 const apiEndpoint = customConfig.apiEndpoint;
@@ -41,6 +43,9 @@ async function request<T>(
   body?: any,
   recaptchaToken?: string,
 ): Promise<ApiResponse<T>> {
+  const { getToken } = useAuthToken();
+  const token = getToken();
+
   let response: any;
   try {
     // STANDING OFF umijs request plugins
@@ -70,7 +75,7 @@ async function request<T>(
       data: body && JSON.stringify(body),
       headers: {
         "Content-Type": "application/json",
-        // Authorization: appState.token && `Bearer ${appState.token}`,
+        Authorization: token != "" && `Bearer ${token}`,
         ...(recaptchaToken ? { "X-Recaptcha-Token": recaptchaToken } : {}),
       },
       validateStatus: () => true,

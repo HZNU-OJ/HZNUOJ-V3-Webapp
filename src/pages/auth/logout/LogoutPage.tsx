@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { history } from "umi";
+import { history, useModel } from "umi";
 import { message } from "antd";
 import Loading from "@/components/Loading";
 
@@ -10,6 +10,8 @@ import { useAuthToken } from "@/utils/hooks";
 const LogoutPage: React.FC<{}> = (props) => {
   const { getToken, signOut } = useAuthToken();
 
+  const { refresh } = useModel("@@initialState");
+
   async function logout() {
     const token = getToken();
     if (!token || token == "") {
@@ -18,6 +20,7 @@ const LogoutPage: React.FC<{}> = (props) => {
     } else {
       const { requestError, response } = await api.auth.logout();
       signOut();
+      refresh();
       message.success("Logout successfully!");
       history.push("/");
     }
@@ -31,7 +34,6 @@ const LogoutPage: React.FC<{}> = (props) => {
     <div
       style={{
         height: "calc(100vh)",
-        backgroundColor: "#fff",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",

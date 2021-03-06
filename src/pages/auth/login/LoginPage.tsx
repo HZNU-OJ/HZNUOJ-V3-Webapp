@@ -41,11 +41,15 @@ const LoginPage: React.FC<{}> = () => {
 
   const [loading, setLoading] = useState(false);
 
-  if (getToken() != "") {
-    message.warning("Already Login!");
-    history.replace("/");
-    return null;
-  }
+  const { refresh } = useModel("@@initialState");
+
+  useEffect(() => {
+    if (getToken() != "") {
+      message.warning("Already Login!");
+      history.replace("/");
+      return null;
+    }
+  }, []);
 
   async function loginAction(formProps: LoginFormProps) {
     const { requestError, response } = await api.auth.login({
@@ -63,6 +67,7 @@ const LoginPage: React.FC<{}> = () => {
       }
     } else if (response.token && response.username) {
       signIn(response.token);
+      refresh();
       message.success(`Welcome back,${response.username}!`);
       history.replace("/");
     }

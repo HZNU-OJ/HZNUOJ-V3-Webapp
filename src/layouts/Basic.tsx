@@ -1,6 +1,11 @@
 import Footer from "@/components/Footer";
 import style from "./Basic.module.less";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+import { useModel } from "umi";
+
+import Loading from "@/components/Loading";
+
 interface topBarItem {
   id: string;
   name: string;
@@ -17,7 +22,29 @@ function topBarItemRender(current: string, itemList: topBarItem[]): string {
   return html;
 }
 
-function topBar(brand: string, current: string) {
+function userItemListRender(
+  itemList: topBarItem[][],
+  username: string,
+): string {
+  let html = "";
+  html += `<li class="am-dropdown" data-am-dropdown>`;
+  html += `
+  <a class='am-dropdown-toggle' data-am-dropdown-toggle href='javascript:;'>
+  <span class='am-icon-user'></span>&nbsp;Dup4&nbsp;<span class='am-icon-caret-down'></span>
+  </a>`;
+  html += `<ul class="am-dropdown-content">`;
+  for (let i = 0; i < itemList.length; ++i) {
+    itemList[i].forEach((item: topBarItem) => {
+      html += `<li><a href="${item.link}">${item.name}</a></li>`;
+    });
+    if (i < itemList.length - 1) html += `<li class="am-divider"></li>`;
+  }
+  html += `</ul>`;
+  html += `</li>`;
+  return html;
+}
+
+function topBar(brand: string, current: string, username?: string | null) {
   const leftItemList = [
     { id: "contests", name: "Contests", link: "/contests" },
     { id: "problemSet", name: "Problem Set", link: "/problemset" },
@@ -25,7 +52,35 @@ function topBar(brand: string, current: string) {
     { id: "users", name: "Users", link: "/users" },
     { id: "discussion", name: "Discussion", link: "/disscussion" },
   ];
-  const rightItemList = [{ id: "enter", name: "Enter", link: "/login" }];
+  const enterItemList = [{ id: "enter", name: "Enter", link: "/login" }];
+
+  const userItemList = [
+    [
+      {
+        id: "my_profile",
+        name: "My Profile",
+        link: "/",
+      },
+      {
+        id: "my_submissions",
+        name: "My Submissions",
+        link: "/",
+      },
+    ],
+    [
+      {
+        id: "edit_profile",
+        name: "Edit Profile",
+        link: "/",
+      },
+      {
+        id: "logout",
+        name: "Logout",
+        link: "/logout",
+      },
+    ],
+  ] as topBarItem[][];
+
   return {
     __html: `
     <header class="am-topbar-inverse am-topbar-fixed-toped" style="font-size: 16px; margin-top: 0px;">
@@ -44,7 +99,11 @@ function topBar(brand: string, current: string) {
         </ul>
         <div class="am-topbar-right" style="padding-right: 0px;">
           <ul class="am-nav am-nav-pills am-topbar-nav">
-          ${topBarItemRender(current, rightItemList)}
+          ${
+            username
+              ? userItemListRender(userItemList, username)
+              : topBarItemRender(current, enterItemList)
+          }
           </ul>
         </div>
       </div>
@@ -56,12 +115,17 @@ function topBar(brand: string, current: string) {
 
 interface HeaderProps {
   current: string;
+  username?: string | null;
 }
 
 const Header: React.FC<HeaderProps> = (props) => {
   return (
     <div
-      dangerouslySetInnerHTML={topBar("HZNU Online Judge", props.current)}
+      dangerouslySetInnerHTML={topBar(
+        "HZNU Online Judge",
+        props.current,
+        props.username,
+      )}
     ></div>
   );
 };
@@ -71,15 +135,40 @@ interface BasicLayoutProps {
 }
 
 const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
+  const { initialState, loading } = useModel("@@initialState");
+
+  useEffect(() => {
+    window.$(".am-dropdown").dropdown();
+  });
+
   return (
     <>
-      <Header current={props.current} />
-      <div className={style.root}>
-        <div className={style.secondRoot}>
-          <div className={style.main}>{props.children}</div>
-          <Footer />
+      {loading === true && (
+        <div
+          style={{
+            height: "calc(100vh)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Loading />
         </div>
-      </div>
+      )}
+      {loading === false && (
+        <>
+          <Header
+            current={props.current}
+            username={initialState?.userMeta?.username}
+          />
+          <div className={style.root}>
+            <div className={style.secondRoot}>
+              <div className={style.main}>{props.children}</div>
+              <Footer />
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 };
