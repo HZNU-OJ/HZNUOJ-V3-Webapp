@@ -68,7 +68,7 @@ const LoginPage: React.FC<{}> = () => {
     } else if (response.token && response.username) {
       signIn(response.token);
       refresh();
-      message.success(`Welcome back,${response.username}!`);
+      message.success(`Welcome back, ${response.username}!`);
       history.replace("/");
     }
   }
