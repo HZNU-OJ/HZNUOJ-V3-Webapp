@@ -1,6 +1,8 @@
 export function useAuthToken() {
   const getToken = function () {
-    return window.localStorage.hznuojAuthToken;
+    let token = window.localStorage.hznuojAuthToken;
+    if (!token) token = "";
+    return token;
   };
 
   const signIn = function (token: string) {
