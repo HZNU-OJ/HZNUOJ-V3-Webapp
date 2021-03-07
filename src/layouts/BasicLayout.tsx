@@ -105,7 +105,6 @@ function topBar(brand: string, current: string, username?: string | null) {
     `,
   };
 }
-
 interface HeaderProps {
   current: string;
   username?: string | null;

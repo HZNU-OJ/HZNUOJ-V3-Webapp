@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Checkbox, message, Row, Col } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { history, useModel, useLocation } from "umi";
-import { getPageQuery } from "@/utils/utils";
+import { history, useModel, useLocation, Helmet } from "umi";
 import BasicLayout from "@/layouts/BasicLayout";
+
+import { getCustomTitle } from "@/utils";
 
 import style from "../auth.module.less";
 
@@ -63,72 +64,81 @@ const LoginPage: React.FC<{}> = () => {
   };
 
   return (
-    <BasicLayout current="enter">
-      <div className={style.root}>
-        <div className={style.secondRoot}>
-          <span className={style.title}>Login to your account</span>
+    <>
+      <Helmet>
+        <title>{getCustomTitle("Login")}</title>
+      </Helmet>
+      <BasicLayout current="enter">
+        <div className={style.root}>
+          <div className={style.secondRoot}>
+            <span className={style.title}>Login to your account</span>
 
-          <Form name="normal_login" className={style.form} onFinish={onFinish}>
-            <Form.Item
-              name="usernameOrEmail"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your Username/E-mail!",
-                },
-              ]}
+            <Form
+              name="normal_login"
+              className={style.form}
+              onFinish={onFinish}
             >
-              <Input
-                prefix={<UserOutlined className="site-form-item-icon" />}
-                placeholder="Username/E-mail"
-              />
-            </Form.Item>
-            <Form.Item
-              name="password"
-              rules={[
-                { required: true, message: "Please input your Password!" },
-              ]}
-            >
-              <Input
-                prefix={<LockOutlined className="site-form-item-icon" />}
-                type="password"
-                placeholder="Password"
-              />
-            </Form.Item>
-
-            <Form.Item>
-              <Button
-                style={{
-                  width: "100%",
-                }}
-                loading={loading === true}
-                type="primary"
-                htmlType="submit"
-                className="login-form-button"
+              <Form.Item
+                name="usernameOrEmail"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Username/E-mail!",
+                  },
+                ]}
               >
-                Login
-              </Button>
-
-              <div
-                style={{
-                  marginTop: 10,
-                }}
+                <Input
+                  prefix={<UserOutlined className="site-form-item-icon" />}
+                  placeholder="Username/E-mail"
+                />
+              </Form.Item>
+              <Form.Item
+                name="password"
+                rules={[
+                  { required: true, message: "Please input your Password!" },
+                ]}
               >
-                <Row gutter={[16, 0]}>
-                  <Col style={{ textAlign: "left" }} span={8}>
-                    <a href="/register">Register</a>
-                  </Col>
-                  <Col style={{ textAlign: "center" }} span={0}></Col>
-                  <Col style={{ textAlign: "right" }} span={16}>
-                    <a href="/forgot-password">Forgot password?</a>
-                  </Col>
-                </Row>
-              </div>
-            </Form.Item>
-          </Form>
+                <Input
+                  prefix={<LockOutlined className="site-form-item-icon" />}
+                  type="password"
+                  placeholder="Password"
+                />
+              </Form.Item>
+
+              <Form.Item>
+                <Button
+                  style={{
+                    width: "100%",
+                  }}
+                  loading={loading === true}
+                  type="primary"
+                  htmlType="submit"
+                  className="login-form-button"
+                >
+                  Login
+                </Button>
+
+                <div
+                  style={{
+                    marginTop: 10,
+                  }}
+                >
+                  <Row gutter={[16, 0]}>
+                    <Col style={{ textAlign: "left" }} span={8}>
+                      <a href="/register">Register</a>
+                    </Col>
+                    <Col style={{ textAlign: "center" }} span={0}></Col>
+                    <Col style={{ textAlign: "right" }} span={16}>
+                      <a href="/forgot-password">Forgot password?</a>
+                    </Col>
+                  </Row>
+                </div>
+              </Form.Item>
+            </Form>
+          </div>
         </div>
-      </div>
-    </BasicLayout>
+      </BasicLayout>
+    </>
   );
 };
 

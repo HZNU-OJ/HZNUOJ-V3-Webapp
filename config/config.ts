@@ -60,6 +60,7 @@ export default defineConfig({
     type: "none",
   },
   metas: customConfig.metas,
+  // use helmet to set title
   title: false,
   analytics: customConfig.analytics,
   hash: true,
@@ -68,4 +69,7 @@ export default defineConfig({
   publicPath: customConfig.publicPath,
   routes: routes,
   proxy: proxy,
+  define: {
+    HTML_TITLE: customConfig.title,
+  },
 });
