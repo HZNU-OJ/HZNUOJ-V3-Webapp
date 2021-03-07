@@ -14,12 +14,12 @@ const HomePage: React.FC<{}> = (props) => {
     <BasicLayout current={""}>
       <div className={style.root}>
         <Row gutter={16} align="top">
-          <Col xs={24} sm={24} md={24} lg={17} xl={17}>
+          <Col xs={24} sm={24} md={24} lg={17} xl={18}>
             <Announcement />
             <SubmissionStatics />
           </Col>
 
-          <Col xs={24} sm={24} md={24} lg={7} xl={7}>
+          <Col xs={24} sm={24} md={24} lg={7} xl={6}>
             <PayAttention />
             <TopUsers />
           </Col>

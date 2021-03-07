@@ -40,7 +40,7 @@ function userItemListRender(itemList: menuItem[][], username: string): string {
 function topBar(brand: string, current: string, username?: string | null) {
   const leftItemList = [
     { id: "contests", name: "Contests", link: "/contests" },
-    { id: "problemSet", name: "Problem Set", link: "/problemset" },
+    { id: "problem_set", name: "Problem Set", link: "/problemset" },
     { id: "submissions", name: "Submissions", link: "/submissions" },
     { id: "users", name: "Users", link: "/users" },
     { id: "discussion", name: "Discussion", link: "/disscussion" },
@@ -124,6 +124,7 @@ const Header: React.FC<HeaderProps> = (props) => {
 
 interface BasicLayoutProps {
   current: string;
+  maxWidth?: string;
 }
 
 const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
@@ -153,7 +154,12 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
             current={props.current}
             username={initialState?.userMeta?.username}
           />
-          <div className={style.root}>
+          <div
+            className={style.root}
+            style={{
+              maxWidth: props.maxWidth ? props.maxWidth : "",
+            }}
+          >
             <div className={style.secondRoot}>
               <div className={style.main}>{props.children}</div>
               <Footer />

@@ -1,0 +1,73 @@
+.root {
+  padding-top: 50px;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.divider {
+  box-sizing: inherit;
+  width: 100vw;
+  height: 0;
+  margin: 0px 0px 37.5px calc(50% - 50vw) !important;
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-color: #3e90cc !important;
+  border-top: 1px solid rgba(34, 36, 38, 0.15);
+  border-bottom: none !important;
+  user-select: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.problemTitle {
+  box-sizing: inherit;
+  padding-bottom: 10px;
+  font-weight: 700;
+  font-size: 2em;
+  font-family: "Lato", "Noto Sans CJK SC", "Source Han Sans SC", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft Yahei", "WenQuanYi Micro Hei",
+    "Droid Sans Fallback", sans-serif;
+  line-height: 1.28571429em;
+  text-transform: none;
+}
+
+.tag {
+  display: inline-block;
+  box-sizing: inherit;
+  margin: 2px !important;
+  padding: 0.5833em 0.833em;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85714286rem;
+  font-family: "Lato", "Noto Sans CJK SC", "Source Han Sans SC", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft Yahei", "WenQuanYi Micro Hei",
+    "Droid Sans Fallback", sans-serif;
+  line-height: 1;
+  text-transform: none;
+  vertical-align: baseline;
+  background-image: none;
+  border: 0 solid transparent;
+  border-radius: 0.28571429rem;
+  transition: background 0.1s ease;
+
+  &.time {
+    background-color: #e03997;
+    border-color: #e03997;
+  }
+
+  &.memory {
+    background-color: #2185d0;
+    border-color: #2185d0;
+  }
+}
+
+.problemHeader {
+  padding-bottom: 25px;
+
+  .left {
+    padding-bottom: 20px;
+  }
+}

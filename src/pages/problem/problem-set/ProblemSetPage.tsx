@@ -90,7 +90,7 @@ const ProblemSetPage: React.FC<{}> = (props) => {
   ];
 
   return (
-    <BasicLayout current={"problemSet"}>
+    <BasicLayout current={"problem_set"}>
       <div className={style.root}>
         {loaded === false && (
           <div className={style.loading}>
