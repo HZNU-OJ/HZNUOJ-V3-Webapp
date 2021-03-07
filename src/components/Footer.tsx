@@ -1,6 +1,6 @@
 import style from "./Footer.module.less";
 import packages from "@/../package.json";
-import GithubIcon from "@/icons/Github";
+import { GithubIcon } from "@/icons";
 import React, { useEffect, useState } from "react";
 
 import api from "@/api";

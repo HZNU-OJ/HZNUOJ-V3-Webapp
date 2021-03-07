@@ -1,4 +1,4 @@
-export default () => {
+export const GithubIcon = () => {
   return (
     <svg
       stroke="currentColor"
