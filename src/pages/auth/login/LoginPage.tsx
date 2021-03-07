@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Checkbox, message, Row, Col } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { Link, history, useModel } from "umi";
+import { history, useModel, useLocation } from "umi";
 import { getPageQuery } from "@/utils/utils";
-import BasicLayout from "@/layouts/Basic";
+import BasicLayout from "@/layouts/BasicLayout";
 
 import style from "../auth.module.less";
 
@@ -12,25 +12,6 @@ import { useAuthToken } from "@/utils/hooks";
 import { isEmail } from "class-validator";
 import api from "@/api";
 
-const replaceGoto = () => {
-  const urlParams = new URL(window.location.href);
-  const params = getPageQuery();
-  let { redirect } = params as { redirect: string };
-  if (redirect) {
-    const redirectUrlParams = new URL(redirect);
-    if (redirectUrlParams.origin === urlParams.origin) {
-      redirect = redirect.substr(urlParams.origin.length);
-      if (redirect.match(/^\/.*#/)) {
-        redirect = redirect.substr(redirect.indexOf("#") + 1);
-      }
-    } else {
-      window.location.href = "/user/settings";
-      return;
-    }
-  }
-  history.replace(redirect || "/user/settings");
-};
-
 interface LoginFormProps {
   usernameOrEmail: string;
   password: string;
@@ -38,6 +19,7 @@ interface LoginFormProps {
 
 const LoginPage: React.FC<{}> = () => {
   const { getToken, signIn } = useAuthToken();
+  const location = useLocation();
 
   const [loading, setLoading] = useState(false);
 
@@ -59,7 +41,7 @@ const LoginPage: React.FC<{}> = () => {
       password: formProps.password,
     });
 
-    if (response.error) {
+    if (response?.error) {
       if (response.error === "WRONG_PASSWORD") {
         message.error("Password Error!");
       } else {
@@ -69,7 +51,8 @@ const LoginPage: React.FC<{}> = () => {
       signIn(response.token);
       refresh();
       message.success(`Welcome back, ${response.username}!`);
-      history.replace("/");
+      const redirectPath = location?.query?.redirect || "/";
+      history.replace(redirectPath);
     }
   }
 

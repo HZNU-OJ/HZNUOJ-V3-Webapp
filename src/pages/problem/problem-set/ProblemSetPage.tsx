@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Table, Tooltip } from "antd";
 import { ColumnsType } from "antd/es/table";
 import Loading from "@/components/Loading";
-import BasicLayout from "@/layouts/Basic";
+import BasicLayout from "@/layouts/BasicLayout";
 
 import style from "./ProblemSetPage.module.less";
 import AntTableHeadStyles from "@/less/AntTableHead.module.less";

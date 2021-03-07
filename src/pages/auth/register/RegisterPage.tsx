@@ -6,7 +6,7 @@ import {
   MailOutlined,
   SafetyOutlined,
 } from "@ant-design/icons";
-import BasicLayout from "@/layouts/Basic";
+import BasicLayout from "@/layouts/BasicLayout";
 import style from "../auth.module.less";
 
 import {

@@ -20,6 +20,21 @@ export default [
     exact: true,
   },
   {
+    path: "/settings",
+    exact: true,
+    redirect: "/settings/profile",
+  },
+  {
+    path: "/settings/profile",
+    exact: true,
+    component: "@/pages/settings/ProfilePage",
+  },
+  {
+    path: "/settings/security",
+    exact: true,
+    component: "@/pages/settings/SecurityPage",
+  },
+  {
     path: "/logout",
     component: "@/pages/auth/logout/LogoutPage",
     exact: true,

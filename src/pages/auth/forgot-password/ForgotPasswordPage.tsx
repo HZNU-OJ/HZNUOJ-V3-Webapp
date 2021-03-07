@@ -3,7 +3,7 @@ import { Form, Input, Button, Checkbox, message, Row, Col, Result } from "antd";
 import { SafetyOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Link, history, useModel } from "umi";
 import style from "../auth.module.less";
-import BasicLayout from "@/layouts/Basic";
+import BasicLayout from "@/layouts/BasicLayout";
 
 import { useRecaptcha } from "@/utils/hooks";
 

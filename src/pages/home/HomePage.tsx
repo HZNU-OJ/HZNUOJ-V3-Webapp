@@ -1,5 +1,5 @@
 import style from "./HomePage.module.less";
-import BasicLayout from "@/layouts/Basic";
+import BasicLayout from "@/layouts/BasicLayout";
 import React from "react";
 import { Row, Col } from "antd";
 import {
@@ -8,7 +8,6 @@ import {
   Announcement,
   PayAttention,
 } from "./components";
-import { useScreenWidthWithin } from "@/utils/hooks";
 
 const HomePage: React.FC<{}> = (props) => {
   return (

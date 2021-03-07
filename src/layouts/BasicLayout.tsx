@@ -1,20 +1,16 @@
-import Footer from "@/components/Footer";
-import style from "./Basic.module.less";
+import { useModel } from "umi";
 import React, { useEffect, useState } from "react";
 
-import { useModel } from "umi";
-
+import Footer from "@/components/Footer";
 import Loading from "@/components/Loading";
 
-interface topBarItem {
-  id: string;
-  name: string;
-  link: string;
-}
+import style from "./BasicLayout.module.less";
 
-function topBarItemRender(current: string, itemList: topBarItem[]): string {
+import { menuItem } from "@/interface/menu.interface";
+
+function topBarItemRender(current: string, itemList: menuItem[]): string {
   let html = "";
-  itemList.forEach((item: topBarItem) => {
+  itemList.forEach((item: menuItem) => {
     html += `<li class="${current === item.id ? "am-active" : ""}"><a href="${
       item.link
     }">${item.name}</a></li>`;
@@ -22,10 +18,7 @@ function topBarItemRender(current: string, itemList: topBarItem[]): string {
   return html;
 }
 
-function userItemListRender(
-  itemList: topBarItem[][],
-  username: string,
-): string {
+function userItemListRender(itemList: menuItem[][], username: string): string {
   let html = "";
   html += `<li class="am-dropdown" data-am-dropdown>`;
   html += `
@@ -34,7 +27,7 @@ function userItemListRender(
   </a>`;
   html += `<ul class="am-dropdown-content">`;
   for (let i = 0; i < itemList.length; ++i) {
-    itemList[i].forEach((item: topBarItem) => {
+    itemList[i].forEach((item: menuItem) => {
       html += `<li><a href="${item.link}">${item.name}</a></li>`;
     });
     if (i < itemList.length - 1) html += `<li class="am-divider"></li>`;
@@ -69,9 +62,9 @@ function topBar(brand: string, current: string, username?: string | null) {
     ],
     [
       {
-        id: "edit_profile",
-        name: "Edit Profile",
-        link: "/",
+        id: "settings",
+        name: "Settings",
+        link: "/settings",
       },
       {
         id: "logout",
@@ -79,7 +72,7 @@ function topBar(brand: string, current: string, username?: string | null) {
         link: "/logout",
       },
     ],
-  ] as topBarItem[][];
+  ] as menuItem[][];
 
   return {
     __html: `
