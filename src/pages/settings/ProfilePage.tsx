@@ -16,6 +16,8 @@ import {
   message,
 } from "antd";
 
+import { UserOutlined, MailOutlined } from "@ant-design/icons";
+
 import SettingsLayout from "@/layouts/SettingsLayout";
 
 import style from "./ProfilePage.module.less";
@@ -67,7 +69,6 @@ function getAvatar(avatarType: avatarType, keys: any): ApiTypes.UserAvatarDto {
     type: avatarType,
     key: avatarType === "gravatar" ? md5(keys["gravatar"]) : keys[avatarType],
   };
-
   return avatar;
 }
 
@@ -90,7 +91,7 @@ const ProfilePage: React.FC<{}> = (props) => {
   const [github, setGithub] = useState(null);
   const [avatarType, setAvatarType] = useState(null);
 
-  const isMobile = useScreenWidthWithin(0, 576);
+  const isMobile = useScreenWidthWithin(0, 768);
 
   useEffect(() => {
     getProfile();
@@ -187,7 +188,10 @@ const ProfilePage: React.FC<{}> = (props) => {
                   label="Username"
                   tooltip="Username is unique and required."
                 >
-                  <Input disabled placeholder="" />
+                  <Input
+                    prefix={<UserOutlined className="site-form-item-icon" />}
+                    disabled
+                  />
                 </Form.Item>
 
                 <div className={style["form-item-footer"]}>
@@ -201,7 +205,10 @@ const ProfilePage: React.FC<{}> = (props) => {
                   label="Email"
                   tooltip={{ title: "Email is unique and required." }}
                 >
-                  <Input disabled placeholder="" />
+                  <Input
+                    prefix={<MailOutlined className="site-form-item-icon" />}
+                    disabled
+                  />
                 </Form.Item>
 
                 <div className={style["form-item-footer"]}>

@@ -25,7 +25,7 @@ import { useRecaptcha } from "@/utils/hooks";
 interface RegisterFormProps {
   email: string;
   password: string;
-  rptpassword: string;
+  rtpPassword: string;
   username: string;
   emailVerificationCode: string;
 }
@@ -52,7 +52,7 @@ const Register: React.FC<{}> = () => {
       return;
     }
 
-    if (formProps.password !== formProps.rptpassword) {
+    if (formProps.password !== formProps.rtpPassword) {
       message.error("The two passwords entered are inconsistent!");
       return;
     }
@@ -195,7 +195,7 @@ const Register: React.FC<{}> = () => {
                 </Form.Item>
 
                 <Form.Item
-                  name="rptpassword"
+                  name="rtpPassword"
                   rules={[
                     {
                       required: true,

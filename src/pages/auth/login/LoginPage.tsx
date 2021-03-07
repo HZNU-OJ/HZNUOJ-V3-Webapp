@@ -52,7 +52,7 @@ const LoginPage: React.FC<{}> = () => {
       signIn(response.token);
       refresh();
       message.success(`Welcome back, ${response.username}!`);
-      const redirectPath = location?.query?.redirect || "/";
+      const redirectPath = location?.query?.redirect ?? "/";
       history.replace(redirectPath);
     }
   }
