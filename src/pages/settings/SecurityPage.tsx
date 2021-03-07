@@ -255,14 +255,14 @@ const ChangeEmailComponent: React.FC<{}> = (props) => {
             },
           ]}
         >
-          <Row gutter={[16, 0]}>
-            <Col span={18}>
+          <Row gutter={16} align="top">
+            <Col xs={16} sm={18} md={18} lg={20} xl={20}>
               <Input
                 prefix={<SafetyOutlined className="site-form-item-icon" />}
               />
             </Col>
 
-            <Col span={6}>
+            <Col xs={8} sm={6} md={6} lg={4} xl={4}>
               <Button
                 style={{
                   width: "100%",
