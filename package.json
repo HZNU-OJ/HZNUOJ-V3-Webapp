@@ -1,6 +1,6 @@
 {
   "name": "hznuoj-v3-webapp",
-  "version": "0.0.36",
+  "version": "0.0.36.0",
   "description": "The WebApp of HZNUOJ V3",
   "repository": "https://github.com/HZNU-OJ/HZNUOJ-V3-WebApp",
   "author": "Dup4",
@@ -56,6 +56,7 @@
   },
   "devDependencies": {
     "@types/blueimp-md5": "^2.7.0",
+    "@types/markdown-it": "^12.0.1",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
     "@types/uuid": "^8.3.0",

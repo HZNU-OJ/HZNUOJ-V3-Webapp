@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation } from "umi";
-import { Row, Col, Statistic } from "antd";
+import { Row, Col, Affix } from "antd";
 
 import BasicLayout from "@/layouts/BasicLayout";
 
@@ -88,11 +88,13 @@ const ProblemViewPage: React.FC<{}> = (props) => {
               lg={{ span: 5, order: 2 }}
               xl={{ span: 5, order: 2 }}
             >
-              <SiderMenu
-                current={tab}
-                menuItemList={SiderMenuItemList}
-                direction={"right"}
-              />
+              <Affix offsetTop={10}>
+                <SiderMenu
+                  current={tab}
+                  menuItemList={SiderMenuItemList}
+                  direction={"right"}
+                />
+              </Affix>
             </Col>
           </Row>
         </div>
