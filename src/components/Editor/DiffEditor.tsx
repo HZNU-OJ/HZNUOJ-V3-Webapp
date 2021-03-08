@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
-import MonacoEditor from "react-monaco-editor";
-import style from "./CodeEditor.less";
+import { MonacoDiffEditor } from "react-monaco-editor";
+import style from "./DiffEditor.less";
 
-interface CodeEditorProps {
+interface DiffEditorProps {
   height?: string;
   language?: string;
   value?: string;
+  original: string;
   theme?: string;
   options?: any;
 }
 
-const CodeEditor: React.FC<CodeEditorProps> = (props) => {
-  let editor: any = null;
+const DiffEditor: React.FC<DiffEditorProps> = (props) => {
+  const editor: any = null;
   const defaultOptions: any = {
     selectOnLineNumbers: true,
     roundedSelection: false,
@@ -37,11 +38,14 @@ const CodeEditor: React.FC<CodeEditorProps> = (props) => {
     hideCursorInOverviewRuler: true,
     contextmenu: false,
     enableSplitViewResizing: false,
+    originalEditable: true,
+    renderSideBySide: true,
   };
 
   const [height, setHeight] = useState("860");
   const [language, setLanguage] = useState("cpp");
   const [value, setValue] = useState("");
+  const [original, setOriginal] = useState("");
   const [theme, setTheme] = useState("vs-light");
   const [options, setOptions] = useState(defaultOptions);
 
@@ -49,6 +53,7 @@ const CodeEditor: React.FC<CodeEditorProps> = (props) => {
     if (props.hasOwnProperty(height)) setHeight(props.height);
     if (props.hasOwnProperty(language)) setLanguage(props.language);
     if (props.hasOwnProperty(value)) setValue(props.value);
+    if (props.hasOwnProperty(original)) setOriginal(props.original);
     if (props.hasOwnProperty(theme)) setTheme(props.theme);
     if (props.hasOwnProperty(options))
       setOptions({ ...defaultOptions, ...props.options });
@@ -56,8 +61,8 @@ const CodeEditor: React.FC<CodeEditorProps> = (props) => {
 
   async function onChange(newValue: string) {}
 
-  async function editorDidMount(_editor: any) {
-    editor = _editor;
+  async function editorDidMount(editor: any) {
+    this.editor = editor;
   }
 
   async function changeEditorValue() {}
@@ -65,19 +70,20 @@ const CodeEditor: React.FC<CodeEditorProps> = (props) => {
   async function changeBySetState() {}
 
   return (
-    <div className={style["code-editor"]}>
-      <MonacoEditor
+    <div className={style["diff-editor"]}>
+      <MonacoDiffEditor
         width={"100%"}
         height={height}
         language={language}
         value={value}
-        options={options}
+        original={original}
+        theme={theme}
         onChange={onChange}
         editorDidMount={editorDidMount}
-        theme={theme}
+        options={options}
       />
     </div>
   );
 };
 
-export { CodeEditor };
+export { DiffEditor };
