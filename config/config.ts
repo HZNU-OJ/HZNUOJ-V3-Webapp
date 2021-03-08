@@ -1,10 +1,12 @@
 import { defineConfig } from "umi";
+
 import customConfig from "../customConfig";
-import MonacoWebpackPlugin from "monaco-editor-webpack-plugin";
 
 import routes from "./routes";
 import proxy from "./proxy";
+
 import { EditorLanguage } from "monaco-editor-webpack-plugin/out/languages";
+import MonacoWebpackPlugin from "monaco-editor-webpack-plugin";
 
 export default defineConfig({
   dynamicImport: {
