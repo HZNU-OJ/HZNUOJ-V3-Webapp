@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import MonacoEditor from "react-monaco-editor";
 import style from "./CodeEditor.less";
 
-interface CodeEditorProps {
+export interface CodeEditorProps {
   height?: string;
   language?: string;
   value?: string;

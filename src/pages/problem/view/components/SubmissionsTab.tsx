@@ -29,7 +29,7 @@ const CodeEditor: React.FC<CodeEditorProps> = dynamic({
   },
 });
 
-const SubmitTab: React.FC<{}> = (props) => {
+const SubmissionsTab: React.FC<{}> = (props) => {
   const [loading, setLoading] = useState(true);
 
   return (
@@ -47,4 +47,4 @@ const SubmitTab: React.FC<{}> = (props) => {
   );
 };
 
-export { SubmitTab };
+export { SubmissionsTab };

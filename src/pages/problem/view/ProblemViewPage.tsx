@@ -9,7 +9,12 @@ import style from "./ProblemViewPage.module.less";
 import SiderMenu from "@/components/SiderMenu";
 import Divider from "@/components/Divider";
 
-import { ProblemViewHeader, StatementTab, SubmitTab } from "./components";
+import {
+  ProblemViewHeader,
+  StatementTab,
+  SubmitTab,
+  SubmissionsTab,
+} from "./components";
 
 import { menuItem } from "@/interface/Menu.interface";
 interface ProblemViewPageParams {
@@ -71,6 +76,7 @@ const ProblemViewPage: React.FC<{}> = (props) => {
                 <>
                   {tab === "statement" && <StatementTab />}
                   {tab === "submit" && <SubmitTab />}
+                  {tab === "submissions" && <SubmissionsTab />}
                 </>
               )}
             </Col>

@@ -1,6 +1,6 @@
 {
   "name": "hznuoj-v3-webapp",
-  "version": "0.0.35.4",
+  "version": "0.0.36",
   "description": "The WebApp of HZNUOJ V3",
   "repository": "https://github.com/HZNU-OJ/HZNUOJ-V3-WebApp",
   "author": "Dup4",
@@ -58,6 +58,7 @@
     "@types/blueimp-md5": "^2.7.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
+    "@types/uuid": "^8.3.0",
     "@umijs/preset-ui": "^2.2.9",
     "@umijs/test": "^3.3.7",
     "cross-env": "^7.0.3",
