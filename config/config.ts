@@ -4,6 +4,7 @@ import MonacoWebpackPlugin from "monaco-editor-webpack-plugin";
 
 import routes from "./routes";
 import proxy from "./proxy";
+import { EditorLanguage } from "monaco-editor-webpack-plugin/out/languages";
 
 export default defineConfig({
   dynamicImport: {
@@ -45,7 +46,7 @@ export default defineConfig({
     config.plugin("monaco-editor-webpack-plugin").use(MonacoWebpackPlugin, [
       // 按需配置
       {
-        languages: customConfig.monacoEditorSupportedLanguages,
+        languages: customConfig.monacoEditorSupportedLanguages as EditorLanguage[],
         publicPath: customConfig.publicPath,
       },
     ]);
