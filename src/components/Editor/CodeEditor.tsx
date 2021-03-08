@@ -46,11 +46,11 @@ const CodeEditor: React.FC<CodeEditorProps> = (props) => {
   const [options, setOptions] = useState(defaultOptions);
 
   useEffect(() => {
-    if (props.hasOwnProperty(height)) setHeight(props.height);
-    if (props.hasOwnProperty(language)) setLanguage(props.language);
-    if (props.hasOwnProperty(value)) setValue(props.value);
-    if (props.hasOwnProperty(theme)) setTheme(props.theme);
-    if (props.hasOwnProperty(options))
+    if (props.hasOwnProperty("height")) setHeight(props.height);
+    if (props.hasOwnProperty("language")) setLanguage(props.language);
+    if (props.hasOwnProperty("value")) setValue(props.value);
+    if (props.hasOwnProperty("theme")) setTheme(props.theme);
+    if (props.hasOwnProperty("options"))
       setOptions({ ...defaultOptions, ...props.options });
   }, [props]);
 

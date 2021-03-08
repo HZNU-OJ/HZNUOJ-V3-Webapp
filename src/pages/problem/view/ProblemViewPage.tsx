@@ -9,7 +9,7 @@ import style from "./ProblemViewPage.module.less";
 import SiderMenu from "@/components/SiderMenu";
 import Divider from "@/components/Divider";
 
-import { ProblemViewHeader, StatementTab } from "./components";
+import { ProblemViewHeader, StatementTab, SubmitTab } from "./components";
 
 import { menuItem } from "@/interface/Menu.interface";
 interface ProblemViewPageParams {
@@ -20,6 +20,7 @@ const ProblemViewPage: React.FC<{}> = (props) => {
   const params: ProblemViewPageParams = useParams();
   const location = useLocation();
   const [tab, setTab] = useState("statement");
+  const [loading, setLoading] = useState(true);
 
   const pathname = location.pathname;
 
@@ -49,6 +50,7 @@ const ProblemViewPage: React.FC<{}> = (props) => {
   useEffect(() => {
     const _tab = location?.query?.tab ?? "statement";
     setTab(_tab);
+    setLoading(false);
   });
 
   return (
@@ -65,7 +67,12 @@ const ProblemViewPage: React.FC<{}> = (props) => {
               lg={{ span: 19, order: 1 }}
               xl={{ span: 19, order: 1 }}
             >
-              {tab === "statement" && <StatementTab />}
+              {loading === false && (
+                <>
+                  {tab === "statement" && <StatementTab />}
+                  {tab === "submit" && <SubmitTab />}
+                </>
+              )}
             </Col>
 
             <Col
