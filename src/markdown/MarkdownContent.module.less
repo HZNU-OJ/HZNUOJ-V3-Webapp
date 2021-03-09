@@ -1,6 +1,31 @@
+@border-color: rgba(34, 36, 38, 0.15);
+
+.codeBox {
+  position: relative;
+  box-sizing: inherit;
+  margin: 1rem 0;
+  padding: 0 !important;
+  overflow: hidden;
+  color: inherit !important;
+  font-family: inherit;
+  line-height: 1.4285em;
+  // font-size: 1rem;
+  // font-size: 14px;
+  background: inherit !important;
+  border: 1px solid rgba(34, 36, 38, 0.15);
+  border-color: @border-color!important;
+  border-right-color: @border-color!important;
+  border-bottom-color: @border-color!important;
+  border-left-color: @border-color!important;
+  border-radius: 0.28571429rem;
+  box-shadow: 0 1px 2px 0 var(--theme-shadow);
+  -webkit-text-size-adjust: 100%;
+}
+
 .markdownContent {
   position: relative;
   overflow: hidden;
+  font-size: 15px;
   transform: translate3d(0, 0, 0);
 
   // Fix box-shadow get cut

@@ -1,16 +1,18 @@
 import React, { useEffect, useMemo, useState } from "react";
 import MarkdownIt from "markdown-it";
-import twemoji from "twemoji";
 
 import style from "./MarkdownContent.module.less";
 
 import { renderMarkdown } from "./markdown";
 import { renderMath } from "./mathjax";
 import { sanitize } from "./sanitize";
+import { highlight } from "@/utils/CodeHighlighter";
+import { codeBoxStyle } from "@/components/CodeBox";
+
 // import { useNavigationChecked } from "@/utils/hooks";
-// import { highlight } from "@/utils/CodeHighlighter";
+
+// import twemoji from "twemoji";
 // import { getTwemojiOptions } from "@/components/EmojiRenderer";
-// import { codeBoxStyle } from "@/components/CodeBox";
 
 export interface MarkdownContentPatcher {
   onPatchRenderer?: (renderer: MarkdownIt) => void;
@@ -35,21 +37,23 @@ export interface MarkdownContentProps {
 // Patch rendered-markdown's styles for semantic-ui
 function patchStyles(wrapper: HTMLDivElement) {
   // Wrap <pre> tags with segments
-  //   Array.from(wrapper.getElementsByTagName("pre")).forEach(element => {
-  // Wrap
-  // const segment = document.createElement("div");
-  // segment.className = "ui existing segment " + codeBoxStyle.segment;
-  // element.parentNode.replaceChild(segment, element);
-  // segment.appendChild(element);
-  // Add default styles for <pre>
-  // element.classList.add(codeBoxStyle.pre);
-  //   });
+  Array.from(wrapper.getElementsByTagName("pre")).forEach((element) => {
+    // Wrap
+    const segment = document.createElement("div");
+    segment.className = [codeBoxStyle.segment, style.codeBox].join(" ");
+    element.parentNode.replaceChild(segment, element);
+    segment.appendChild(element);
+
+    // Add default styles for <pre>
+    element.classList.add(codeBoxStyle.pre);
+  });
+
   // Add default class names for <table>
-  //   Array.from(wrapper.getElementsByTagName("table")).forEach(element => {
-  //     if (!element.classList.contains("ui")) {
-  //       element.classList.add("ui", "structured", "celled", "table");
-  //     }
-  //   });
+  Array.from(wrapper.getElementsByTagName("table")).forEach((element) => {
+    // if (!element.classList.contains("ui")) {
+    //   element.classList.add("ui", "structured", "celled", "table");
+    // }
+  });
 }
 
 function parseUrlIfSameOrigin(href: string) {
@@ -81,8 +85,9 @@ const MarkdownContent: React.FC<MarkdownContentProps> = (props) => {
     // Render highlights
     highlightPlaceholders.forEach((item) => {
       const element = findPlaceholderElement(wrapper, item.id);
-      element.outerHTML = "";
-      //   element.outerHTML = highlight(item.code, item.language);
+      //   console.log(highlight(item.code, item.language));
+      // console.log(item.language);
+      element.outerHTML = highlight(item.code, item.language);
     });
 
     // Render maths

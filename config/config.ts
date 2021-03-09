@@ -54,6 +54,21 @@ export default defineConfig({
     ]);
     return config;
   },
+  extraBabelPlugins: [
+    [
+      "prismjs",
+      {
+        languages: Object.keys(
+          require("prismjs/components.js").languages,
+        ).filter((name) => name !== "meta"),
+        // "languages": ["javascript", "css", "markup"],
+        plugins: ["line-numbers"],
+        // "theme": "twilight",
+        // "theme": "tomorrow",
+        // "css": true
+      },
+    ],
+  ],
   devServer: {
     port: 8000,
     host: "0.0.0.0",

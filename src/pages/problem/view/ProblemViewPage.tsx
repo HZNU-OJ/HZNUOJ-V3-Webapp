@@ -9,6 +9,8 @@ import style from "./ProblemViewPage.module.less";
 import SiderMenu from "@/components/SiderMenu";
 import Divider from "@/components/Divider";
 
+import { useScreenWidthWithin } from "@/utils/hooks";
+
 import {
   ProblemViewHeader,
   StatementTab,
@@ -26,6 +28,8 @@ const ProblemViewPage: React.FC<{}> = (props) => {
   const location = useLocation();
   const [tab, setTab] = useState("statement");
   const [loading, setLoading] = useState(true);
+
+  const isMobile = useScreenWidthWithin(0, 992);
 
   const pathname = location.pathname;
 
@@ -88,13 +92,23 @@ const ProblemViewPage: React.FC<{}> = (props) => {
               lg={{ span: 5, order: 2 }}
               xl={{ span: 5, order: 2 }}
             >
-              <Affix offsetTop={10}>
+              {isMobile && (
                 <SiderMenu
                   current={tab}
                   menuItemList={SiderMenuItemList}
                   direction={"right"}
                 />
-              </Affix>
+              )}
+
+              {!isMobile && (
+                <Affix offsetTop={10}>
+                  <SiderMenu
+                    current={tab}
+                    menuItemList={SiderMenuItemList}
+                    direction={"right"}
+                  />
+                </Affix>
+              )}
             </Col>
           </Row>
         </div>
