@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import MarkdownContent from "@/markdown/MarkdownContent";
+import LazyMarkdownContent from "@/markdown/LazyMarkdownContent";
 import { useParams } from "umi";
 
 import styles from "./DiscussionViewPage.module.less";
@@ -32,7 +32,7 @@ const DiscussionViewPage: React.FC<{}> = (props) => {
       {loaded === true && (
         <div className={styles.root}>
           <div className={styles.secondRoot}>
-            <MarkdownContent content={markdownContent} />
+            <LazyMarkdownContent content={markdownContent} />
           </div>
         </div>
       )}

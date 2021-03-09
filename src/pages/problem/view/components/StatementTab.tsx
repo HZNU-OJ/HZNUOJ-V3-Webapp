@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import MarkdownContent from "@/markdown/MarkdownContent";
+import LazyMarkdownContent from "@/markdown/LazyMarkdownContent";
 
 import { Skeleton } from "antd";
 
@@ -53,7 +53,7 @@ const StatementTab: React.FC<{}> = (props) => {
     <>
       <Skeleton title={true} loading={loading} active>
         <AmazeUIDetails title="Description">
-          <MarkdownContent content={content} />
+          <LazyMarkdownContent content={content} />
         </AmazeUIDetails>
 
         <AmazeUIDetails title="Input"></AmazeUIDetails>

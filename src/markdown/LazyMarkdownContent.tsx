@@ -16,7 +16,11 @@ export interface LazyMarkdownContentProps extends MarkdownContentProps {
 
 const LazyMarkdownContent: React.FC<LazyMarkdownContentProps> = (props) => {
   const loading = (
-    <Skeleton active paragraph={{ rows: props.placeholderLines || 4 }} />
+    <Skeleton
+      active
+      title={true}
+      paragraph={{ rows: props.placeholderLines || 4 }}
+    />
   );
   return (
     <Suspense fallback={loading}>
