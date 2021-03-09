@@ -35,28 +35,39 @@ const AmazeUIDetails: React.FC<AmazeUIDetailsProps> = (props) => {
 };
 
 const StatementTab: React.FC<{}> = (props) => {
-  const [content, setContent] = useState("");
+  const [contentA, setContentA] = useState("");
+  const [contentB, setContentB] = useState("");
   const [loading, setLoading] = useState(true);
-  const [hide, setHide] = useState(false);
 
-  async function getContent() {
-    const { requestError, response } = await api.app.getMd();
-    setContent(response.content);
+  async function getContentA() {
+    const { requestError, response } = await api.app.getMd({ id: "a" });
+
+    setContentA(response.content);
+    setLoading(false);
+  }
+
+  async function getContentB() {
+    const { requestError, response } = await api.app.getMd({ id: "b" });
+
+    setContentB(response.content);
     setLoading(false);
   }
 
   useEffect(() => {
-    getContent();
+    getContentA();
+    getContentB();
   }, []);
 
   return (
     <>
       <Skeleton title={true} loading={loading} active>
         <AmazeUIDetails title="Description">
-          <LazyMarkdownContent content={content} />
+          <LazyMarkdownContent content={contentA} noSanitize={true} />
         </AmazeUIDetails>
 
-        <AmazeUIDetails title="Input"></AmazeUIDetails>
+        <AmazeUIDetails title="Input">
+          <LazyMarkdownContent content={contentB} noSanitize={true} />
+        </AmazeUIDetails>
 
         <AmazeUIDetails title="Output"></AmazeUIDetails>
 

@@ -5,6 +5,8 @@ import MarkdownItMath from "markdown-it-math-loose";
 import MarkdownItMergeCells from "markdown-it-merge-cells/src";
 import MarkdownItMentions from "markdown-it-mentions";
 import MarkdownItTaskLists from "@hackmd/markdown-it-task-lists";
+import MarkdownItAnchor from "markdown-it-anchor";
+import MarkdownItTocDoneRight from "markdown-it-toc-done-right";
 
 export interface MarkdownHighlightPlaceholder {
   id: string;
@@ -72,9 +74,9 @@ export function renderMarkdown(
   // Initialize renderer
   const renderer = new MarkdownIt({
     html: true,
-    breaks: false,
     linkify: true,
-    typographer: false,
+    typographer: true,
+    breaks: false,
     highlight: addHighlightPlaceholder,
   });
 
@@ -86,13 +88,20 @@ export function renderMarkdown(
     inlineRenderer: (code: string) => addMathPlaceholder(code, false),
     blockRenderer: (code: string) => addMathPlaceholder(code, true),
   });
-  renderer.use(MarkdownItMergeCells);
+
+  // renderer.use(MarkdownItMergeCells);
   renderer.use(MarkdownItMentions, {
     parseURL: (username: string) => `/u/${username}`,
   });
-  renderer.use(MarkdownItTaskLists, {
-    enabled: true,
-  });
+
+  // renderer.use(MarkdownItTaskLists, {
+  //   enabled: true,
+  // });
+
+  // renderer.use(MarkdownItAnchor, { permalink: true, permalinkBefore: true });
+  // renderer.use(MarkdownItTocDoneRight, {
+  //   level: [1, 2]
+  // });
 
   if (onPatchRenderer) onPatchRenderer(renderer);
 

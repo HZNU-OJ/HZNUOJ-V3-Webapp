@@ -13,6 +13,8 @@ import "mathjax-full/js/input/tex/html/HtmlConfiguration.js";
 import "mathjax-full/js/input/tex/noundefined/NoUndefinedConfiguration.js";
 import "mathjax-full/js/input/tex/physics/PhysicsConfiguration.js";
 
+import { mathJaxStyle } from "./MarkdownContent";
+
 mathjax.handlers.register(SafeHandler(new HTMLHandler(browserAdaptor())));
 
 const mathDocument = mathjax.document(document, {
@@ -32,17 +34,20 @@ export function renderMath(math: string, display: boolean) {
     const element = mathDocument.convert(math, {
       display,
     });
-    element.classList.add(display ? "block" : "inline");
+    // element.classList.remove("MathJax");
+    element.classList.replace("MathJax", mathJaxStyle.MathJax);
+    element.classList.add(display ? mathJaxStyle.block : mathJaxStyle.inline);
     return element;
   } catch (e) {
     console.log(e);
 
     const wrapper = document.createElement("mjx-container");
-    wrapper.className = "MathJax error";
+    wrapper.className = mathJaxStyle.MathJax;
     wrapper.setAttribute("jax", "SVG");
     if (display) {
       wrapper.setAttribute("display", "true");
     }
+    wrapper.classList.add(display ? mathJaxStyle.block : mathJaxStyle.inline);
 
     const message = document.createElement("span");
     message.innerText = `Failed to render math, ${String(e)}`;

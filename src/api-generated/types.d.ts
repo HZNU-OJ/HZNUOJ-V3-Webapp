@@ -266,6 +266,9 @@ declare namespace ApiTypes {
     permissions?: ApiTypes.DiscussionPermissionsDto;
     haveManagePermissionsPermission?: boolean;
   }
+  export interface GetIdDto {
+    id: string;
+  }
   export interface GetMdDto {
     content: string;
   }
@@ -327,13 +330,11 @@ declare namespace ApiTypes {
     userPrivileges?: (
       | "EditHomepage"
       | "ManageUser"
-      | "ManageUserGroup"
       | "ManageProblem"
       | "ManageContest"
       | "ManageDiscussion"
       | "SkipRecaptcha"
     )[];
-    userPreference?: ApiTypes.UserPreferenceDto;
     serverPreference: ApiTypes.PreferenceConfig;
   }
   export interface GetSubmissionDetailRequestDto {
@@ -386,20 +387,11 @@ declare namespace ApiTypes {
     privileges?: (
       | "EditHomepage"
       | "ManageUser"
-      | "ManageUserGroup"
       | "ManageProblem"
       | "ManageContest"
       | "ManageDiscussion"
       | "SkipRecaptcha"
     )[];
-  }
-  export interface GetUserPreferenceRequestDto {
-    userId?: number;
-    username?: string;
-  }
-  export interface GetUserPreferenceResponseDto {
-    error?: "NO_SUCH_USER" | "PERMISSION_DENIED";
-    meta?: ApiTypes.UserMetaDto;
   }
   export interface GetUserProfileRequestDto {
     userId?: number;
@@ -469,11 +461,15 @@ declare namespace ApiTypes {
   }
   namespace Parameters {
     export type Email = string;
+    export type Id = string;
     export type Jsonp = string;
     export type Query = string;
     export type Token = string;
     export type Username = string;
     export type Wildcard = "Start" | "End" | "Both";
+  }
+  export interface PathParameters {
+    id: ApiTypes.Parameters.Id;
   }
   export interface PreferenceConfig {
     siteName: string;
@@ -930,7 +926,6 @@ declare namespace ApiTypes {
     privileges: (
       | "EditHomepage"
       | "ManageUser"
-      | "ManageUserGroup"
       | "ManageProblem"
       | "ManageContest"
       | "ManageDiscussion"
@@ -1088,13 +1083,6 @@ declare namespace ApiTypes {
   export interface UpdateUserPasswordResponseDto {
     error?: "PERMISSION_DENIED" | "NO_SUCH_USER" | "WRONG_OLD_PASSWORD";
   }
-  export interface UpdateUserPreferenceRequestDto {
-    userId: number;
-    preference: ApiTypes.UserPreferenceDto;
-  }
-  export interface UpdateUserPreferenceResponseDto {
-    error?: "NO_SUCH_USER" | "PERMISSION_DENIED";
-  }
   export interface UpdateUserProfileRequestDto {
     userId: number;
     username?: string;
@@ -1146,34 +1134,6 @@ declare namespace ApiTypes {
     submissionCount: number;
     rating: number;
     registrationTime: string; // date-time
-  }
-  export interface UserPreferenceCodeDto {
-    defaultLanguage?: string;
-    defaultCompileAndRunOptions?: {};
-  }
-  export interface UserPreferenceCodeFormatterDto {
-    disableByDefault?: boolean;
-    options?: string;
-  }
-  export interface UserPreferenceDto {
-    locale?: ApiTypes.UserPreferenceLocaleDto;
-    theme?: string;
-    font?: ApiTypes.UserPreferenceFontDto;
-    codeFormatter?: ApiTypes.UserPreferenceCodeFormatterDto;
-    code?: ApiTypes.UserPreferenceCodeDto;
-  }
-  export interface UserPreferenceFontDto {
-    contentFontFace?: string;
-    codeFontFace?: string;
-    codeFontSize?: number;
-    codeLineHeight?: number;
-    codeFontLigatures?: boolean;
-    markdownEditorFont?: string;
-  }
-  export interface UserPreferenceLocaleDto {
-    system?: "en_US";
-    content?: "en_US";
-    hideUnavailableMessage?: boolean;
   }
   export interface UserSessionDto {
     sessionId: number;

@@ -14,6 +14,12 @@ import { codeBoxStyle } from "@/components/CodeBox";
 // import twemoji from "twemoji";
 // import { getTwemojiOptions } from "@/components/EmojiRenderer";
 
+export const mathJaxStyle = {
+  MathJax: style.MathJax,
+  inline: style.inline,
+  block: style.block,
+};
+
 export interface MarkdownContentPatcher {
   onPatchRenderer?: (renderer: MarkdownIt) => void;
   onPatchResult?: (element: HTMLDivElement) => (() => void) | void;
@@ -50,9 +56,9 @@ function patchStyles(wrapper: HTMLDivElement) {
 
   // Add default class names for <table>
   Array.from(wrapper.getElementsByTagName("table")).forEach((element) => {
-    // if (!element.classList.contains("ui")) {
-    //   element.classList.add("ui", "structured", "celled", "table");
-    // }
+    if (!element.classList.contains(style["gfm-table"])) {
+      element.classList.add(style["gfm-table"]);
+    }
   });
 }
 
@@ -85,8 +91,6 @@ const MarkdownContent: React.FC<MarkdownContentProps> = (props) => {
     // Render highlights
     highlightPlaceholders.forEach((item) => {
       const element = findPlaceholderElement(wrapper, item.id);
-      //   console.log(highlight(item.code, item.language));
-      // console.log(item.language);
       element.outerHTML = highlight(item.code, item.language);
     });
 
@@ -106,38 +110,38 @@ const MarkdownContent: React.FC<MarkdownContentProps> = (props) => {
     Array.from(wrapper.getElementsByTagName("a")).forEach((a) => {
       a.relList.add("noreferrer", "noreferrer");
       if (!parseUrlIfSameOrigin(a.href)) a.target = "_blank";
+      else a.target = "_parent";
     });
 
-    Array.from(wrapper.getElementsByClassName("task-list-item")).forEach(
-      (li) => {
-        if (li.tagName !== "LI") return;
+    // Array.from(wrapper.getElementsByClassName("task-list-item")).forEach(
+    //   (li) => {
+    //     if (li.tagName !== "LI") return;
 
-        const input = li.firstElementChild as HTMLInputElement;
-        if (
-          !input ||
-          input.tagName !== "INPUT" ||
-          input.type.toLowerCase() !== "checkbox" ||
-          input.className !== "task-list-item-checkbox"
-        )
-          return;
+    //     const input = li.firstElementChild as HTMLInputElement;
+    //     if (
+    //       !input ||
+    //       input.tagName !== "INPUT" ||
+    //       input.type.toLowerCase() !== "checkbox" ||
+    //       input.className !== "task-list-item-checkbox"
+    //     )
+    //       return;
 
-        const checked = input.checked;
+    //     const checked = input.checked;
 
-        const semanticCheckbox = document.createElement("div");
-        semanticCheckbox.className =
-          "ui checkbox " + style.taskListCheckbox + (checked ? " checked" : "");
-        input.className = "hidden";
-        semanticCheckbox.appendChild(input);
+    //     const semanticCheckbox = document.createElement("div");
+    //     semanticCheckbox.className = style.taskListCheckbox + (checked ? " checked" : "");
+    //     input.className = "hidden";
+    //     semanticCheckbox.appendChild(input);
 
-        const div = document.createElement("div");
-        if (div.append) div.append(...li.childNodes);
-        else while (li.firstChild) div.appendChild(li.firstChild);
-        semanticCheckbox.appendChild(document.createElement("label"));
-        semanticCheckbox.appendChild(div);
+    //     const div = document.createElement("div");
+    //     if (div.append) div.append(...li.childNodes);
+    //     else while (li.firstChild) div.appendChild(li.firstChild);
+    //     semanticCheckbox.appendChild(document.createElement("label"));
+    //     semanticCheckbox.appendChild(div);
 
-        li.appendChild(semanticCheckbox);
-      },
-    );
+    //     li.appendChild(semanticCheckbox);
+    //   },
+    // );
 
     patchStyles(wrapper);
 

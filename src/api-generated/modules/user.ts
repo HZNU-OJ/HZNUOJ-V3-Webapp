@@ -32,14 +32,6 @@ export const getUserProfile = createPostApi<
   ApiTypes.GetUserProfileRequestDto,
   ApiTypes.GetUserProfileResponseDto
 >("user/getUserProfile", false);
-export const getUserPreference = createPostApi<
-  ApiTypes.GetUserPreferenceRequestDto,
-  ApiTypes.GetUserPreferenceResponseDto
->("user/getUserPreference", false);
-export const updateUserPreference = createPostApi<
-  ApiTypes.UpdateUserPreferenceRequestDto,
-  ApiTypes.UpdateUserPreferenceResponseDto
->("user/updateUserPreference", false);
 export const getUserSecuritySettings = createPostApi<
   ApiTypes.GetUserSecuritySettingsRequestDto,
   ApiTypes.GetUserSecuritySettingsResponseDto
