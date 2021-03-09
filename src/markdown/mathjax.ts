@@ -29,16 +29,20 @@ mathDocument.updateDocument();
 
 export function renderMath(math: string, display: boolean) {
   try {
-    return mathDocument.convert(math, {
+    const element = mathDocument.convert(math, {
       display,
     });
+    element.classList.add(display ? "block" : "inline");
+    return element;
   } catch (e) {
     console.log(e);
 
     const wrapper = document.createElement("mjx-container");
-    wrapper.className = "MathJax";
+    wrapper.className = "MathJax error";
     wrapper.setAttribute("jax", "SVG");
-    if (display) wrapper.setAttribute("display", "true");
+    if (display) {
+      wrapper.setAttribute("display", "true");
+    }
 
     const message = document.createElement("span");
     message.innerText = `Failed to render math, ${String(e)}`;

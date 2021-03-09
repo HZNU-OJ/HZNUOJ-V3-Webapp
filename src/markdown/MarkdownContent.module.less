@@ -28,6 +28,15 @@
   font-size: 15px;
   transform: translate3d(0, 0, 0);
 
+  :global {
+    .inline {
+      font-size: 16px !important;
+    }
+    .block {
+      font-size: 18px !important;
+    }
+  }
+
   // Fix box-shadow get cut
   &:not(.noOverflowCutFix) {
     margin: -2px;
