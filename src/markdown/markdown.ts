@@ -5,7 +5,8 @@ import MarkdownItMath from "markdown-it-math-loose";
 import MarkdownItMergeCells from "markdown-it-merge-cells/src";
 import MarkdownItMentions from "markdown-it-mentions";
 import MarkdownItTaskLists from "@hackmd/markdown-it-task-lists";
-import MarkdownItTocAndAnchor from "markdown-it-toc-and-anchor";
+
+// import MarkdownItTocAndAnchor from "markdown-it-toc-and-anchor"
 
 export interface MarkdownHighlightPlaceholder {
   id: string;
@@ -92,6 +93,13 @@ export function renderMarkdown(
   renderer.use(MarkdownItMentions, {
     parseURL: (username: string) => `/u/${username}`,
   });
+
+  // renderer.use(MarkdownItTaskLists, {
+  //   enabled: true,
+  // });
+
+  // renderer.use(MarkdownItTocAndAnchor, {
+  // });
 
   if (onPatchRenderer) onPatchRenderer(renderer);
 
