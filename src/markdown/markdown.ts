@@ -3,6 +3,7 @@ import { v4 as uuid } from "uuid";
 
 import MarkdownItMath from "markdown-it-math-loose";
 import MarkdownItMentions from "markdown-it-mentions";
+import MarkdownItContainer from "markdown-it-container";
 
 // import MarkdownItMergeCells from "markdown-it-merge-cells/src";
 // import MarkdownItTaskLists from "@hackmd/markdown-it-task-lists";
@@ -93,6 +94,28 @@ export function renderMarkdown(
   // renderer.use(MarkdownItMergeCells);
   renderer.use(MarkdownItMentions, {
     parseURL: (username: string) => `/user/profile/${username}`,
+  });
+
+  renderer.use(MarkdownItContainer, "spoiler", {
+    validate: function (params: any) {
+      return params.trim().match(/^spoiler\s+(.*)$/);
+    },
+
+    render: function (tokens: any, idx: number) {
+      const m = tokens[idx].info.trim().match(/^spoiler\s+(.*)$/);
+
+      if (tokens[idx].nesting === 1) {
+        // opening tag
+        return (
+          "<details><summary>" +
+          renderer.utils.escapeHtml(m[1]) +
+          "</summary>\n"
+        );
+      } else {
+        // closing tag
+        return "</details>\n";
+      }
+    },
   });
 
   // renderer.use(MarkdownItTaskLists, {
