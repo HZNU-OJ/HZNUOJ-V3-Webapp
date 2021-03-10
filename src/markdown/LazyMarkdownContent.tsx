@@ -12,6 +12,7 @@ const MarkdownContent = lazy(load);
 
 export interface LazyMarkdownContentProps extends MarkdownContentProps {
   placeholderLines?: number;
+  loading?: boolean;
 }
 
 const LazyMarkdownContent: React.FC<LazyMarkdownContentProps> = (props) => {
@@ -24,7 +25,8 @@ const LazyMarkdownContent: React.FC<LazyMarkdownContentProps> = (props) => {
   );
   return (
     <Suspense fallback={loading}>
-      <MarkdownContent {...props} />
+      {props.loading === true && loading}
+      {props.loading !== true && <MarkdownContent {...props} />}
     </Suspense>
   );
 };

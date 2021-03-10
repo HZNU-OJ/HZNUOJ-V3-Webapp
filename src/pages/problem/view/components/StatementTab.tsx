@@ -37,36 +37,48 @@ const AmazeUIDetails: React.FC<AmazeUIDetailsProps> = (props) => {
 const StatementTab: React.FC<{}> = (props) => {
   const [contentA, setContentA] = useState("");
   const [contentB, setContentB] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loadingA, setLoadingA] = useState(true);
+  const [loadingB, setLoadingB] = useState(true);
 
   async function getContentA() {
     const { requestError, response } = await api.app.getMd({ id: "a" });
 
     setContentA(response.content);
-    setLoading(false);
+    setLoadingA(false);
   }
 
   async function getContentB() {
     const { requestError, response } = await api.app.getMd({ id: "b" });
 
     setContentB(response.content);
-    setLoading(false);
+    setLoadingB(false);
   }
 
   useEffect(() => {
     getContentA();
-    getContentB();
   }, []);
+
+  setTimeout(() => {
+    getContentB();
+  }, 2000);
 
   return (
     <>
-      <Skeleton title={true} loading={loading} active>
+      <Skeleton title={true} loading={false} active>
         <AmazeUIDetails title="Description">
-          <LazyMarkdownContent content={contentA} noSanitize={true} />
+          <LazyMarkdownContent
+            content={contentA}
+            noSanitize={true}
+            loading={loadingA}
+          />
         </AmazeUIDetails>
 
         <AmazeUIDetails title="Input">
-          <LazyMarkdownContent content={contentB} noSanitize={true} />
+          <LazyMarkdownContent
+            content={contentB}
+            noSanitize={true}
+            loading={loadingB}
+          />
         </AmazeUIDetails>
 
         <AmazeUIDetails title="Output"></AmazeUIDetails>
