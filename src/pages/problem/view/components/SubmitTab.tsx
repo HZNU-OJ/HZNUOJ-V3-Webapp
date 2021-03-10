@@ -1,33 +1,9 @@
 import React, { useState } from "react";
-import { CodeEditorProps } from "@/components/Editor";
 import { Spin } from "antd";
 import style from "./SubmitTab.module.less";
-import { dynamic } from "umi";
-import Loading from "@/components/Loading";
-import LoadingStyle from "@/less/Loading.module.less";
+import LazyCodeEditor from "@/components/Editor/LazyCodeEditor";
 
 const height = 520;
-
-const CodeEditorLoading = () => {
-  return (
-    <div
-      className={LoadingStyle.center}
-      style={{
-        height: height,
-      }}
-    >
-      <Loading />
-    </div>
-  );
-};
-
-const CodeEditor: React.FC<CodeEditorProps> = dynamic({
-  loading: CodeEditorLoading,
-  loader: async function () {
-    const { CodeEditor } = await import("@/components/Editor");
-    return CodeEditor;
-  },
-});
 
 const SubmitTab: React.FC<{}> = (props) => {
   const [loading, setLoading] = useState(true);
@@ -41,7 +17,11 @@ const SubmitTab: React.FC<{}> = (props) => {
       )}
 
       {loading === true && (
-        <CodeEditor height={height.toString()} value={""} language={"cpp"} />
+        <LazyCodeEditor
+          placeholderHeight={height}
+          value={""}
+          language={"cpp"}
+        />
       )}
     </div>
   );
