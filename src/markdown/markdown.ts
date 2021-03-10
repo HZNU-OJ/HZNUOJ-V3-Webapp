@@ -91,7 +91,7 @@ export function renderMarkdown(
 
   // renderer.use(MarkdownItMergeCells);
   renderer.use(MarkdownItMentions, {
-    parseURL: (username: string) => `/u/${username}`,
+    parseURL: (username: string) => `/user/profile/${username}`,
   });
 
   // renderer.use(MarkdownItTaskLists, {
