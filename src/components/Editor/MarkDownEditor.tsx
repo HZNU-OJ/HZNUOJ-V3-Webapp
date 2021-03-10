@@ -22,6 +22,7 @@ const MarkDownEditor: React.FC<MarkDownEditorProps> = (props) => {
       type={"primary"}
       style={{
         width: isMobile ? "100%" : 120,
+        marginBottom: isMobile ? "" : "5px",
       }}
     >
       Submit
