@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import MonacoEditor from "react-monaco-editor";
-// import style from "./CodeEditor.less";
 
 export interface CodeEditorProps {
   height?: string;

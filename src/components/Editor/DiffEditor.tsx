@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { MonacoDiffEditor } from "react-monaco-editor";
-import style from "./DiffEditor.less";
+import style from "./Editor.common.module.less";
 
 export interface DiffEditorProps {
   height?: string;

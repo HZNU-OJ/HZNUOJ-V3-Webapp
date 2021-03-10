@@ -1,6 +1,6 @@
 import React from "react";
 import CodeEditor from "./CodeEditor";
-import style from "./CodeBoxEditor.module.less";
+import style from "./Editor.common.module.less";
 
 import { Button, Select, Row, Col } from "antd";
 
@@ -22,18 +22,29 @@ const CodeBoxEditor: React.FC<CodeBoxEditorProps> = (props) => {
     minimap: { enabled: false },
   };
 
-  const isMobile = useScreenWidthWithin(0, 376);
+  const isMobile = useScreenWidthWithin(0, 577);
+
+  const submitButton = (
+    <Button
+      type={"primary"}
+      style={{
+        width: isMobile ? "100%" : 120,
+      }}
+    >
+      Submit
+    </Button>
+  );
 
   return (
     <>
       <div className={style.root}>
         <div className={`am-panel am-panel-primary ${style.panel}`}>
-          <div className={style["panel-footer"]}>
+          <div className={style["panel-header"]}>
             <Row gutter={16} align="top">
               <Col
                 xs={{ span: 24 }}
-                sm={{ span: 24 }}
-                md={{ span: 12 }}
+                sm={{ span: 16 }}
+                md={{ span: 16 }}
                 lg={{ span: 20 }}
                 xl={{ span: 20 }}
               >
@@ -56,34 +67,34 @@ const CodeBoxEditor: React.FC<CodeBoxEditorProps> = (props) => {
                 </div>
               </Col>
 
-              <Col
-                xs={{ span: 24 }}
-                sm={{ span: 24 }}
-                md={{ span: 12 }}
-                lg={{ span: 4 }}
-                xl={{ span: 4 }}
-              >
-                <div
-                  style={{
-                    textAlign: isMobile ? "center" : "right",
-                    paddingTop: isMobile ? "10px" : "",
-                  }}
+              {isMobile === false && (
+                <Col
+                  xs={{ span: 24 }}
+                  sm={{ span: 8 }}
+                  md={{ span: 8 }}
+                  lg={{ span: 4 }}
+                  xl={{ span: 4 }}
                 >
-                  <Button
-                    type={"primary"}
+                  <div
                     style={{
-                      width: isMobile ? "100%" : 120,
+                      textAlign: isMobile ? "center" : "right",
+                      paddingTop: isMobile ? "10px" : "",
                     }}
                   >
-                    Submit
-                  </Button>
-                </div>
-              </Col>
+                    {submitButton}
+                  </div>
+                </Col>
+              )}
             </Row>
           </div>
+
           <div className="am-panel-bd">
             <CodeEditor options={isMobile ? editorOptions : {}} {...props} />
           </div>
+
+          {isMobile === true && (
+            <div className={style["panel-footer"]}>{submitButton}</div>
+          )}
         </div>
       </div>
     </>

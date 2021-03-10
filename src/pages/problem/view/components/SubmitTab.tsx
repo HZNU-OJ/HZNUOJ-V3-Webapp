@@ -7,7 +7,7 @@ import { useScreenWidthWithin } from "@/utils/hooks";
 const SubmitTab: React.FC<{}> = (props) => {
   const [loading, setLoading] = useState(true);
 
-  const isMobile = useScreenWidthWithin(0, 376);
+  const isMobile = useScreenWidthWithin(0, 577);
 
   return (
     <div className={style.root}>

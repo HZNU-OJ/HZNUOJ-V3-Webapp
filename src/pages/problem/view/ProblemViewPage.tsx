@@ -57,6 +57,7 @@ const ProblemViewPage: React.FC<{}> = (props) => {
   ];
 
   useEffect(() => {
+    setLoading(true);
     const _tab = location?.query?.tab ?? "statement";
     setTab(_tab);
     setLoading(false);

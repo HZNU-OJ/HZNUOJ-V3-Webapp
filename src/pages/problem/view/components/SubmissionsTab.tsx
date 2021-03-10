@@ -1,36 +1,13 @@
 import React, { useState } from "react";
-import { CodeEditorProps } from "@/components/Editor";
 import { Spin } from "antd";
 import style from "./SubmitTab.module.less";
-import { dynamic } from "umi";
-import Loading from "@/components/Loading";
-import LoadingStyle from "@/less/Loading.module.less";
-
-const height = 520;
-
-const CodeEditorLoading = () => {
-  return (
-    <div
-      className={LoadingStyle.center}
-      style={{
-        height: height,
-      }}
-    >
-      <Loading />
-    </div>
-  );
-};
-
-const CodeEditor: React.FC<CodeEditorProps> = dynamic({
-  loading: CodeEditorLoading,
-  loader: async function () {
-    const { CodeEditor } = await import("@/components/Editor");
-    return CodeEditor;
-  },
-});
+import LazyMarkDownEditor from "@/components/Editor/LazyMarkDownEditor";
+import { useScreenWidthWithin } from "@/utils/hooks";
 
 const SubmissionsTab: React.FC<{}> = (props) => {
   const [loading, setLoading] = useState(true);
+
+  const isMobile = useScreenWidthWithin(0, 577);
 
   return (
     <div className={style.root}>
@@ -41,7 +18,11 @@ const SubmissionsTab: React.FC<{}> = (props) => {
       )}
 
       {loading === true && (
-        <CodeEditor height={height.toString()} value={""} language={"cpp"} />
+        <LazyMarkDownEditor
+          height={isMobile ? "220" : "500"}
+          value={""}
+          language={"cpp"}
+        />
       )}
     </div>
   );
