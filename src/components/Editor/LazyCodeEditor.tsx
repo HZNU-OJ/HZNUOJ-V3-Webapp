@@ -13,7 +13,7 @@ export interface LazyCodeEditorProps extends CodeEditorProps {
   loading?: boolean;
 }
 
-const _LazyCodeEditor: React.FC<LazyCodeEditorProps> = (props) => {
+const LazyCodeEditor: React.FC<LazyCodeEditorProps> = (props) => {
   const loading = (
     <div
       className={LoadingStyle.center}
@@ -31,7 +31,7 @@ const _LazyCodeEditor: React.FC<LazyCodeEditorProps> = (props) => {
   );
 };
 
-export default Object.assign(_LazyCodeEditor, {
+export default Object.assign(LazyCodeEditor, {
   load,
 });
 

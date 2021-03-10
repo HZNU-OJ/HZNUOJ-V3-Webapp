@@ -12,7 +12,7 @@ const SubmitTab: React.FC<{}> = (props) => {
     <div className={style.root}>
       {loading === false && (
         <div className={style.loading}>
-          <Spin tip="代码加载中..."></Spin>
+          <Spin tip="loading..."></Spin>
         </div>
       )}
 

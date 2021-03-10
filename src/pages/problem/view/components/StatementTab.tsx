@@ -54,13 +54,16 @@ const StatementTab: React.FC<{}> = (props) => {
     setLoadingB(false);
   }
 
+  // getContentA();
+
   useEffect(() => {
     getContentA();
+    getContentB();
   }, []);
 
-  setTimeout(() => {
-    getContentB();
-  }, 2000);
+  // setTimeout(() => {
+  //   getContentB();
+  // }, 2000);
 
   return (
     <>

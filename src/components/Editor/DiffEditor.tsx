@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { MonacoDiffEditor } from "react-monaco-editor";
 import style from "./DiffEditor.less";
 
-interface DiffEditorProps {
+export interface DiffEditorProps {
   height?: string;
   language?: string;
   value?: string;
@@ -87,3 +87,4 @@ const DiffEditor: React.FC<DiffEditorProps> = (props) => {
 };
 
 export { DiffEditor };
+export default DiffEditor;
