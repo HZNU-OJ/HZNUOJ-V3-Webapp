@@ -26,7 +26,7 @@ interface ProblemViewPageParams {
 const ProblemViewPage: React.FC<{}> = (props) => {
   const params: ProblemViewPageParams = useParams();
   const location = useLocation();
-  const [tab, setTab] = useState("statement");
+  const [tab, setTab] = useState(location?.query?.tab ?? "statement");
   const [loading, setLoading] = useState(true);
 
   const isMobile = useScreenWidthWithin(0, 992);

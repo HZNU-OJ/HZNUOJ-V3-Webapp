@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MonacoEditor from "react-monaco-editor";
-import style from "./CodeEditor.less";
+// import style from "./CodeEditor.less";
 
 export interface CodeEditorProps {
   height?: string;
@@ -24,8 +24,10 @@ const CodeEditor: React.FC<CodeEditorProps> = (props) => {
     fontSize: 12,
     fontFamily:
       "'Fira Mono', 'Bitstream Vera Sans Mono', 'Menlo', 'Consolas', 'Lucida Console', 'Source Han Sans SC', 'Noto Sans CJK SC', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft Yahei', monospace",
-    lineNumbersMinChars: 4,
-    glyphMargin: false,
+    lineNumbers: "on", // 行号是否显示   on | off
+    lineNumbersMinChars: 0,
+    folding: true, // 代码折叠
+    glyphMargin: false, // 断点
     renderFinalNewline: true,
     scrollbar: {
       useShadows: false,
@@ -37,6 +39,7 @@ const CodeEditor: React.FC<CodeEditorProps> = (props) => {
     hideCursorInOverviewRuler: true,
     contextmenu: false,
     enableSplitViewResizing: false,
+    minimap: { enabled: true }, // 右侧索引小地图
   };
 
   const [height, setHeight] = useState("860");
@@ -65,18 +68,18 @@ const CodeEditor: React.FC<CodeEditorProps> = (props) => {
   async function changeBySetState() {}
 
   return (
-    <div className={style["code-editor"]}>
-      <MonacoEditor
-        width={"100%"}
-        height={height}
-        language={language}
-        value={value}
-        options={options}
-        onChange={onChange}
-        editorDidMount={editorDidMount}
-        theme={theme}
-      />
-    </div>
+    // <div className={style["code-editor"]}>
+    <MonacoEditor
+      width={"100%"}
+      height={height}
+      language={language}
+      value={value}
+      options={options}
+      onChange={onChange}
+      editorDidMount={editorDidMount}
+      theme={theme}
+    />
+    // </div>
   );
 };
 

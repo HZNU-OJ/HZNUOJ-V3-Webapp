@@ -9,7 +9,6 @@ const load = () => import("./CodeEditor");
 const CodeEditor = lazy(load);
 
 export interface LazyCodeEditorProps extends CodeEditorProps {
-  placeholderHeight?: number;
   loading?: boolean;
 }
 
@@ -18,7 +17,7 @@ const LazyCodeEditor: React.FC<LazyCodeEditorProps> = (props) => {
     <div
       className={LoadingStyle.center}
       style={{
-        height: props.placeholderHeight ?? 480,
+        height: parseInt(props.height) ?? 480,
       }}
     >
       <Loading />

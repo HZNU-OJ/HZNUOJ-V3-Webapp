@@ -25,7 +25,7 @@ const DiffEditor: React.FC<DiffEditorProps> = (props) => {
     fontSize: 12,
     fontFamily:
       "'Fira Mono', 'Bitstream Vera Sans Mono', 'Menlo', 'Consolas', 'Lucida Console', 'Source Han Sans SC', 'Noto Sans CJK SC', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft Yahei', monospace",
-    lineNumbersMinChars: 4,
+    lineNumbersMinChars: 0,
     glyphMargin: false,
     renderFinalNewline: true,
     scrollbar: {

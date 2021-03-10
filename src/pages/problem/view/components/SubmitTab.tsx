@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Spin } from "antd";
 import style from "./SubmitTab.module.less";
-import LazyCodeEditor from "@/components/Editor/LazyCodeEditor";
-
-const height = 520;
+import LazyCodeBoxEditor from "@/components/Editor/LazyCodeBoxEditor";
+import { useScreenWidthWithin } from "@/utils/hooks";
 
 const SubmitTab: React.FC<{}> = (props) => {
   const [loading, setLoading] = useState(true);
+
+  const isMobile = useScreenWidthWithin(0, 376);
 
   return (
     <div className={style.root}>
@@ -17,8 +18,8 @@ const SubmitTab: React.FC<{}> = (props) => {
       )}
 
       {loading === true && (
-        <LazyCodeEditor
-          placeholderHeight={height}
+        <LazyCodeBoxEditor
+          height={isMobile ? "220" : "500"}
           value={""}
           language={"cpp"}
         />
