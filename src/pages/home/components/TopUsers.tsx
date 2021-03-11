@@ -12,7 +12,7 @@ function getTopUsersData() {
     const name = rating >= 2400 ? "Hsueh-" : "Dup4";
     html.push(
       <tr key={["top", "users", index].join("-")}>
-        <td style={{ textAlign: "left" }}>{index + 1}</td>
+        <td style={{ textAlign: "left" }}>{index}</td>
         <td style={{ textAlign: "center" }}>
           {getHandleLink(name, getRatingName(rating))}
         </td>
