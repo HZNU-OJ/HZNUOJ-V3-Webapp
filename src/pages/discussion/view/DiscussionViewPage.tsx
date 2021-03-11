@@ -23,8 +23,6 @@ const DiscussionViewPage: React.FC<{}> = (props) => {
     setLoaded(true);
   }, []);
 
-  console.log(params.id);
-
   return (
     <>
       {loaded == false && <></>}

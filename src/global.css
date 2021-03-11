@@ -1,7 +1,8 @@
 .ant-btn-primary {
+  --btn-color: #3d74aa;
   color: #fff !important;
-  background-color: #3d74aa !important;
-  border-color: #3d74aa !important;
+  background-color: var(--btn-color) !important;
+  border-color: var(--btn-color) !important;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, .12);
   -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, .045);
   box-shadow: 0 2px 0 rgba(0, 0, 0, .045);

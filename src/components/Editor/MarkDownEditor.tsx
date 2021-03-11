@@ -43,7 +43,7 @@ const MarkDownEditor: React.FC<MarkDownEditorProps> = (props) => {
             <Tabs
               defaultActiveKey="1"
               centered={isMobile ? true : false}
-              tabBarGutter={5}
+              tabBarGutter={0}
               {...(isMobile
                 ? {}
                 : {
