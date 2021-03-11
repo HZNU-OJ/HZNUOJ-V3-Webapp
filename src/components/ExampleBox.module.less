@@ -9,11 +9,14 @@
   word-wrap: break-word;
   -webkit-text-size-adjust: 100%;
 
+  @border-color: #3e90cc;
+
   .input {
     margin: 0;
     padding: 0;
     color: #222;
-    border: 1px solid #888;
+    // border: 1px solid #888;
+    border: 1px solid @border-color;
   }
 
   .output {
@@ -22,7 +25,8 @@
     margin: 0;
     margin-bottom: 1em;
     padding: 0;
-    border: 1px solid #888;
+    // border: 1px solid #888;
+    border: 1px solid @border-color;
   }
 
   .title {
@@ -32,7 +36,8 @@
     font-size: 1.3em;
     line-height: 1.5em;
     text-transform: lowercase;
-    border-bottom: 1px solid #888;
+    // border-bottom: 1px solid #888;
+    border-bottom: 1px solid @border-color;
   }
 
   .copyBtn {
