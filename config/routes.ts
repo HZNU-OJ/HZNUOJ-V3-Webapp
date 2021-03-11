@@ -70,7 +70,7 @@ export default [
     exact: true,
   },
   {
-    path: "/disscussion/:id",
+    path: "/discussion/:id",
     component: "@/pages/discussion/view/DiscussionViewPage",
     exact: true,
   },
