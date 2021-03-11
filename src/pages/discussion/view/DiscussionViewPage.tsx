@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { Breadcrumb } from "antd";
 import LazyMarkdownContent from "@/markdown/LazyMarkdownContent";
 import { useParams } from "umi";
 
-import styles from "./DiscussionViewPage.module.less";
+import Divider from "@/components/Divider";
+import { DiscussionViewHeader } from "./components";
 
-import { getJSON } from "@/utils";
+import BasicLayout from "@/layouts/BasicLayout";
 
-const markdownContent = ``;
+import style from "./DiscussionViewPage.module.less";
 
 interface DiscussionViewPageParams {
   id: string;
@@ -19,21 +21,21 @@ const DiscussionViewPage: React.FC<{}> = (props) => {
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    const contentRemote = getJSON("");
     setLoaded(true);
   }, []);
 
   return (
     <>
-      {loaded == false && <></>}
-
-      {loaded === true && (
-        <div className={styles.root}>
-          <div className={styles.secondRoot}>
-            <LazyMarkdownContent content={markdownContent} />
-          </div>
+      <BasicLayout current={"discussion"}>
+        <div className={style.root}>
+          <Breadcrumb separator=">">
+            <Breadcrumb.Item href="">Discussion</Breadcrumb.Item>
+            <Breadcrumb.Item href="">General</Breadcrumb.Item>
+          </Breadcrumb>
+          <DiscussionViewHeader id={params.id} />
+          <Divider />
         </div>
-      )}
+      </BasicLayout>
     </>
   );
 };
