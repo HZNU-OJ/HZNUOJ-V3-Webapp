@@ -46,12 +46,12 @@ function patchStyles(wrapper: HTMLDivElement) {
   Array.from(wrapper.getElementsByTagName("pre")).forEach((element) => {
     // Wrap
     const segment = document.createElement("div");
-    segment.className = [codeBoxStyle.segment, style.codeBox].join(" ");
+    segment.className = [codeBoxStyle.segment, codeBoxStyle.pre].join(" ");
     element.parentNode.replaceChild(segment, element);
     segment.appendChild(element);
 
     // Add default styles for <pre>
-    element.classList.add(codeBoxStyle.pre);
+    element.classList.add(codeBoxStyle.content);
   });
 
   // Add default class names for <table>

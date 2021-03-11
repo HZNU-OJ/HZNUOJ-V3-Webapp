@@ -28,6 +28,31 @@
   }
 }
 
+@border-color: #46a0e4;
+
+.codeBoxPre {
+  --theme-shadow: rgba(34, 36, 38, 0.15);
+  position: relative;
+  box-sizing: inherit;
+  margin: 1rem 0;
+  padding: 0 !important;
+  overflow: hidden;
+  color: inherit !important;
+  // font-size: 1rem;
+  font-size: 14px;
+  font-family: inherit;
+  line-height: 1.4285em;
+  background: inherit !important;
+  border: 1px solid @border-color;
+  border-color: @border-color !important;
+  border-right-color: @border-color !important;
+  border-bottom-color: @border-color !important;
+  border-left-color: @border-color !important;
+  border-radius: 0.28571429rem;
+  box-shadow: 0 1px 2px 0 var(--theme-shadow);
+  -webkit-text-size-adjust: 100%;
+}
+
 .omittedLabel {
   position: absolute;
   right: 0;
