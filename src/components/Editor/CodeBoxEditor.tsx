@@ -88,7 +88,7 @@ const CodeBoxEditor: React.FC<CodeBoxEditorProps> = (props) => {
             </Row>
           </div>
 
-          <div className="am-panel-bd">
+          <div className={style["panel-body"]}>
             <CodeEditor options={isMobile ? editorOptions : {}} {...props} />
           </div>
 

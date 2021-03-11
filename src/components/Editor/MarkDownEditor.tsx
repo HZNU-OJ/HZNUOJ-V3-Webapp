@@ -52,6 +52,9 @@ const MarkDownEditor: React.FC<MarkDownEditorProps> = (props) => {
                     },
                   })}
               type="card"
+              style={{
+                padding: "0px",
+              }}
             >
               <TabPane tab="Edit" key="1">
                 <CodeEditor
@@ -62,7 +65,7 @@ const MarkDownEditor: React.FC<MarkDownEditorProps> = (props) => {
               <TabPane tab="Preview" key="2">
                 Content of Tab Pane 2
               </TabPane>
-              <TabPane tab="File" key="3">
+              <TabPane tab="Upload" key="3">
                 Content of Tab Pane 3
               </TabPane>
             </Tabs>
