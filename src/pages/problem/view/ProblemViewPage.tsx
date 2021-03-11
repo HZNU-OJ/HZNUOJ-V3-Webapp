@@ -16,6 +16,7 @@ import {
   StatementTab,
   SubmitTab,
   SubmissionsTab,
+  StatisticsTab,
 } from "./components";
 
 import { menuItem } from "@/interface/Menu.interface";
@@ -82,6 +83,7 @@ const ProblemViewPage: React.FC<{}> = (props) => {
                   {tab === "statement" && <StatementTab />}
                   {tab === "submit" && <SubmitTab />}
                   {tab === "submissions" && <SubmissionsTab />}
+                  {tab === "statistics" && <StatisticsTab />}
                 </>
               )}
             </Col>
