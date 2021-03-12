@@ -2,13 +2,16 @@ import api from "@/api";
 import { useAuthToken } from "@/utils/hooks";
 
 export async function getInitialState() {
-  const { getToken } = useAuthToken();
+  const { getToken, signOut } = useAuthToken();
   const token = getToken();
 
   try {
     const { requestError, response } = await api.auth.getSessionInfo({
       token: token,
     });
+    if (!response.userMeta) {
+      signOut();
+    }
     return response;
   } catch (error) {
     console.log(error);

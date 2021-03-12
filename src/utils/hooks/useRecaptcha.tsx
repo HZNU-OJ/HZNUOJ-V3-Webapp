@@ -1,4 +1,7 @@
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import customConfig from "@/../customConfig";
+
+const copyRight = customConfig.title;
 
 export function useRecaptcha() {
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -24,7 +27,7 @@ export function useRecaptcha() {
       recaptchaEnabled ? (
         <span
           className={className}
-          dangerouslySetInnerHTML={{ __html: _(".copyright") }}
+          dangerouslySetInnerHTML={{ __html: copyRight }}
         />
       ) : null,
   });
