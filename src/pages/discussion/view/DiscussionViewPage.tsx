@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Breadcrumb } from "antd";
-import LazyMarkdownContent from "@/markdown/LazyMarkdownContent";
 import { useParams } from "umi";
 
 import Divider from "@/components/Divider";
-import { DiscussionViewHeader } from "./components";
+import { DiscussionViewHeader, DiscussionBox } from "./components";
 
 import BasicLayout from "@/layouts/BasicLayout";
 
@@ -36,6 +35,14 @@ const DiscussionViewPage: React.FC<{}> = (props) => {
           </div>
           <DiscussionViewHeader id={params.id} />
           <Divider />
+          <div className={style.boxList}>
+            <div className={style.discussionBox}>
+              <DiscussionBox />
+            </div>
+            <div className={style.discussionBox}>
+              <DiscussionBox />
+            </div>
+          </div>
         </div>
       </BasicLayout>
     </>
