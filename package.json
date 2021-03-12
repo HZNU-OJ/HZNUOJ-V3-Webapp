@@ -1,6 +1,6 @@
 {
   "name": "hznuoj-v3-webapp",
-  "version": "0.0.45.6",
+  "version": "0.0.45.7",
   "description": "The WebApp of HZNUOJ V3",
   "repository": "https://github.com/HZNU-OJ/HZNUOJ-V3-WebApp",
   "author": "Dup4",
@@ -36,6 +36,7 @@
     "axios": "^0.21.1",
     "blueimp-md5": "^2.18.0",
     "class-validator": "^0.13.1",
+    "css-element-queries": "^1.2.3",
     "dayjs": "^1.10.4",
     "highcharts": "^9.0.1",
     "highcharts-react-official": "^3.0.0",

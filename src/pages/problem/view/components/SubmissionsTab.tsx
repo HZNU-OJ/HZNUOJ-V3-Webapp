@@ -7,6 +7,8 @@ import { useScreenWidthWithin } from "@/utils/hooks";
 const SubmissionsTab: React.FC<{}> = (props) => {
   const [loading, setLoading] = useState(true);
 
+  const [editorValue, setEditorValue] = useState("");
+
   const isMobile = useScreenWidthWithin(0, 577);
 
   return (
@@ -20,8 +22,9 @@ const SubmissionsTab: React.FC<{}> = (props) => {
       {loading === true && (
         <LazyMarkDownEditor
           height={isMobile ? "220" : "500"}
-          value={""}
           language={"cpp"}
+          value={editorValue}
+          onChange={(value) => setEditorValue(value)}
         />
       )}
     </div>

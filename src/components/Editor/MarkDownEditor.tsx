@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import CodeEditor from "./CodeEditor";
 import style from "./Editor.common.module.less";
+import * as Monaco from "monaco-editor";
 
 import { Button, Row, Col, Tabs, Upload, message } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
@@ -9,7 +10,8 @@ const { Dragger } = Upload;
 
 import { useScreenWidthWithin } from "@/utils/hooks";
 
-import type { CodeEditorProps } from "./CodeEditor";
+import type { CodeEditorProps } from "./LazyCodeEditor";
+import LazyMarkdownContent from "@/markdown/MarkdownContent";
 export type { CodeEditorProps } from "./CodeEditor";
 
 export interface MarkDownEditorProps extends CodeEditorProps {
@@ -78,7 +80,11 @@ const UploadComponent: React.FC<{}> = (props) => {
 
 const MarkDownEditor: React.FC<MarkDownEditorProps> = (props) => {
   const isMobile = useScreenWidthWithin(0, 577);
-  const CodeEditorRef = React.createRef();
+  const [content, setContent] = useState(props.value);
+
+  useEffect(() => {
+    setContent(props.value);
+  }, [props.value]);
 
   const submitButton = (
     <Button
@@ -97,10 +103,6 @@ const MarkDownEditor: React.FC<MarkDownEditorProps> = (props) => {
     folding: false,
     minimap: { enabled: false },
   };
-
-  useEffect(() => {
-    // console.log(CodeEditorRef.current.value);
-  });
 
   return (
     <>
@@ -125,16 +127,24 @@ const MarkDownEditor: React.FC<MarkDownEditorProps> = (props) => {
             >
               <TabPane tab="Edit" key="1">
                 <CodeEditor
-                  // ref={CodeEditorRef}
-                  options={isMobile ? editorOptions : {}}
-                  {...props}
+                  language={"markdown"}
+                  height={props.height || "500"}
+                  value={props.value}
+                  onChange={props.onChange}
+                  options={
+                    (isMobile
+                      ? editorOptions
+                      : {}) as Monaco.editor.IEditorConstructionOptions
+                  }
                 />
               </TabPane>
               <TabPane tab="Preview" key="2">
                 <div
                   className={style.preview}
                   style={{ height: parseInt(props.height) }}
-                ></div>
+                >
+                  <LazyMarkdownContent content={content} />
+                </div>
               </TabPane>
               <TabPane tab="Upload" key="3">
                 <div
