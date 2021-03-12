@@ -70,6 +70,11 @@ export default [
     exact: true,
   },
   {
+    path: "/user/:username",
+    component: "@/pages/user/view/UserViewPage",
+    exact: true,
+  },
+  {
     path: "/discussion/:id",
     component: "@/pages/discussion/view/DiscussionViewPage",
     exact: true,
