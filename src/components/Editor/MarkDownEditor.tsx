@@ -2,82 +2,22 @@ import React, { useEffect, useState } from "react";
 import CodeEditor from "./CodeEditor";
 import style from "./Editor.common.module.less";
 import * as Monaco from "monaco-editor";
+import UploadDragger from "@/components/UploadDragger";
 
-import { Button, Row, Col, Tabs, Upload, message } from "antd";
-import { InboxOutlined } from "@ant-design/icons";
+import { Button, Tabs } from "antd";
+
 const { TabPane } = Tabs;
-const { Dragger } = Upload;
 
 import { useScreenWidthWithin } from "@/utils/hooks";
 
-import type { CodeEditorProps } from "./LazyCodeEditor";
-import LazyMarkdownContent from "@/markdown/MarkdownContent";
-import MarkdownContentStyle from "@/markdown/MarkdownContent";
+import type { CodeEditorProps } from "./CodeEditor";
 export type { CodeEditorProps } from "./CodeEditor";
+
+import LazyMarkdownContent from "@/markdown/LazyMarkdownContent";
 
 export interface MarkDownEditorProps extends CodeEditorProps {
   loading?: boolean;
 }
-
-const UploadComponent: React.FC<{}> = (props) => {
-  const fileList = [
-    {
-      uid: "-1",
-      name: "xxx.png",
-      status: "done",
-      url:
-        "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-      thumbUrl:
-        "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    },
-    {
-      uid: "-2",
-      name: "yyy.png",
-      status: "error",
-    },
-  ];
-
-  const _props = {
-    name: "file",
-    multiple: true,
-    listType: "picture",
-    defaultFileList: [...fileList],
-    action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-    onChange(info: any) {
-      const { status } = info.file;
-      if (status !== "uploading") {
-        console.log(info.file, info.fileList);
-      }
-      if (status === "done") {
-        message.success(`${info.file.name} file uploaded successfully.`);
-      } else if (status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
-  };
-
-  return (
-    <div
-      style={{
-        minHeight: "220px",
-        height: "50%",
-      }}
-    >
-      <Dragger {..._props}>
-        <p className="ant-upload-drag-icon">
-          <InboxOutlined />
-        </p>
-        <p className="ant-upload-text">
-          Click or drag file to this area to upload
-        </p>
-        <p className="ant-upload-hint">
-          Support for a single or bulk upload. Strictly prohibit from uploading
-          company data or other band files
-        </p>
-      </Dragger>
-    </div>
-  );
-};
 
 const MarkDownEditor: React.FC<MarkDownEditorProps> = (props) => {
   const isMobile = useScreenWidthWithin(0, 577);
@@ -152,7 +92,7 @@ const MarkDownEditor: React.FC<MarkDownEditorProps> = (props) => {
                   className={style.upload}
                   style={{ height: parseInt(props.height) }}
                 >
-                  <UploadComponent />
+                  <UploadDragger />
                 </div>
               </TabPane>
             </Tabs>
