@@ -7,6 +7,8 @@ import UserAvatar from "@/components/UserAvatar";
 
 import style from "./UserViewPage.module.less";
 
+import api from "@/api";
+
 interface UserViewPageParams {
   username?: string;
 }
@@ -14,35 +16,43 @@ interface UserViewPageParams {
 const UserViewPage: React.FC<{}> = (props) => {
   const params: UserViewPageParams = useParams();
   const { initialState } = useModel("@@initialState");
-  const [loaded, setLoaded] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState(
+    {} as ApiTypes.GetUserProfileResponseDto,
+  );
+
+  async function getUserProfile(username: string) {
+    const { requestError, response } = await api.user.getUserProfile({
+      username: username,
+    });
+
+    if (response) {
+      setProfile(response);
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
-    setLoaded(true);
-  }, []);
+    getUserProfile(params.username);
+  }, [params.username]);
 
   return (
     <BasicLayout current={"users"}>
       <div className={style.root}>
-        {loaded === false && (
+        {loading === true && (
           <div className={style.loading}>
             <Loading />
           </div>
         )}
 
-        {loaded === true && (
+        {loading === false && (
           <div className={style.tableRoot}>
             <Row gutter={16} align="top">
-              <Col xs={24} sm={24} md={24} lg={8} xl={8}>
-                {/* <UserAvatar
-                      userAvatar={getAvatar(avatarType, {
-                        gravatar: email,
-                        qq: qq,
-                        github: github,
-                      })}
-                      imageSize={220}
-                    /> */}
+              <Col xs={24} sm={24} md={24} lg={6} xl={6}>
+                <UserAvatar userAvatar={profile.meta.avatar} imageSize={220} />
+                <div className={style.username}>{profile.meta.username}</div>
               </Col>
-              <Col xs={24} sm={24} md={24} lg={16} xl={16}></Col>
+              <Col xs={24} sm={24} md={24} lg={18} xl={18}></Col>
             </Row>
           </div>
         )}
