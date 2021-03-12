@@ -12,6 +12,7 @@ import { useScreenWidthWithin } from "@/utils/hooks";
 
 import type { CodeEditorProps } from "./LazyCodeEditor";
 import LazyMarkdownContent from "@/markdown/MarkdownContent";
+import MarkdownContentStyle from "@/markdown/MarkdownContent";
 export type { CodeEditorProps } from "./CodeEditor";
 
 export interface MarkDownEditorProps extends CodeEditorProps {
@@ -143,7 +144,7 @@ const MarkDownEditor: React.FC<MarkDownEditorProps> = (props) => {
                   className={style.preview}
                   style={{ height: parseInt(props.height) }}
                 >
-                  <LazyMarkdownContent content={content} />
+                  <LazyMarkdownContent content={content} noSanitize={true} />
                 </div>
               </TabPane>
               <TabPane tab="Upload" key="3">

@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import MarkdownIt from "markdown-it";
 
 import style from "./MarkdownContent.module.less";
+export { MarkdownContentStyle } from "./MarkdownContent.module.less";
 
 import { renderMarkdown } from "./markdown";
 import { renderMath } from "./mathjax";
