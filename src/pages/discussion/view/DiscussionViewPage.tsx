@@ -28,10 +28,12 @@ const DiscussionViewPage: React.FC<{}> = (props) => {
     <>
       <BasicLayout current={"discussion"}>
         <div className={style.root}>
-          <Breadcrumb separator=">">
-            <Breadcrumb.Item href="">Discussion</Breadcrumb.Item>
-            <Breadcrumb.Item href="">General</Breadcrumb.Item>
-          </Breadcrumb>
+          <div className={style.breadCrumb}>
+            <Breadcrumb separator=">">
+              <Breadcrumb.Item href="">Discussion</Breadcrumb.Item>
+              <Breadcrumb.Item href="">General</Breadcrumb.Item>
+            </Breadcrumb>
+          </div>
           <DiscussionViewHeader id={params.id} />
           <Divider />
         </div>
