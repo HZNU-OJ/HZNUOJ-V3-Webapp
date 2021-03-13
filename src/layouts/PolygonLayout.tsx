@@ -1,10 +1,10 @@
 import { useModel } from "umi";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import Footer from "@/components/Footer";
 import Loading from "@/components/Loading";
 
-import style from "./BasicLayout.module.less";
+import style from "./PolygonLayout.module.less";
 
 import { menuItem } from "@/interface/menu.interface";
 
@@ -39,49 +39,15 @@ function userItemListRender(itemList: menuItem[][], username: string): string {
 
 function topBar(brand: string, current: string, username?: string | null) {
   const leftItemList = [
-    { id: "contests", name: "Contests", link: "/contests" },
-    { id: "problem_set", name: "Problem Set", link: "/problemset" },
-    { id: "submissions", name: "Submissions", link: "/submissions" },
-    { id: "users", name: "Users", link: "/users" },
-    { id: "discussion", name: "Discussion", link: "/discussion" },
+    { id: "problem", name: "Problem", link: "/polygon/problem" },
+    { id: "contest", name: "Contest", link: "/polygon/contest" },
   ];
-  const enterItemList = [{ id: "enter", name: "Enter", link: "/login" }];
-
   const userItemList = [
     [
       {
-        id: "my_profile",
-        name: "My Profile",
+        id: "back_oj",
+        name: "Back OJ",
         link: `/user/${username}`,
-      },
-      {
-        id: "my_submissions",
-        name: "My Submissions",
-        link: "/",
-      },
-    ],
-    [
-      {
-        id: "polygon",
-        name: "Polygon",
-        link: "/polygon",
-      },
-      {
-        id: "admin",
-        name: "Admin",
-        link: "/admin",
-      },
-    ],
-    [
-      {
-        id: "settings",
-        name: "Settings",
-        link: "/settings",
-      },
-      {
-        id: "logout",
-        name: "Logout",
-        link: "/logout",
       },
     ],
   ] as menuItem[][];
@@ -96,7 +62,7 @@ function topBar(brand: string, current: string, username?: string | null) {
     </button>
     <div class="am-container ${style["h-header"]}">
       <h1 class="am-topbar-brand">
-        <a href="/" >${brand}</a>
+        <a href="/polygon" >${brand}</a>
       </h1>
       <div class="am-collapse am-topbar-collapse" id="collapse-head">
         <ul class="am-nav am-nav-pills am-topbar-nav">
@@ -104,11 +70,7 @@ function topBar(brand: string, current: string, username?: string | null) {
         </ul>
         <div class="am-topbar-right" style="padding-right: 0px;">
           <ul class="am-nav am-nav-pills am-topbar-nav">
-          ${
-            username
-              ? userItemListRender(userItemList, username)
-              : topBarItemRender(current, enterItemList)
-          }
+          ${userItemListRender(userItemList, username)}
           </ul>
         </div>
       </div>
@@ -125,21 +87,17 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = (props) => {
   return (
     <div
-      dangerouslySetInnerHTML={topBar(
-        "HZNU Online Judge",
-        props.current,
-        props.username,
-      )}
+      dangerouslySetInnerHTML={topBar("Polygon", props.current, props.username)}
     ></div>
   );
 };
 
-interface BasicLayoutProps {
+interface PolygonLayoutProps {
   current: string;
   maxWidth?: string;
 }
 
-const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
+const PolygonLayout: React.FC<PolygonLayoutProps> = (props) => {
   const { initialState, loading } = useModel("@@initialState");
 
   useEffect(() => {
@@ -183,4 +141,4 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   );
 };
 
-export default BasicLayout;
+export default PolygonLayout;

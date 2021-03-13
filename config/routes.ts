@@ -94,4 +94,9 @@ export default [
     component: "@/pages/500",
     exact: true,
   },
+  {
+    path: "/polygon",
+    component: "@/pages/polygon/home/PolygonHomePage",
+    exact: true,
+  },
 ];
