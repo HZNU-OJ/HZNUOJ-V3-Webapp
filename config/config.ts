@@ -9,6 +9,9 @@ import { EditorLanguage } from "monaco-editor-webpack-plugin/out/languages";
 import MonacoWebpackPlugin from "monaco-editor-webpack-plugin";
 
 export default defineConfig({
+  polyfill: {
+    imports: ["core-js/stable"],
+  },
   dynamicImport: {
     loading: "@/components/GlobalLoading",
   },
