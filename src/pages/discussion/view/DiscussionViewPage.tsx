@@ -6,7 +6,8 @@ import Divider from "@/components/Divider";
 import { DiscussionViewHeader, DiscussionBox } from "./components";
 
 import BasicLayout from "@/layouts/BasicLayout";
-
+import LazyMarkDownEditor from "@/components/Editor/LazyMarkDownEditor";
+import { useScreenWidthWithin } from "@/utils/hooks";
 import style from "./DiscussionViewPage.module.less";
 
 interface DiscussionViewPageParams {
@@ -18,6 +19,9 @@ const DiscussionViewPage: React.FC<{}> = (props) => {
 
   const [loaded, setLoaded] = useState(false);
   const [content, setContent] = useState("");
+
+  const isMobile = useScreenWidthWithin(0, 577);
+  const [editorValue, setEditorValue] = useState("");
 
   useEffect(() => {
     setLoaded(true);
@@ -43,6 +47,12 @@ const DiscussionViewPage: React.FC<{}> = (props) => {
               <DiscussionBox />
             </div>
           </div>
+          <LazyMarkDownEditor
+            height={isMobile ? "220" : "500"}
+            language={"markdown"}
+            value={editorValue}
+            onChange={(value) => setEditorValue(value)}
+          />
         </div>
       </BasicLayout>
     </>

@@ -32,7 +32,7 @@ const SubmissionsTab: React.FC<{}> = (props) => {
         {loading === true && (
           <LazyMarkDownEditor
             height={isMobile ? "220" : "500"}
-            language={"cpp"}
+            language={"markdown"}
             value={editorValue}
             onChange={(value) => setEditorValue(value)}
           />
