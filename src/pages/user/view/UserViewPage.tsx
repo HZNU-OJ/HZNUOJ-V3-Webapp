@@ -3,11 +3,14 @@ import { useModel, useParams } from "umi";
 import { Row, Col } from "antd";
 import Loading from "@/components/Loading";
 import BasicLayout from "@/layouts/BasicLayout";
-import UserAvatar from "@/components/UserAvatar";
+
+import { DataView, LeftPanel, SubwayGraph } from "./components";
 
 import style from "./UserViewPage.module.less";
 
 import api from "@/api";
+
+import { useScreenWidthWithin } from "@/utils/hooks";
 
 interface UserViewPageParams {
   username?: string;
@@ -20,6 +23,8 @@ const UserViewPage: React.FC<{}> = (props) => {
   const [profile, setProfile] = useState(
     {} as ApiTypes.GetUserProfileResponseDto,
   );
+
+  const isMobile = useScreenWidthWithin(0, 577);
 
   async function getUserProfile(username: string) {
     const { requestError, response } = await api.user.getUserProfile({
@@ -48,11 +53,25 @@ const UserViewPage: React.FC<{}> = (props) => {
         {loading === false && (
           <div className={style.tableRoot}>
             <Row gutter={16} align="top">
-              <Col xs={24} sm={24} md={24} lg={6} xl={6}>
-                <UserAvatar userAvatar={profile.meta.avatar} imageSize={220} />
-                <div className={style.username}>{profile.meta.username}</div>
+              <Col xs={24} sm={24} md={6} lg={6} xl={6}>
+                <LeftPanel profile={profile} />
               </Col>
-              <Col xs={24} sm={24} md={24} lg={18} xl={18}></Col>
+              <Col xs={24} sm={24} md={18} lg={18} xl={18}>
+                <div
+                  style={{
+                    marginTop: isMobile ? "10px" : "",
+                  }}
+                >
+                  <DataView />
+                </div>
+                <div
+                  style={{
+                    marginTop: 10,
+                  }}
+                >
+                  <SubwayGraph />
+                </div>
+              </Col>
             </Row>
           </div>
         )}
