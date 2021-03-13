@@ -4,7 +4,7 @@ import { Row, Col } from "antd";
 import Loading from "@/components/Loading";
 import BasicLayout from "@/layouts/BasicLayout";
 
-import { DataView, LeftPanel, SubwayGraph } from "./components";
+import { DataView, LeftPanel, SubwayGraph, RatingGraph } from "./components";
 
 import style from "./UserViewPage.module.less";
 
@@ -53,10 +53,10 @@ const UserViewPage: React.FC<{}> = (props) => {
         {loading === false && (
           <div className={style.tableRoot}>
             <Row gutter={16} align="top">
-              <Col xs={24} sm={24} md={6} lg={6} xl={6}>
+              <Col xs={24} sm={24} md={5} lg={5} xl={5}>
                 <LeftPanel profile={profile} />
               </Col>
-              <Col xs={24} sm={24} md={18} lg={18} xl={18}>
+              <Col xs={24} sm={24} md={19} lg={19} xl={19}>
                 <div
                   style={{
                     marginTop: isMobile ? "10px" : "",
@@ -70,6 +70,9 @@ const UserViewPage: React.FC<{}> = (props) => {
                   }}
                 >
                   <SubwayGraph />
+                </div>
+                <div style={{ marginTop: 10 }}>
+                  <RatingGraph />
                 </div>
               </Col>
             </Row>
