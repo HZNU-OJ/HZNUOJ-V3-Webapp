@@ -10,9 +10,37 @@
   margin-bottom: 30px;
 }
 
-.boxList {
+@desktop-avatar-size: 40px;
+@desktop-avatar-margin: 19px;
+
+@vertical-line-height: 42px;
+@vertical-line-width: 2px;
+@vertical-line-color: #3e90cc;
+@vertical-line-left: 36px;
+
+.titleDivider {
+  padding-bottom: 4px;
 }
 
-.discussionBox {
+.boxList {
+  position: relative;
+}
+
+.discussionBox,
+.markdownEditor {
   margin-bottom: 42px;
+
+  &::before {
+    margin-top: -@vertical-line-height;
+  }
+
+  &::before {
+    position: absolute;
+    left: @vertical-line-left;
+    display: block;
+    width: @vertical-line-width;
+    height: @vertical-line-height;
+    background-color: @vertical-line-color;
+    content: " ";
+  }
 }

@@ -10,6 +10,12 @@ import api from "@/api";
 
 interface DiscussionBoxProps {}
 
+const content = `
+$$
+f(x) = 2^x
+$$
+`;
+
 const DiscussionBox: React.FC<DiscussionBoxProps> = (props) => {
   const [contentA, setContentA] = useState("");
   const [contentB, setContentB] = useState("");
@@ -18,8 +24,8 @@ const DiscussionBox: React.FC<DiscussionBoxProps> = (props) => {
 
   async function getContentA() {
     const { requestError, response } = await api.app.getMd({ id: "a" });
-
-    setContentA(response.content);
+    setContentA(content);
+    // setContentA(response.content);
     setLoadingA(false);
   }
 

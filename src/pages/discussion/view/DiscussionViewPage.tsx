@@ -38,7 +38,9 @@ const DiscussionViewPage: React.FC<{}> = (props) => {
             </Breadcrumb>
           </div>
           <DiscussionViewHeader id={params.id} />
-          <Divider />
+          <div className={style.titleDivider}>
+            <Divider />
+          </div>
           <div className={style.boxList}>
             <div className={style.discussionBox}>
               <DiscussionBox />
@@ -46,13 +48,27 @@ const DiscussionViewPage: React.FC<{}> = (props) => {
             <div className={style.discussionBox}>
               <DiscussionBox />
             </div>
+            <div className={style.discussionBox}>
+              <DiscussionBox />
+            </div>
+            <div className={style.discussionBox}>
+              <DiscussionBox />
+            </div>
+            <div className={style.discussionBox}>
+              <DiscussionBox />
+            </div>
+            <div className={style.discussionBox}>
+              <DiscussionBox />
+            </div>
+            <div className={style.markdownEditor}>
+              <LazyMarkDownEditor
+                height={isMobile ? "220" : "500"}
+                language={"markdown"}
+                value={editorValue}
+                onChange={(value) => setEditorValue(value)}
+              />
+            </div>
           </div>
-          <LazyMarkDownEditor
-            height={isMobile ? "220" : "500"}
-            language={"markdown"}
-            value={editorValue}
-            onChange={(value) => setEditorValue(value)}
-          />
         </div>
       </BasicLayout>
     </>
