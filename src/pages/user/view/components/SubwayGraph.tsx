@@ -14,11 +14,11 @@ function shiftDate(date: Date, numDays: number) {
 }
 
 const randomValues = getRange(365).map((index) => {
-  const count = getRandomInt(0, 4);
+  const count = getRandomInt(0, 50);
   return {
     date: shiftDate(today, -index),
     count: count,
-    color: Math.ceil(count / 5 / 0.24),
+    color: Math.ceil(count / 51 / 0.25),
   };
 });
 
