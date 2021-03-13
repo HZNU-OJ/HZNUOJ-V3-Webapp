@@ -227,7 +227,7 @@ const RatingGraph: React.FC<{}> = (props) => {
 
   return (
     <>
-      <div className={`${style.border}`}>
+      <div className={`${style.border} ${style.ratingGraph}`}>
         {loading === true && (
           <div
             style={{
