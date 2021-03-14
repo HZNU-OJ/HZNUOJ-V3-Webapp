@@ -47,7 +47,7 @@ function topBar(brand: string, current: string, username?: string | null) {
       {
         id: "back_oj",
         name: "Back OJ",
-        link: `/user/${username}`,
+        link: `/`,
       },
     ],
   ] as menuItem[][];
