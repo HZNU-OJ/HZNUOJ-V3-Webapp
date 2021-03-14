@@ -99,4 +99,9 @@ export default [
     component: "@/pages/polygon/home/PolygonHomePage",
     exact: true,
   },
+  {
+    path: "/admin",
+    component: "@/pages/admin/home/AdminHomePage",
+    exact: true,
+  },
 ];
