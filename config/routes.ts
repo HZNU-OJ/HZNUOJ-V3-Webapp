@@ -85,6 +85,16 @@ export default [
     exact: true,
   },
   {
+    path: "/polygon",
+    component: "@/pages/polygon/home/PolygonHomePage",
+    exact: true,
+  },
+  {
+    path: "/admin",
+    component: "@/pages/admin/home/AdminHomePage",
+    exact: true,
+  },
+  {
     path: "/403",
     component: "@/pages/403",
     exact: true,
@@ -100,13 +110,6 @@ export default [
     exact: true,
   },
   {
-    path: "/polygon",
-    component: "@/pages/polygon/home/PolygonHomePage",
-    exact: true,
-  },
-  {
-    path: "/admin",
-    component: "@/pages/admin/home/AdminHomePage",
-    exact: true,
+    component: "@/pages/404",
   },
 ];
