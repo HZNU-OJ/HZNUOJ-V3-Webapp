@@ -45,6 +45,11 @@ export default [
     exact: true,
   },
   {
+    path: "/contest/:id",
+    component: "@/pages/contest/dashboard/DashboardPage",
+    exact: true,
+  },
+  {
     path: "/problem/:id",
     component: "@/pages/problem/view/ProblemViewPage",
     exact: true,
