@@ -97,7 +97,17 @@ export default [
   {
     path: "/polygon/problem/:id",
     exact: true,
+    redirect: "/polygon/problem/dashboard/:id",
+  },
+  {
+    path: "/polygon/problem/dashboard/:id",
+    exact: true,
     component: "@/pages/polygon/problem/DashboardPage",
+  },
+  {
+    path: "/polygon/problem/statement/:id",
+    exact: true,
+    component: "@/pages/polygon/problem/StatementPage",
   },
   {
     path: "/admin",
