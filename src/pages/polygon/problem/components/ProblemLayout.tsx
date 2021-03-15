@@ -71,15 +71,15 @@ const ProblemLayout: React.FC<ProblemLayoutProps> = (props) => {
       <PolygonLayout current="problem">
         <div className={style.root}>
           <Row gutter={16} align="top">
-            <Col xs={24} sm={24} md={20} lg={21} xl={21}>
-              {props.children}
-            </Col>
             <Col xs={24} sm={24} md={4} lg={3} xl={3}>
               <SiderMenu
                 current={props.current}
-                direction="right"
+                direction="left"
                 menuItemList={siderItemList}
               />
+            </Col>
+            <Col xs={24} sm={24} md={20} lg={21} xl={21}>
+              {props.children}
             </Col>
           </Row>
         </div>

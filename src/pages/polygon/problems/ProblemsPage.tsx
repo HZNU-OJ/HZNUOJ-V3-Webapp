@@ -63,9 +63,9 @@ const AddProblemModel: React.FC<AddProblemModelProps> = (props) => {
         >
           <Form.Item>
             <Form.Item
-              name="problemName"
-              label="Problem Name"
-              tooltip="The Problem Name can be same as other problem."
+              name="name"
+              label="name"
+              tooltip="The name is not the name in the statement. It is just a sign. And can be duplicate."
             >
               <Input />
             </Form.Item>
