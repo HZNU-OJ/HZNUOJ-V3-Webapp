@@ -92,7 +92,7 @@ export default [
   {
     path: "/polygon/problem",
     exact: true,
-    component: "@/pages/polygon/problem/ProblemsPage",
+    component: "@/pages/polygon/problems/ProblemsPage",
   },
   {
     path: "/admin",
