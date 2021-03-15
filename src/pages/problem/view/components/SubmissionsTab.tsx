@@ -35,6 +35,7 @@ const SubmissionsTab: React.FC<{}> = (props) => {
             language={"markdown"}
             value={editorValue}
             onChange={(value) => setEditorValue(value)}
+            onSubmit={() => {}}
           />
         )}
       </div>

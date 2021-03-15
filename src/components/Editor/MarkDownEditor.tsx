@@ -17,6 +17,7 @@ import LazyMarkdownContent from "@/markdown/LazyMarkdownContent";
 
 export interface MarkDownEditorProps extends CodeEditorProps {
   loading?: boolean;
+  onSubmit?: any;
 }
 
 const MarkDownEditor: React.FC<MarkDownEditorProps> = (props) => {
@@ -54,7 +55,7 @@ const MarkDownEditor: React.FC<MarkDownEditorProps> = (props) => {
               defaultActiveKey="1"
               centered={isMobile ? true : false}
               tabBarGutter={0}
-              {...(isMobile
+              {...(!props.onSubmit || isMobile
                 ? {}
                 : {
                     tabBarExtraContent: {
@@ -98,7 +99,7 @@ const MarkDownEditor: React.FC<MarkDownEditorProps> = (props) => {
             </Tabs>
           </div>
 
-          {isMobile && (
+          {props.onSubmit && isMobile && (
             <div className={style["panel-footer"]}>
               <div
                 style={{
@@ -107,6 +108,7 @@ const MarkDownEditor: React.FC<MarkDownEditorProps> = (props) => {
               >
                 <Button
                   type={"primary"}
+                  onClick={props.onSubmit ?? (() => {})}
                   style={{
                     width: isMobile ? "100%" : 120,
                   }}
