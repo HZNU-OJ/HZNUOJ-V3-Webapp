@@ -95,6 +95,11 @@ export default [
     component: "@/pages/polygon/problems/ProblemsPage",
   },
   {
+    path: "/polygon/problem/:id",
+    exact: true,
+    component: "@/pages/polygon/problem/DashboardPage",
+  },
+  {
     path: "/admin",
     component: "@/pages/admin/home/AdminHomePage",
     exact: true,
