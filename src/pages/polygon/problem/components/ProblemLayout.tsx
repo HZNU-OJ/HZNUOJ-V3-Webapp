@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { useModel, history, useLocation, useParams } from "umi";
-import { Row, Col } from "antd";
+import { Row, Col, Affix } from "antd";
 import SiderMenu from "@/components/SiderMenu";
 import PolygonLayout from "@/layouts/PolygonLayout";
 import { menuItem } from "@/interface/Menu.interface";
 import { useRedirectLogin } from "@/utils/hooks";
 import style from "./ProblemLayout.module.less";
+import { useScreenWidthWithin } from "@/utils/hooks";
 
 interface ProblemLayoutProps {
   current: string;
@@ -67,6 +68,8 @@ const ProblemLayout: React.FC<ProblemLayoutProps> = (props) => {
 
   const params: ProblemParams = useParams();
 
+  const isMobile = useScreenWidthWithin(0, 768);
+
   // const { initialState, loading } = useModel("@@initialState");
   // const redirectLogin = useRedirectLogin();
 
@@ -84,11 +87,23 @@ const ProblemLayout: React.FC<ProblemLayoutProps> = (props) => {
         <div className={style.root}>
           <Row gutter={16} align="top">
             <Col xs={24} sm={24} md={4} lg={3} xl={3}>
-              <SiderMenu
-                current={props.current}
-                direction="left"
-                menuItemList={getSiderItemList(parseInt(params.id))}
-              />
+              {isMobile && (
+                <SiderMenu
+                  current={props.current}
+                  menuItemList={getSiderItemList(parseInt(params.id))}
+                  direction={"left"}
+                />
+              )}
+
+              {!isMobile && (
+                <Affix offsetTop={10}>
+                  <SiderMenu
+                    current={props.current}
+                    menuItemList={getSiderItemList(parseInt(params.id))}
+                    direction={"left"}
+                  />
+                </Affix>
+              )}
             </Col>
             <Col xs={24} sm={24} md={20} lg={21} xl={21}>
               {props.children}
