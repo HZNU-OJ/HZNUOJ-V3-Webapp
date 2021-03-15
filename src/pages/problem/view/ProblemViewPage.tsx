@@ -75,8 +75,8 @@ const ProblemViewPage: React.FC<{}> = (props) => {
               xs={{ span: 24, order: 2 }}
               sm={{ span: 24, order: 2 }}
               md={{ span: 24, order: 2 }}
-              lg={{ span: 19, order: 1 }}
-              xl={{ span: 19, order: 1 }}
+              lg={{ span: 21, order: 1 }}
+              xl={{ span: 21, order: 1 }}
             >
               {loading === false && (
                 <>
@@ -92,8 +92,8 @@ const ProblemViewPage: React.FC<{}> = (props) => {
               xs={{ span: 24, order: 1 }}
               sm={{ span: 24, order: 1 }}
               md={{ span: 24, order: 1 }}
-              lg={{ span: 5, order: 2 }}
-              xl={{ span: 5, order: 2 }}
+              lg={{ span: 3, order: 2 }}
+              xl={{ span: 3, order: 2 }}
             >
               {isMobile && (
                 <SiderMenu
