@@ -18,7 +18,7 @@ import {
 
 import { UserOutlined, MailOutlined } from "@ant-design/icons";
 
-import SettingsLayout from "@/layouts/SettingsLayout";
+import SettingsLayout from "@/pages/settings/components/SettingsLayout";
 
 import style from "./ProfilePage.module.less";
 

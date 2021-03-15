@@ -7,7 +7,7 @@ import { LockOutlined, MailOutlined, SafetyOutlined } from "@ant-design/icons";
 
 import { isValidPassword, isValidEmail } from "@/utils/validators";
 
-import SettingsLayout from "@/layouts/SettingsLayout";
+import SettingsLayout from "@/pages/settings/components/SettingsLayout";
 import SiderMenu from "@/components/SiderMenu";
 import { menuItem } from "@/interface/Menu.interface";
 import { useScreenWidthWithin, useRecaptcha } from "@/utils/hooks";
