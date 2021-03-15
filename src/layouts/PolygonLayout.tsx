@@ -40,7 +40,7 @@ function userItemListRender(itemList: menuItem[][], username: string): string {
 function topBar(brand: string, current: string, username?: string | null) {
   const leftItemList = [
     { id: "problem", name: "Problem", link: "/polygon/problem" },
-    { id: "contest", name: "Contest", link: "/polygon/contest" },
+    // { id: "contest", name: "Contest", link: "/polygon/contest" },
   ];
   const userItemList = [
     [

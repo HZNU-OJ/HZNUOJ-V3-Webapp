@@ -86,8 +86,13 @@ export default [
   },
   {
     path: "/polygon",
-    component: "@/pages/polygon/home/PolygonHomePage",
     exact: true,
+    redirect: "/polygon/problem",
+  },
+  {
+    path: "/polygon/problem",
+    exact: true,
+    component: "@/pages/polygon/problem/ProblemsPage",
   },
   {
     path: "/admin",
