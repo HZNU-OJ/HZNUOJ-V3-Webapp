@@ -1,6 +1,7 @@
 import React from "react";
 import CodeEditor from "./CodeEditor";
 import style from "./Editor.common.module.less";
+import * as Monaco from "monaco-editor";
 
 import { Button, Select, Row, Col } from "antd";
 
@@ -89,7 +90,14 @@ const CodeBoxEditor: React.FC<CodeBoxEditorProps> = (props) => {
           </div>
 
           <div className={style["panel-body"]}>
-            <CodeEditor options={isMobile ? editorOptions : {}} {...props} />
+            <CodeEditor
+              options={
+                (isMobile
+                  ? editorOptions
+                  : {}) as Monaco.editor.IEditorConstructionOptions
+              }
+              {...props}
+            />
           </div>
 
           {isMobile === true && (
