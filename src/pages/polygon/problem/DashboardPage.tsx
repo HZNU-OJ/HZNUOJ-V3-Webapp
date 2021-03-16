@@ -96,8 +96,8 @@ const DashboardPage: React.FC<{}> = (props) => {
 
         <Col xs={24} sm={24} md={24} lg={7} xl={7}>
           <div className={style.infoBox}>
-            {info.map((item) => (
-              <Row gutter={16}>
+            {info.map((item, index) => (
+              <Row gutter={16} key={index}>
                 <Col span={8}>
                   <p>
                     <strong>{item[0]}:</strong>
