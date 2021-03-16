@@ -9,6 +9,6 @@ declare module "*.svg" {
   export default url;
 }
 
-interface Window {
-  $: any;
+declare interface Window {
+  $: (selector: string) => any;
 }
