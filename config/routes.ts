@@ -110,6 +110,11 @@ export default [
     component: "@/pages/polygon/problem/StatementPage",
   },
   {
+    path: "/polygon/problem/files/:id",
+    exact: true,
+    component: "@/pages/polygon/problem/FilesPage",
+  },
+  {
     path: "/admin",
     component: "@/pages/admin/home/AdminHomePage",
     exact: true,
