@@ -53,9 +53,9 @@ function getSiderItemList(id: number) {
       link: getLink("solutions"),
     },
     {
-      id: "manage_access",
+      id: "manageaccess",
       name: "Manage Access",
-      link: getLink("manage_access"),
+      link: getLink("manageaccess"),
     },
   ];
   return siderItemList;
