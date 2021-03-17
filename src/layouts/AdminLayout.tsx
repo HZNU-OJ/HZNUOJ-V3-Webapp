@@ -88,7 +88,11 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = (props) => {
   return (
     <div
-      dangerouslySetInnerHTML={topBar("Admin", props.current, props.username)}
+      dangerouslySetInnerHTML={topBar(
+        "Administration",
+        props.current,
+        props.username,
+      )}
     ></div>
   );
 };
