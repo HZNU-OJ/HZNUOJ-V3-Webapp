@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import ProblemLayout from "./components/ProblemLayout";
 
@@ -7,8 +7,10 @@ import { ColumnsType } from "antd/es/table";
 import { PlusOutlined } from "@ant-design/icons";
 import AntTableHeadStyles from "@/less/AntTableHead.module.less";
 import { useTableSearch } from "@/utils/hooks";
+import FileUploadDrawer from "@/components/FileUploadDrawer";
 
 const FilesPage: React.FC<{}> = (props) => {
+  const [FileUploadDrawerVisible, setFileUploadDrawerVisible] = useState(false);
   interface FileItem {
     name: string;
     length: number;
@@ -64,7 +66,9 @@ const FilesPage: React.FC<{}> = (props) => {
             type="primary"
             icon={<PlusOutlined />}
             size={"middle"}
-            // onClick={onClick}
+            onClick={() => {
+              setFileUploadDrawerVisible(true);
+            }}
           >
             Add File
           </Button>
@@ -88,6 +92,13 @@ const FilesPage: React.FC<{}> = (props) => {
           />
         </div>
       </ProblemLayout>
+
+      <FileUploadDrawer
+        visible={FileUploadDrawerVisible}
+        onClose={() => {
+          setFileUploadDrawerVisible(false);
+        }}
+      />
     </>
   );
 };
