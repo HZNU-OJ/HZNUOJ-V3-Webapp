@@ -28,10 +28,10 @@ const UploadDragger: React.FC<{}> = (props) => {
     listType: "picture",
     defaultFileList: [...fileList],
     action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-    previewFile(url: string) {
-      alert(url);
-    },
-    showUploadList: false,
+    // previewFile(url: string) {
+    //   alert(url);
+    // },
+    // showUploadList: false,
     onChange(info: any) {
       const { status } = info.file;
       if (status !== "uploading") {
@@ -43,9 +43,9 @@ const UploadDragger: React.FC<{}> = (props) => {
         message.error(`${info.file.name} file upload failed.`);
       }
     },
-    onDownload(url: string) {
-      alert(url);
-    },
+    // onDownload(url: string) {
+    //   alert(url);
+    // },
   };
 
   return (
