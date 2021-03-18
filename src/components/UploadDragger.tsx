@@ -25,8 +25,8 @@ const UploadDragger: React.FC<{}> = (props) => {
   const _props = {
     name: "file",
     multiple: true,
-    listType: "picture",
-    defaultFileList: [...fileList],
+    // listType: "picture",
+    // defaultFileList: [...fileList],
     action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     // previewFile(url: string) {
     //   alert(url);
