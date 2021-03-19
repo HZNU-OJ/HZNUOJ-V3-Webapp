@@ -64,7 +64,7 @@ function getTableDataSource(): ContestItem[] {
     dataSource.push({
       id: i,
       contestName: `2020 Intelligent Video Coding Contest ${i}`,
-      writers: ["Dup4", "Hsueh-", "ltslts"].join(", "),
+      writers: ["Dup4", "Hsueh-", "ltslts"].join("\n"),
       start: 1613656156 + i * 100,
       end: 1613656156 + 10 * i * 100,
       status: Frozen2Running(
