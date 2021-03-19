@@ -29,7 +29,7 @@ const DiscussionViewPage: React.FC<{}> = (props) => {
 
   return (
     <>
-      <BasicLayout current={"discussion"}>
+      <BasicLayout current={"discussions"}>
         <div className={style.root}>
           <div className={style.breadCrumb}>
             <Breadcrumb separator=">">
