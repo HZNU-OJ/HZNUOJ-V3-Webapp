@@ -8,6 +8,9 @@ import style from "./ContestLayout.module.less";
 
 import { menuItem } from "@/interface/menu.interface";
 
+import Divider from "@/components/Divider";
+import ContestHeader from "../components/ContestHeader";
+
 function topBarItemRender(current: string, itemList: menuItem[]): string {
   let html = "";
   itemList.forEach((item: menuItem) => {
@@ -198,7 +201,13 @@ const ContestLayout: React.FC<ContestLayoutProps> = (props) => {
             }}
           >
             <div className={style.secondRoot}>
-              <div className={style.main}>{props.children}</div>
+              <div className={style.main}>
+                <div className={style.contestHeader}>
+                  <ContestHeader />
+                  <Divider />
+                </div>
+                {props.children}
+              </div>
               <Footer />
             </div>
           </div>
