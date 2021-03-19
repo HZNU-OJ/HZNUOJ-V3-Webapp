@@ -31,7 +31,7 @@ const Footer: React.FC<{}> = (props) => {
           title="GitHub"
           target="_blank"
           rel="noreferrer noopener"
-          href="https://github.com/hznu-oj"
+          href="https://github.com/HZNU-OJ/HZNUOJ"
         >
           <GithubIcon />
         </a>
