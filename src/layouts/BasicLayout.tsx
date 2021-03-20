@@ -59,6 +59,11 @@ function topBar(brand: string, current: string, username?: string | null) {
         name: "My Submissions",
         link: "/",
       },
+      {
+        id: "my_discussions",
+        name: "My Discussions",
+        link: "/",
+      },
     ],
     [
       {
