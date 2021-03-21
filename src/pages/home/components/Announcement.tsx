@@ -44,17 +44,15 @@ const Announcement: React.FC<{}> = (props) => {
       <div className="am-panel-hd" style={{ padding: "2px 5px", fontSize: 16 }}>
         Announcement
       </div>
-      <div className="am-panel-bd" style={{ padding: "5px" }}>
-        <table className="am-table">
-          <thead>
-            <tr>
-              <th className={style.tableTitle}>Title</th>
-              <th className={style.tableDate}>Date</th>
-            </tr>
-          </thead>
-          <tbody>{getData()}</tbody>
-        </table>
-      </div>
+      <table className="am-table">
+        <thead>
+          <tr>
+            <th className={style.tableTitle}>Title</th>
+            <th className={style.tableDate}>Date</th>
+          </tr>
+        </thead>
+        <tbody>{getData()}</tbody>
+      </table>
     </div>
   );
 };
