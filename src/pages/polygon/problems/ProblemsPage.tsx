@@ -165,7 +165,7 @@ const ProblemsPage: React.FC<{}> = (props) => {
     <>
       <PolygonLayout current={"problem"}>
         <div className={style.root}>
-          <div className={style.opBtn}>
+          <div className={style.addBtn}>
             <Button
               type="primary"
               icon={<PlusOutlined />}
