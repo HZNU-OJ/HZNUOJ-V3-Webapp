@@ -5,6 +5,11 @@ export default [
     exact: true,
   },
   {
+    path: "/discussion/new",
+    component: "@/pages/discussion/new/DiscussionNewPage",
+    export: true,
+  },
+  {
     path: "/discussion/:id",
     component: "@/pages/discussion/view/DiscussionViewPage",
     exact: true,
