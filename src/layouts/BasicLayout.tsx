@@ -72,8 +72,8 @@ function topBar(brand: string, current: string, username?: string | null) {
         link: "/polygon",
       },
       {
-        id: "admin",
-        name: "Admin",
+        id: "administration",
+        name: "Administration",
         link: "/admin",
       },
     ],
