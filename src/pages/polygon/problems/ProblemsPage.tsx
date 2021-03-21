@@ -54,7 +54,6 @@ const AddProblemModel: React.FC<AddProblemModelProps> = (props) => {
         <Form
           form={form}
           layout="vertical"
-          name={"ddd"}
           style={{
             width: "98%",
             margin: 5,
@@ -64,7 +63,7 @@ const AddProblemModel: React.FC<AddProblemModelProps> = (props) => {
           <Form.Item>
             <Form.Item
               name="name"
-              label="name"
+              label="Name"
               tooltip="The name is not the name in the statement. It is just a sign. And can be duplicate."
             >
               <Input />
