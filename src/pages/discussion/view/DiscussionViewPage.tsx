@@ -60,14 +60,14 @@ const DiscussionViewPage: React.FC<{}> = (props) => {
             <div className={style.discussionBox}>
               <DiscussionBox />
             </div>
-            <div className={style.markdownEditor}>
+            {/* <div className={style.markdownEditor}>
               <LazyMarkDownEditor
                 height={isMobile ? "220" : "500"}
                 language={"markdown"}
                 value={editorValue}
                 onChange={(value) => setEditorValue(value)}
               />
-            </div>
+            </div> */}
           </div>
         </div>
       </BasicLayout>
