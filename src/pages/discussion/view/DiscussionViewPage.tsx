@@ -24,6 +24,7 @@ const DiscussionViewPage: React.FC<{}> = (props) => {
   const [replyCount, setReplyCount] = useState(0);
   const [content, setContent] = useState("");
   const [username, setUsername] = useState("");
+  const [publishTime, setPublishTime] = useState("");
 
   const isMobile = useScreenWidthWithin(0, 577);
   const [editorValue, setEditorValue] = useState("");
@@ -45,6 +46,7 @@ const DiscussionViewPage: React.FC<{}> = (props) => {
       setReplyCount(response.discussion.meta.replyCount);
       setContent(response.discussion.content);
       setUsername(response.discussion.publisher.username);
+      setPublishTime(response.discussion.meta.publishTime);
       setLoaded(true);
     }
   }
@@ -79,7 +81,11 @@ const DiscussionViewPage: React.FC<{}> = (props) => {
             </div>
             <div className={style.boxList}>
               <div className={style.discussionBox}>
-                <DiscussionBox username={username} content={content} />
+                <DiscussionBox
+                  username={username}
+                  content={content}
+                  publishTime={publishTime}
+                />
               </div>
               {/* <div className={style.discussionBox}>
               <DiscussionBox />

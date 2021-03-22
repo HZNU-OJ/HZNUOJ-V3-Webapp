@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Table, message } from "antd";
+import { Table, message, Tooltip } from "antd";
 import { ColumnsType } from "antd/es/table";
 import AntTableHeadStyles from "@/less/AntTableHead.module.less";
 import { useTableSearch } from "@/utils/hooks";
+import { formatDateTime } from "@/utils/formatDateTime";
 
 import api from "@/api";
 
@@ -71,6 +72,14 @@ const DiscussionsTable: React.FC<DiscussionsTableProps> = (props) => {
       key: "lastUpdated",
       width: 220,
       align: "center",
+      render: (lastUpdated: string) => {
+        const [withoutYear, withYear] = formatDateTime(lastUpdated);
+        return (
+          <Tooltip placement="top" title={withYear}>
+            <span>{withoutYear}</span>
+          </Tooltip>
+        );
+      },
     },
   ];
 
