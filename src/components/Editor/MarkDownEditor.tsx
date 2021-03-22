@@ -88,14 +88,14 @@ const MarkDownEditor: React.FC<MarkDownEditorProps> = (props) => {
                   <LazyMarkdownContent content={content} noSanitize={true} />
                 </div>
               </TabPane>
-              <TabPane tab="Upload" key="3">
+              {/* <TabPane tab="Upload" key="3">
                 <div
                   className={style.upload}
                   style={{ height: parseInt(props.height) }}
                 >
                   <UploadDragger />
                 </div>
-              </TabPane>
+              </TabPane> */}
             </Tabs>
           </div>
 
