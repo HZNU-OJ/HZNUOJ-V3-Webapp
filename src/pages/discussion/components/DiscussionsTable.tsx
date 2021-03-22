@@ -1,15 +1,32 @@
-import React from "react";
-import { Table } from "antd";
+import React, { useEffect, useState } from "react";
+import { Table, message } from "antd";
 import { ColumnsType } from "antd/es/table";
 import AntTableHeadStyles from "@/less/AntTableHead.module.less";
 import { useTableSearch } from "@/utils/hooks";
 
+import api from "@/api";
+
+interface titleItem {
+  id: number;
+  name: string;
+}
+
+interface actionItem {
+  id: number;
+}
+
 interface DiscussionItem {
   id: number;
-  title: string;
+  title: titleItem;
   publisher: string;
   replies: number;
   lastUpdated: string;
+  action: actionItem;
+}
+
+interface DiscussionsTableProps {
+  publisherId: number;
+  isMe?: boolean;
 }
 
 enum DiscussionsTableHeadTitle {
@@ -17,17 +34,20 @@ enum DiscussionsTableHeadTitle {
   publisher = "Publisher",
   replies = "Replies",
   lastUpdated = "Last Updated",
+  action = "Action",
 }
 
-const DiscussionsTable: React.FC<{}> = (props) => {
+const DiscussionsTable: React.FC<DiscussionsTableProps> = (props) => {
   const columns: ColumnsType<DiscussionItem> = [
     {
       title: DiscussionsTableHeadTitle.title,
       dataIndex: "title",
       key: "title",
-      width: 680,
+      width: 500,
       align: "left",
-      ...useTableSearch("title", DiscussionsTableHeadTitle.title),
+      render: (title: titleItem) => {
+        return <a href={`/discussion/${title.id}`}>{title.name}</a>;
+      },
     },
     {
       title: DiscussionsTableHeadTitle.publisher,
@@ -54,14 +74,79 @@ const DiscussionsTable: React.FC<{}> = (props) => {
     },
   ];
 
+  if (props.isMe) {
+    columns.push({
+      title: DiscussionsTableHeadTitle.action,
+      dataIndex: "action",
+      key: "action",
+      width: 180,
+      align: "left",
+      render: (action: actionItem) => {
+        return (
+          <>
+            <div
+              style={{
+                padding: 5,
+              }}
+            >
+              <a href={`/discussion/${action.id}/edit`}>Edit</a>
+            </div>
+          </>
+        );
+      },
+    });
+  }
+
+  const [fetchLoading, setFetchLoading] = useState(true);
+  const [tableData, setTableData] = useState([] as DiscussionItem[]);
+
+  async function fetchTableData() {
+    const { requestError, response } = await api.discussion.queryDiscussions({
+      locale: "en_US",
+      publisherId: props.publisherId ?? 0,
+      nonpublic: false,
+      titleOnly: false,
+      skipCount: 0,
+      takeCount: 0,
+    });
+
+    if (requestError) {
+      message.error(requestError);
+    } else {
+      let _tableData: DiscussionItem[] = [];
+      response.discussions.forEach((item) => {
+        _tableData.push({
+          id: item.meta.id,
+          title: {
+            id: item.meta.id,
+            name: item.meta.title,
+          },
+          publisher: item.publisher.username,
+          replies: item.meta.replyCount,
+          lastUpdated: item.meta.editTime ?? item.meta.publishTime,
+          action: {
+            id: item.meta.id,
+          },
+        });
+      });
+      setTableData(_tableData);
+      setFetchLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchTableData();
+  }, []);
+
   return (
     <>
       <Table<DiscussionItem>
+        loading={fetchLoading}
         size="small"
         scroll={{ x: 1180 }}
         sticky
         columns={columns}
-        // dataSource={getTableDataSource()}
+        dataSource={tableData}
         className={AntTableHeadStyles.table}
         rowKey={(record) => record.id}
         pagination={{

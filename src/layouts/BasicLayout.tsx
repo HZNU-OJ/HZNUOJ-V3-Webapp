@@ -37,7 +37,12 @@ function userItemListRender(itemList: menuItem[][], username: string): string {
   return html;
 }
 
-function topBar(brand: string, current: string, username?: string | null) {
+function topBar(
+  brand: string,
+  current: string,
+  username?: string | null,
+  id?: number | null,
+) {
   const leftItemList = [
     { id: "contests", name: "Contests", link: "/contests" },
     { id: "problem_set", name: "Problem Set", link: "/problemset" },
@@ -62,7 +67,7 @@ function topBar(brand: string, current: string, username?: string | null) {
       {
         id: "my_discussions",
         name: "My Discussions",
-        link: `/discussions?username=${username ?? ""}`,
+        link: `/discussions?publisherId=${id ?? ""}`,
       },
     ],
     [
@@ -125,6 +130,7 @@ function topBar(brand: string, current: string, username?: string | null) {
 interface HeaderProps {
   current: string;
   username?: string | null;
+  id?: number | null;
 }
 
 const Header: React.FC<HeaderProps> = (props) => {
@@ -134,6 +140,7 @@ const Header: React.FC<HeaderProps> = (props) => {
         "HZNU Online Judge",
         props.current,
         props.username,
+        props.id,
       )}
     ></div>
   );
@@ -170,6 +177,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
           <Header
             current={props.current}
             username={initialState?.userMeta?.username}
+            id={initialState?.userMeta?.id}
           />
           <div
             className={style.root}
