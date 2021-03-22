@@ -14,4 +14,9 @@ export default [
     component: "@/pages/discussion/view/DiscussionViewPage",
     exact: true,
   },
+  {
+    path: "/discussion/:id/edit",
+    component: "@/pages/discussion/edit/DiscussionEditPage",
+    exact: true,
+  },
 ];

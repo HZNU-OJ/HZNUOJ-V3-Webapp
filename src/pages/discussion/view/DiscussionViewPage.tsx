@@ -67,7 +67,9 @@ const DiscussionViewPage: React.FC<{}> = (props) => {
           >
             <div className={style.breadCrumb}>
               <Breadcrumb separator=">">
-                <Breadcrumb.Item href="">Discussion</Breadcrumb.Item>
+                <Breadcrumb.Item href="/discussions">
+                  Discussion
+                </Breadcrumb.Item>
                 <Breadcrumb.Item href="">General</Breadcrumb.Item>
               </Breadcrumb>
             </div>
