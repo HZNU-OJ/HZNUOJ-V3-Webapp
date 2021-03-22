@@ -40,6 +40,7 @@ type avatarType = "gravatar" | "qq" | "github";
 
 interface UpdateProfileFormProps {
   username: string;
+  nickname: string;
   email: string;
   organization: string;
   location: string;
@@ -105,6 +106,7 @@ const ProfilePage: React.FC<{}> = (props) => {
       console.log(response);
       const _profile: UpdateProfileFormProps = {
         username: response.meta.username,
+        nickname: response.meta.nickname,
         email: response.meta.email,
         organization: response.information.organization,
         location: response.information.location,
@@ -142,7 +144,7 @@ const ProfilePage: React.FC<{}> = (props) => {
       email: formProps.email,
       publicEmail: formProps.publicEmail,
       avatarInfo: getAvatarInfo(formProps),
-      nickname: "",
+      nickname: formProps.nickname,
       bio: "",
       information: {
         organization: formProps.organization,
@@ -230,6 +232,10 @@ const ProfilePage: React.FC<{}> = (props) => {
                 <div className={style["form-item-footer"]}>
                   <span>Goto the Security pane for changing Email.</span>
                 </div>
+              </Form.Item>
+
+              <Form.Item name="nickname" label="Nickname">
+                <Input />
               </Form.Item>
 
               <Form.Item
