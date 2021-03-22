@@ -17,7 +17,7 @@ const LazyMarkDownEditor: React.FC<LazyMarkDownEditorProps> = (props) => {
     <div
       className={LoadingStyle.center}
       style={{
-        height: parseInt(props.height) ?? 500,
+        height: props.height ? parseInt(props.height) + 74 : 500,
       }}
     >
       <Loading />
