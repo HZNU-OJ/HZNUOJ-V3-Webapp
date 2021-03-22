@@ -46,6 +46,7 @@ const DiscussionsTable: React.FC<DiscussionsTableProps> = (props) => {
       key: "title",
       width: 500,
       align: "left",
+      ...useTableSearch("title", DiscussionsTableHeadTitle.title),
       render: (title: titleItem) => {
         return <a href={`/discussion/${title.id}`}>{title.name}</a>;
       },
@@ -57,6 +58,9 @@ const DiscussionsTable: React.FC<DiscussionsTableProps> = (props) => {
       width: 180,
       align: "center",
       ...useTableSearch("publisher", DiscussionsTableHeadTitle.publisher),
+      render: (publisher: string) => {
+        return <a href={`/user/${publisher}`}>{publisher}</a>;
+      },
     },
     {
       title: DiscussionsTableHeadTitle.replies,
