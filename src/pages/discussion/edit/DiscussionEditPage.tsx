@@ -52,24 +52,6 @@ const DiscussionEditPage: React.FC<{}> = (props) => {
     fetchDate();
   }, []);
 
-  async function onDelete() {
-    setDeleteLoading(true);
-    const { requestError, response } = await api.discussion.deleteDiscussion({
-      discussionId: parseInt(params.id),
-    });
-
-    setDeleteLoading(false);
-
-    if (requestError) {
-      message.error(requestError);
-    } else {
-      message.success(`Delete Discussion(id:${params.id}) Successfully!`);
-      setTimeout(() => {
-        history.push("/discussions");
-      }, 500);
-    }
-  }
-
   async function onChangePublic() {
     setChangePublicLoading(true);
     const { requestError, response } = await api.discussion.setDiscussionPublic(
@@ -81,8 +63,8 @@ const DiscussionEditPage: React.FC<{}> = (props) => {
 
     setChangePublicLoading(false);
 
-    if (requestError) {
-      message.error(requestError);
+    if (response?.error) {
+      message.error(response.error);
     } else {
       setIsPublic((isPublic) => !isPublic);
       message.success(
@@ -90,6 +72,24 @@ const DiscussionEditPage: React.FC<{}> = (props) => {
           isPublic ? "Public" : "Private"
         } Successfully!`,
       );
+    }
+  }
+
+  async function onDelete() {
+    setDeleteLoading(true);
+    const { requestError, response } = await api.discussion.deleteDiscussion({
+      discussionId: parseInt(params.id),
+    });
+
+    setDeleteLoading(false);
+
+    if (response?.error) {
+      message.error(response.error);
+    } else {
+      message.success(`Delete Discussion(id:${params.id}) Successfully!`);
+      setTimeout(() => {
+        history.push("/discussions");
+      }, 500);
     }
   }
 
@@ -103,8 +103,8 @@ const DiscussionEditPage: React.FC<{}> = (props) => {
 
     setSubmitLoading(false);
 
-    if (requestError) {
-      message.error(requestError);
+    if (response?.error) {
+      message.error(response.error);
     } else {
       message.success("Update Sucessful!");
     }
