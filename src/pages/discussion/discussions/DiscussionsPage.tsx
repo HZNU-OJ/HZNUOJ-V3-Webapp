@@ -13,7 +13,7 @@ const DiscussionsPage: React.FC<{}> = (props) => {
   const { initialState, loading } = useModel("@@initialState");
 
   const [isMe, setIsMe] = useState(
-    initialState.userMeta.id == (location?.query?.publisherId ?? 0),
+    initialState?.userMeta?.id == (location?.query?.publisherId ?? 0),
   );
 
   const [publisherId, setPublisherId] = useState(
