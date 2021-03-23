@@ -23,10 +23,13 @@ function userItemListRender(itemList: menuItem[][], username: string): string {
   html += `<li class="am-dropdown" data-am-dropdown>`;
   html += `
   <a class='am-dropdown-toggle' data-am-dropdown-toggle href='javascript:;'>
-  <span class='am-icon-user'></span>&nbsp;Dup4&nbsp;<span class='am-icon-caret-down'></span>
+  <span class='am-icon-user'></span>&nbsp;${username}&nbsp;<span class='am-icon-caret-down'></span>
   </a>`;
   html += `<ul class="am-dropdown-content">`;
   for (let i = 0; i < itemList.length; ++i) {
+    if (itemList[i].length === 0) {
+      continue;
+    }
     itemList[i].forEach((item: menuItem) => {
       html += `<li><a href="${item.link}">${item.name}</a></li>`;
     });
@@ -42,6 +45,7 @@ function topBar(
   current: string,
   username?: string | null,
   id?: number | null,
+  isAdmin?: boolean | null,
 ) {
   const leftItemList = [
     { id: "contests", name: "Contests", link: "/contests" },
@@ -64,24 +68,30 @@ function topBar(
         name: "My Submissions",
         link: `/submissions?username=${username ?? ""}`,
       },
-      {
-        id: "my_discussions",
-        name: "My Discussions",
-        link: `/discussions?publisherId=${id ?? ""}`,
-      },
+      ...(isAdmin
+        ? [
+            {
+              id: "my_discussions",
+              name: "My Discussions",
+              link: `/discussions?publisherId=${id ?? ""}`,
+            },
+          ]
+        : []),
     ],
-    [
-      {
-        id: "polygon",
-        name: "Polygon",
-        link: "/polygon",
-      },
-      {
-        id: "administration",
-        name: "Administration",
-        link: "/admin",
-      },
-    ],
+    isAdmin
+      ? [
+          {
+            id: "polygon",
+            name: "Polygon",
+            link: "/polygon",
+          },
+          {
+            id: "administration",
+            name: "Administration",
+            link: "/admin",
+          },
+        ]
+      : [],
     [
       {
         id: "settings",
@@ -131,6 +141,7 @@ interface HeaderProps {
   current: string;
   username?: string | null;
   id?: number | null;
+  isAdmin?: boolean | null;
 }
 
 const Header: React.FC<HeaderProps> = (props) => {
@@ -141,6 +152,7 @@ const Header: React.FC<HeaderProps> = (props) => {
         props.current,
         props.username,
         props.id,
+        props.isAdmin,
       )}
     ></div>
   );
@@ -178,6 +190,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
             current={props.current}
             username={initialState?.userMeta?.username}
             id={initialState?.userMeta?.id}
+            isAdmin={initialState?.userMeta?.isAdmin}
           />
           <div
             className={style.root}

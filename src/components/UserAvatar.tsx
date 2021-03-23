@@ -20,7 +20,7 @@ function getAvatarUrl(avatar: ApiTypes.UserAvatarDto, size: number) {
     case "gravatar":
       return `${ensureTrailingSlash("https://s.gravatar.com")}avatar/${
         avatar.key
-      }?size=${size}&default=404`;
+      }?size=${size}`;
     case "qq":
       let sizeParam: number;
       if (size <= 40) sizeParam = 1;

@@ -4,7 +4,7 @@ import { ColumnsType } from "antd/es/table";
 import AntTableHeadStyles from "@/less/AntTableHead.module.less";
 import { useTableSearch } from "@/utils/hooks";
 import { formatDateTime } from "@/utils/formatDateTime";
-
+import style from "./DiscussionsTable.module.less";
 import api from "@/api";
 
 interface titleItem {
@@ -48,7 +48,15 @@ const DiscussionsTable: React.FC<DiscussionsTableProps> = (props) => {
       align: "left",
       ...useTableSearch("title", DiscussionsTableHeadTitle.title),
       render: (title: titleItem) => {
-        return <a href={`/discussion/${title.id}`}>{title.name}</a>;
+        return (
+          <span className={"h-ellipsis"}>
+            <a href={`/discussion/${title.id}`}>
+              <Tooltip placement="top" title={title.name}>
+                <span>{title.name}</span>
+              </Tooltip>
+            </a>
+          </span>
+        );
       },
     },
     {
@@ -153,23 +161,25 @@ const DiscussionsTable: React.FC<DiscussionsTableProps> = (props) => {
 
   return (
     <>
-      <Table<DiscussionItem>
-        loading={fetchLoading}
-        size="small"
-        scroll={{ x: 1180 }}
-        sticky
-        columns={columns}
-        dataSource={tableData}
-        className={AntTableHeadStyles.table}
-        rowKey={(record) => record.id}
-        pagination={{
-          hideOnSinglePage: true,
-          showQuickJumper: true,
-          showSizeChanger: true,
-          defaultPageSize: 32,
-          pageSizeOptions: ["8", "16", "32", "64", "128", "256"],
-        }}
-      />
+      <div className={style.table}>
+        <Table<DiscussionItem>
+          loading={fetchLoading}
+          size="small"
+          scroll={{ x: 1180 }}
+          sticky
+          columns={columns}
+          dataSource={tableData}
+          className={AntTableHeadStyles.table}
+          rowKey={(record) => record.id}
+          pagination={{
+            hideOnSinglePage: true,
+            showQuickJumper: true,
+            showSizeChanger: true,
+            defaultPageSize: 32,
+            pageSizeOptions: ["8", "16", "32", "64", "128", "256"],
+          }}
+        />
+      </div>
     </>
   );
 };
