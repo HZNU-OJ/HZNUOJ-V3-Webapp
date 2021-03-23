@@ -1,7 +1,12 @@
 export default [
   {
     path: "/admin",
-    component: "@/pages/admin/home/AdminHomePage",
+    exact: true,
+    redirect: "/admin/judge-machine",
+  },
+  {
+    path: "/admin/judge-machine",
+    component: "@/pages/admin/general/JudgeMachinePage",
     exact: true,
   },
 ];
