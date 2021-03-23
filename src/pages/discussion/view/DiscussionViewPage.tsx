@@ -46,7 +46,10 @@ const DiscussionViewPage: React.FC<{}> = (props) => {
       setReplyCount(response.discussion.meta.replyCount);
       setContent(response.discussion.content);
       setUsername(response.discussion.publisher.username);
-      setPublishTime(response.discussion.meta.publishTime);
+      setPublishTime(
+        response.discussion.meta.editTime ??
+          response.discussion.meta.publishTime,
+      );
       setLoaded(true);
     }
   }
