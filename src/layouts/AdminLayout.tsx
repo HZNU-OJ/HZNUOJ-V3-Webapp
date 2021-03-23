@@ -39,7 +39,7 @@ function userItemListRender(itemList: menuItem[][], username: string): string {
 
 function topBar(brand: string, current: string, username?: string | null) {
   const leftItemList = [
-    { id: "general", name: "General", link: "/admin/general" },
+    { id: "general", name: "General", link: "/admin" },
     { id: "problem", name: "Problem", link: "/admin/problem" },
     { id: "content", name: "Content", link: "/admin/contest" },
   ];
