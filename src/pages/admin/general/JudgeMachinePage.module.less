@@ -1,0 +1,45 @@
+.addBtn {
+  text-align: left;
+}
+
+.table {
+  padding-top: 10px;
+  font-weight: bold;
+}
+
+.statusBadge {
+  display: inline-block;
+  box-sizing: inherit;
+  width: 0.5em;
+  min-width: 0;
+  height: 0.5em;
+  min-height: 0;
+  margin: 0 0.14285714em;
+  margin-right: 10px !important;
+  margin-left: 0;
+  padding: 0.5em !important;
+  overflow: hidden;
+  font-weight: 700;
+  font-size: 0.85714286rem;
+  line-height: 1em;
+  white-space: nowrap;
+  text-align: center;
+  text-transform: none;
+  vertical-align: baseline;
+  background-image: none;
+  border: 0 solid transparent;
+  border-radius: 500rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  transition: background 0.1s ease;
+
+  &.online {
+    background-color: #21ba45;
+    border-color: #21ba45;
+  }
+
+  &.offline {
+    background-color: #13c2c2;
+    border-color: #13c2c2;
+  }
+}
