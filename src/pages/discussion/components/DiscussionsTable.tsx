@@ -128,7 +128,7 @@ const DiscussionsTable: React.FC<DiscussionsTableProps> = (props) => {
       nonpublic: false,
       titleOnly: false,
       skipCount: 0,
-      takeCount: 0,
+      takeCount: 1000000,
     });
 
     if (requestError) {
