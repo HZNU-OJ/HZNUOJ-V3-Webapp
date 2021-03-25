@@ -41,6 +41,7 @@ enum ProblemTableHeadTitle {
 const ProblemsPage: React.FC<{}> = (props) => {
   const [fetchDataLoading, setFetchDataLoading] = useState(true);
   const [addProblemModelVisible, setAddProblemModelVisible] = useState(false);
+  const [deleteVisible, setDeleteVisible] = useState(false);
 
   const [tableData, setTableData] = useState([] as ProblemItem[]);
 
