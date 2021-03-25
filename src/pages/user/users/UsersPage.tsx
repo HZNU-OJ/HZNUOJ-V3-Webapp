@@ -78,6 +78,9 @@ const UsersPage: React.FC<{}> = (props) => {
       width: 180,
       align: "left",
       ...useTableSearch("username", UsersTableHeadTitle.username),
+      render: (username: string) => (
+        <a href={`/user/${username}`}>{username}</a>
+      ),
     },
     {
       title: UsersTableHeadTitle.organization,
