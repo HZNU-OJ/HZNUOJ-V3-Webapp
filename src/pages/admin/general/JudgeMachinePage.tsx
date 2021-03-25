@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import GeneralLayout from "./components/GeneralLayout";
-import { Button, Form, Modal, Input, message, Space, Popconfirm } from "antd";
+import GeneralLayout from "./layouts/GeneralLayout";
+import { Button, message, Space, Popconfirm } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import style from "./JudgeMachinePage.module.less";
 import AntTableHeadStyles from "@/less/AntTableHead.module.less";
@@ -8,94 +8,26 @@ import { Table, Tooltip } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { useTableSearch } from "@/utils/hooks";
 import copyToClipboard from "@/utils/copyToClipboard";
+import { AddJudgeMachineModel } from "./components";
 
 import api from "@/api";
 
-interface AddJudgeMachineModelProps {
-  visible: boolean;
-  confirmLoading?: any;
-  title?: string;
-  onOk?: any;
-  onCancel?: any;
+interface JudgeClientSystemInfo {
+  os: string;
+  kernel: string;
+  arch: string;
+  cpu: {
+    model: string;
+    flags: string;
+    cache: Record<string, number>;
+  };
+  memory: {
+    size: number;
+    description: string;
+  };
+  languages: {};
+  extraInfo: string;
 }
-
-const AddJudgeMachineModel: React.FC<AddJudgeMachineModelProps> = (props) => {
-  const [confirmLoading, setConfirmLoading] = useState(false);
-
-  interface AddJudgeMachineParams {
-    name: string;
-  }
-
-  const [form] = Form.useForm();
-
-  async function confirmAction(value: AddJudgeMachineParams) {
-    setConfirmLoading(true);
-
-    const { requestError, response } = await api.judgeClient.addJudgeClient({
-      name: value.name,
-      allowedHosts: [],
-    });
-
-    if (response?.error) {
-      message.error(response.error);
-    } else {
-      message.success("Add Sucessfully!");
-      if (props.onCancel) {
-        props.onCancel();
-      }
-    }
-
-    setConfirmLoading(false);
-  }
-
-  return (
-    <>
-      <Modal
-        title={"Add Judge Machine"}
-        okText={"Submit"}
-        cancelText={"Cancel"}
-        getContainer={false}
-        maskClosable={true}
-        destroyOnClose={true}
-        visible={props.visible}
-        confirmLoading={props.confirmLoading || confirmLoading}
-        onCancel={props.onCancel ?? (() => {})}
-        onOk={() => {
-          form
-            .validateFields()
-            .then((values) => {
-              form.resetFields();
-              form.setFieldsValue(values);
-              confirmAction(values);
-            })
-            .catch((info) => {
-              console.log("Confirm Error:", info);
-            });
-        }}
-      >
-        <Form
-          form={form}
-          layout="vertical"
-          style={{
-            width: "98%",
-            margin: 5,
-            marginBottom: -40,
-          }}
-        >
-          <Form.Item>
-            <Form.Item
-              name="name"
-              label="Name"
-              tooltip="The Judge Machine Name."
-            >
-              <Input />
-            </Form.Item>
-          </Form.Item>
-        </Form>
-      </Modal>
-    </>
-  );
-};
 
 interface actionItem {
   id: number;
@@ -106,8 +38,9 @@ interface JudgeMachineItem {
   id: number;
   status: boolean;
   name: string;
-  cpu: string;
+  cpu: ApiTypes.JudgeClientInfoDto;
   memory: string;
+  os: string;
   kernal: string;
   action: actionItem;
 }
@@ -118,6 +51,7 @@ enum JudgeMachineHeadTitle {
   name = "Name",
   cpu = "CPU",
   memory = "Memory",
+  os = "OS",
   kernal = "Kernel",
   action = "Action",
 }
@@ -129,13 +63,93 @@ const JudgeMachinePage: React.FC<{}> = (props) => {
   ] = useState(false);
   const [tableData, setTableData] = useState([]);
 
-  const [fetchDataLoading, setFetchDataLoading] = useState(true);
-  const [deleteLoading, setDeleteLoading] = useState(false);
+  function getCpu(judgeClient: ApiTypes.JudgeClientInfoDto) {
+    if (judgeClient.systemInfo && judgeClient.systemInfo) {
+      const systemInfo = judgeClient.systemInfo as JudgeClientSystemInfo;
+      const hasFlags = !!systemInfo.cpu.flags;
+      const hasCache =
+        systemInfo.cpu.cache &&
+        typeof systemInfo.cpu.cache === "object" &&
+        Object.keys(systemInfo.cpu.cache).length !== 0;
 
+      return systemInfo.cpu.model;
+
+      // return (
+
+      //   <Popup
+      //     trigger={<span>{systemInfo.cpu.model}</span>}
+      //     disabled={!hasFlags && !hasCache}
+      //     content={
+      //       <>
+      //         {hasFlags && (
+      //           <>
+      //             <Header content="Flags" />
+      //             <p className={style.cpuFlags}>
+      //               <code>{systemInfo.cpu.flags}</code>
+      //             </p>
+      //           </>
+      //         )}
+      //         {hasCache && (
+      //           <>
+      //             <Header content="Cache" />
+      //             <table className={style.cpuCache}>
+      //               <tbody>
+      //                 {Object.entries(systemInfo.cpu.cache).map(([name, value]) => (
+      //                   <tr key={name}>
+      //                     <td align="left" className={style.cpuCacheName}>
+      //                       <strong>{name}</strong>
+      //                     </td>
+      //                     <td>{Math.round(value / 1024) + " KiB"}</td>
+      //                   </tr>
+      //                 ))}
+      //               </tbody>
+      //             </table>
+      //           </>
+      //         )}
+      //       </>
+      //     }
+      //     hoverable
+      //     position="bottom center"
+      //   />
+      // );
+    }
+    return "-";
+  }
+
+  function getMemory(judgeClient: ApiTypes.JudgeClientInfoDto) {
+    if (judgeClient.systemInfo && judgeClient.systemInfo) {
+      const systemInfo = judgeClient.systemInfo as JudgeClientSystemInfo;
+      return (
+        systemInfo.memory.description +
+        " (" +
+        Math.round(systemInfo.memory.size / 1024) +
+        " MiB)"
+      );
+    }
+    return "-";
+  }
+
+  function getKernel(judgeClient: ApiTypes.JudgeClientInfoDto) {
+    if (judgeClient.systemInfo && judgeClient.systemInfo) {
+      const systemInfo = judgeClient.systemInfo as JudgeClientSystemInfo;
+      return systemInfo.kernel;
+    }
+    return "-";
+  }
+
+  function getOS(judgeClient: ApiTypes.JudgeClientInfoDto) {
+    if (judgeClient.systemInfo && judgeClient.systemInfo) {
+      const systemInfo = judgeClient.systemInfo as JudgeClientSystemInfo;
+      return systemInfo.os;
+    }
+    return "-";
+  }
+
+  const [fetchDataLoading, setFetchDataLoading] = useState(true);
   async function fetchDate() {
     const { requestError, response } = await api.judgeClient.listJudgeClients();
 
-    let _tableData = [];
+    let _tableData: JudgeMachineItem[] = [];
     if (requestError) {
       message.error(requestError);
     } else {
@@ -143,25 +157,23 @@ const JudgeMachinePage: React.FC<{}> = (props) => {
         _tableData.push({
           id: item.id,
           name: item.name,
-          cpu: "",
-          memory: "",
-          kernal: "",
+          cpu: item,
+          memory: getMemory(item),
+          os: getOS(item),
+          kernal: getKernel(item),
+          status: item.online,
           action: {
             id: item.id,
             key: item.key,
           },
         });
       });
-      console.log(response);
       setTableData(_tableData);
       setFetchDataLoading(false);
     }
   }
 
-  useEffect(() => {
-    fetchDate();
-  }, [addJudgeMachineModalVisible, deleteLoading]);
-
+  const [deleteLoading, setDeleteLoading] = useState(false);
   async function onDelete(id: number) {
     setDeleteLoading(true);
     const { requestError, response } = await api.judgeClient.deleteJudgeClient({
@@ -175,12 +187,16 @@ const JudgeMachinePage: React.FC<{}> = (props) => {
     setDeleteLoading(false);
   }
 
+  useEffect(() => {
+    fetchDate();
+  }, [addJudgeMachineModalVisible, deleteLoading]);
+
   const columns: ColumnsType<JudgeMachineItem> = [
     {
       title: JudgeMachineHeadTitle.status,
       dataIndex: "status",
       key: "status",
-      width: 100,
+      width: 80,
       align: "left",
       render: (status: boolean) => {
         return (
@@ -199,7 +215,7 @@ const JudgeMachinePage: React.FC<{}> = (props) => {
       title: JudgeMachineHeadTitle.name,
       dataIndex: "name",
       key: "name",
-      width: 100,
+      width: 60,
       align: "left",
       ...useTableSearch("name", JudgeMachineHeadTitle.name),
     },
@@ -207,14 +223,22 @@ const JudgeMachinePage: React.FC<{}> = (props) => {
       title: JudgeMachineHeadTitle.cpu,
       dataIndex: "cpu",
       key: "cpu",
-      width: 200,
+      width: 180,
       align: "left",
+      render: getCpu,
     },
     {
       title: JudgeMachineHeadTitle.memory,
       dataIndex: "memory",
       key: "memory",
-      width: 200,
+      width: 120,
+      align: "left",
+    },
+    {
+      title: JudgeMachineHeadTitle.os,
+      dataIndex: "os",
+      key: "os",
+      width: 120,
       align: "left",
     },
     {
@@ -228,7 +252,7 @@ const JudgeMachinePage: React.FC<{}> = (props) => {
       title: JudgeMachineHeadTitle.action,
       dataIndex: "action",
       key: "action",
-      width: 100,
+      width: 70,
       align: "left",
       render: (action: actionItem) => {
         return (
