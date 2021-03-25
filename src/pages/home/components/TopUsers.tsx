@@ -9,7 +9,8 @@ function getTopUsersData() {
   const ratings = [3749, 2600, 2400, 2300, 2100, 1900, 1600, 1400, 1200, 800];
   let html = [];
   ratings.forEach((rating: number, index: number) => {
-    const name = rating >= 2400 ? "Hsueh-" : "Zhenyu Shan";
+    // const name = rating >= 2400 ? "Hsueh-" : "Zhenyu Shan";
+    const name = "Kwords";
     html.push(
       <tr key={["top", "users", index].join("-")}>
         <td style={{ textAlign: "left" }}>{index}</td>
