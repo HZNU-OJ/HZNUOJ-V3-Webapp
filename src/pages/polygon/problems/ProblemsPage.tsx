@@ -1,114 +1,116 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PolygonLayout from "@/layouts/PolygonLayout";
-import { useTableSearch } from "@/utils/hooks";
-import { Table, Button, Tooltip, Modal, Form, Input } from "antd";
+import { useTableSearch, useTableFilter } from "@/utils/hooks";
+import { Table, Button, Tooltip, message, Space, Popconfirm } from "antd";
 import { ColumnsType } from "antd/es/table";
 import AntTableHeadStyles from "@/less/AntTableHead.module.less";
 import style from "./ProblemsPage.module.less";
 import { PlusOutlined } from "@ant-design/icons";
+import AddProblemModel from "./components/AddProblemModel";
+import {
+  problemTypeEnum,
+  problemTypeList,
+} from "@/interface/problem.interface";
 
-interface AddProblemModelProps {
-  visible: boolean;
-  confirmLoading?: any;
-  title?: string;
-  onOk?: any;
-  onCancel?: any;
+import api from "@/api";
+
+interface ProblemActionParams {
+  id: number;
+  name?: string;
 }
-
-const AddProblemModel: React.FC<AddProblemModelProps> = (props) => {
-  interface AddProblemFormParams {
-    problemName: string;
-  }
-
-  const [form] = Form.useForm();
-
-  async function confirmAction(value: AddProblemFormParams) {
-    console.log(value);
-  }
-
-  return (
-    <>
-      <Modal
-        title={"Add Problem"}
-        okText={"Submit"}
-        cancelText={"Cancel"}
-        getContainer={false}
-        maskClosable={true}
-        destroyOnClose={true}
-        visible={props.visible}
-        confirmLoading={props.confirmLoading ?? false}
-        onCancel={props.onCancel ?? (() => {})}
-        onOk={() => {
-          form
-            .validateFields()
-            .then((values) => {
-              form.resetFields();
-              form.setFieldsValue(values);
-              confirmAction(values);
-            })
-            .catch((info) => {
-              console.log("Confirm Error:", info);
-            });
-        }}
-      >
-        <Form
-          form={form}
-          layout="vertical"
-          style={{
-            width: "98%",
-            margin: 5,
-            marginBottom: -40,
-          }}
-        >
-          <Form.Item>
-            <Form.Item
-              name="name"
-              label="Name"
-              tooltip="The name is not the name in the statement. It is just a sign. And can be duplicate."
-            >
-              <Input />
-            </Form.Item>
-          </Form.Item>
-        </Form>
-      </Modal>
-    </>
-  );
-};
-
 interface ProblemItem {
   id: number;
   name: string;
-  owner: string;
-  revision: string;
-  modify: number;
+  type: problemTypeEnum;
+  owner?: string;
+  revision?: string;
+  modify?: number;
+  action: ProblemActionParams;
 }
 
 enum ProblemTableHeadTitle {
   id = "#",
   name = "Name",
+  type = "Type",
   owner = "Owner",
   revision = "Rev.",
   modify = "Modify.",
-  operation = "Operation",
+  action = "Action",
 }
 
 const ProblemsPage: React.FC<{}> = (props) => {
-  const [addProblemModalVisible, setAddProblemModalVisible] = useState(false);
+  const [fetchDataLoading, setFetchDataLoading] = useState(true);
+  const [addProblemModelVisible, setAddProblemModelVisible] = useState(false);
 
-  async function onClose() {
-    setAddProblemModalVisible(false);
-  }
+  const [tableData, setTableData] = useState([] as ProblemItem[]);
 
   async function onClick() {
-    setAddProblemModalVisible(true);
+    setAddProblemModelVisible(true);
   }
+
+  async function fetchData() {
+    const { requestError, response } = await api.problem.queryProblemSet({
+      locale: "en_US",
+      skipCount: 0,
+      takeCount: 1000000,
+      nonpublic: true,
+      titleOnly: true,
+    });
+
+    if (requestError) {
+      message.error(requestError);
+    } else if (response.error) {
+      message.error(requestError);
+    } else {
+      let _tableData: ProblemItem[] = [];
+      response.result = response.result.sort((a, b) => b.meta.id - a.meta.id);
+      response.result.forEach((item) => {
+        _tableData.push({
+          id: item.meta.id,
+          name: item.title,
+          type: item.meta.type,
+          action: {
+            id: item.meta.id,
+            name: item.title,
+          },
+        });
+      });
+      setTableData(_tableData);
+      setFetchDataLoading(false);
+    }
+  }
+
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  async function onDelete(id: number, name: string = "") {
+    setDeleteLoading(true);
+
+    const { requestError, response } = await api.problem.deleteProblem({
+      problemId: id,
+    });
+
+    if (requestError) {
+      message.error(requestError);
+    } else if (response.error) {
+      message.error(requestError);
+    } else {
+      message.success(
+        `Problem${name === "" ? "" : `(${name})`} deleted successfully!`,
+      );
+    }
+
+    setDeleteLoading(false);
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, [addProblemModelVisible, deleteLoading]);
 
   const columns: ColumnsType<ProblemItem> = [
     {
       title: ProblemTableHeadTitle.id,
       dataIndex: "id",
       key: "id",
-      width: "36px",
+      width: "60px",
       align: "left",
       sorter: (a, b) => a.id - b.id,
     },
@@ -116,48 +118,85 @@ const ProblemsPage: React.FC<{}> = (props) => {
       title: ProblemTableHeadTitle.name,
       dataIndex: "name",
       key: "name",
-      width: "220px",
+      width: "600px",
       align: "left",
       ...useTableSearch("name", ProblemTableHeadTitle.name),
       render: (name: string) => {
         return (
           <Tooltip placement="top" title={name}>
-            <a href="/polygon/problem" className={["h-ellipsis"].join(" ")}>
-              {name}
-            </a>
+            <div className={"h-ellipsis"}>{name}</div>
           </Tooltip>
         );
       },
     },
     {
-      title: ProblemTableHeadTitle.owner,
-      dataIndex: "owner",
-      key: "owner",
-      width: "120px",
+      title: ProblemTableHeadTitle.type,
+      dataIndex: "type",
+      key: "type",
+      width: "200px",
       align: "left",
-      ...useTableSearch("owner", ProblemTableHeadTitle.owner),
+      ...useTableFilter(
+        "type",
+        ProblemTableHeadTitle.type,
+        problemTypeList.map((type: string) => {
+          return {
+            title: <b>{type}</b>,
+            value: type,
+          };
+        }),
+        160,
+      ),
     },
+    // {
+    //   title: ProblemTableHeadTitle.owner,
+    //   dataIndex: "owner",
+    //   key: "owner",
+    //   width: "120px",
+    //   align: "left",
+    //   ...useTableSearch("owner", ProblemTableHeadTitle.owner),
+    // },
+    // {
+    //   title: ProblemTableHeadTitle.revision,
+    //   dataIndex: "revision",
+    //   key: "revision",
+    //   width: "80px",
+    //   align: "left",
+    // },
+    // {
+    //   title: ProblemTableHeadTitle.modify,
+    //   dataIndex: "modify",
+    //   key: "modify",
+    //   width: "180px",
+    //   align: "left",
+    //   sorter: (a, b) => a.modify - b.modify,
+    // },
     {
-      title: ProblemTableHeadTitle.revision,
-      dataIndex: "revision",
-      key: "revision",
-      width: "80px",
+      title: ProblemTableHeadTitle.action,
+      dataIndex: "action",
+      key: "action",
+      width: "200px",
       align: "left",
-    },
-    {
-      title: ProblemTableHeadTitle.modify,
-      dataIndex: "modify",
-      key: "modify",
-      width: "180px",
-      align: "left",
-      sorter: (a, b) => a.modify - b.modify,
-    },
-    {
-      title: ProblemTableHeadTitle.operation,
-      dataIndex: "operator",
-      key: "operator",
-      width: "100px",
-      align: "left",
+      render: (problemActionItem: ProblemActionParams) => {
+        return (
+          <Space size={"middle"}>
+            <a href={`/polygon/problem/${problemActionItem.id}`}>Edit</a>
+            <Popconfirm
+              title={`Are you sure to delete the problem?`}
+              onConfirm={() => {
+                onDelete(problemActionItem.id, problemActionItem.name);
+              }}
+              okText="Yes"
+              cancelText="No"
+              placement="top"
+              okButtonProps={{
+                loading: deleteLoading,
+              }}
+            >
+              <a>Del</a>
+            </Popconfirm>
+          </Space>
+        );
+      },
     },
   ];
 
@@ -181,7 +220,8 @@ const ProblemsPage: React.FC<{}> = (props) => {
               scroll={{ x: 1100 }}
               sticky
               columns={columns}
-              // dataSource={getTableDataSource()}
+              loading={fetchDataLoading}
+              dataSource={tableData}
               className={AntTableHeadStyles.table}
               rowKey={(record) => record.id}
               pagination={{
@@ -197,9 +237,9 @@ const ProblemsPage: React.FC<{}> = (props) => {
       </PolygonLayout>
 
       <AddProblemModel
-        visible={addProblemModalVisible}
+        visible={addProblemModelVisible}
         onCancel={() => {
-          setAddProblemModalVisible(false);
+          setAddProblemModelVisible(false);
         }}
       />
     </>
