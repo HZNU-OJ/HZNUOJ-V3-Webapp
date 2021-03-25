@@ -50,7 +50,7 @@ export default [
     component: "@/pages/polygon/problem/SolutionsPage",
   },
   {
-    path: "/polygon/problem/manageaccess/:id",
+    path: "/polygon/problem/manage-access/:id",
     exact: true,
     component: "@/pages/polygon/problem/ManageAccessPage",
   },
