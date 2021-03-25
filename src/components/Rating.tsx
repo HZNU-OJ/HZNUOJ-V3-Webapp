@@ -81,7 +81,7 @@ export function getHandleLink(handle: string, rank: string) {
         style["rated-user"],
         style[getRankClassName(rank.toLowerCase())],
       ].join(" ")}
-      href={`/u/${handle}`}
+      href={`/user/${handle}`}
     >
       {handle}
     </a>
