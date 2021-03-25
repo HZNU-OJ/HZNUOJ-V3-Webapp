@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import GeneralLayout from "./layouts/GeneralLayout";
-import { Button, message, Space, Popconfirm } from "antd";
+import { Button, message, Space, Popconfirm, Popover } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import style from "./JudgeMachinePage.module.less";
 import AntTableHeadStyles from "@/less/AntTableHead.module.less";
@@ -72,46 +72,41 @@ const JudgeMachinePage: React.FC<{}> = (props) => {
         typeof systemInfo.cpu.cache === "object" &&
         Object.keys(systemInfo.cpu.cache).length !== 0;
 
-      return systemInfo.cpu.model;
+      if (!hasFlags && !hasCache) return systemInfo.cpu.model;
 
-      // return (
+      const content = (
+        <>
+          {hasFlags && (
+            <>
+              <h2>Flags</h2>
+              <p className={style.cpuFlags}>{systemInfo.cpu.flags}</p>
+            </>
+          )}
+          {hasCache && (
+            <>
+              <h2>Cache</h2>
+              <table className={style.cpuCache}>
+                <tbody>
+                  {Object.entries(systemInfo.cpu.cache).map(([name, value]) => (
+                    <tr key={name}>
+                      <td align="left" className={style.cpuCacheName}>
+                        <strong>{name}</strong>
+                      </td>
+                      <td>{Math.round(value / 1024) + " KiB"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          )}
+        </>
+      );
 
-      //   <Popup
-      //     trigger={<span>{systemInfo.cpu.model}</span>}
-      //     disabled={!hasFlags && !hasCache}
-      //     content={
-      //       <>
-      //         {hasFlags && (
-      //           <>
-      //             <Header content="Flags" />
-      //             <p className={style.cpuFlags}>
-      //               <code>{systemInfo.cpu.flags}</code>
-      //             </p>
-      //           </>
-      //         )}
-      //         {hasCache && (
-      //           <>
-      //             <Header content="Cache" />
-      //             <table className={style.cpuCache}>
-      //               <tbody>
-      //                 {Object.entries(systemInfo.cpu.cache).map(([name, value]) => (
-      //                   <tr key={name}>
-      //                     <td align="left" className={style.cpuCacheName}>
-      //                       <strong>{name}</strong>
-      //                     </td>
-      //                     <td>{Math.round(value / 1024) + " KiB"}</td>
-      //                   </tr>
-      //                 ))}
-      //               </tbody>
-      //             </table>
-      //           </>
-      //         )}
-      //       </>
-      //     }
-      //     hoverable
-      //     position="bottom center"
-      //   />
-      // );
+      return (
+        <Popover content={content} placement={"bottom"}>
+          <span>{systemInfo.cpu.model}</span>
+        </Popover>
+      );
     }
     return "-";
   }
