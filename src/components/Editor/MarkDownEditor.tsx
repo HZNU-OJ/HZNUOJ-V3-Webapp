@@ -23,6 +23,7 @@ export interface MarkDownEditorProps extends CodeEditorProps {
 const MarkDownEditor: React.FC<MarkDownEditorProps> = (props) => {
   const isMobile = useScreenWidthWithin(0, 577);
   const [content, setContent] = useState(props.value);
+  const [markdownContentLoading, setMarkdownContentLoading] = useState(true);
 
   useEffect(() => {
     setContent(props.value);
@@ -66,6 +67,9 @@ const MarkDownEditor: React.FC<MarkDownEditorProps> = (props) => {
               style={{
                 padding: "0px",
               }}
+              onChange={(activeKey: string) => {
+                setMarkdownContentLoading(activeKey === "1");
+              }}
             >
               <TabPane tab="Edit" key="1">
                 <CodeEditor
@@ -85,7 +89,11 @@ const MarkDownEditor: React.FC<MarkDownEditorProps> = (props) => {
                   className={style.preview}
                   style={{ height: parseInt(props.height) }}
                 >
-                  <LazyMarkdownContent content={content} noSanitize={true} />
+                  <LazyMarkdownContent
+                    content={content}
+                    noSanitize={true}
+                    loading={markdownContentLoading}
+                  />
                 </div>
               </TabPane>
               {/* <TabPane tab="Upload" key="3">
