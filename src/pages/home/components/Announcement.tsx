@@ -58,8 +58,11 @@ const Announcement: React.FC<{}> = (props) => {
     if (requestError) {
     } else {
       let html = [];
-      response.discussions = response.discussions.filter(
-        (item) => item.meta.id === 1,
+      response.discussions = response.discussions.filter((item) =>
+        [1, 3].includes(item.meta.id),
+      );
+      response.discussions = response.discussions.sort(
+        (a, b) => b.meta.id - a.meta.id,
       );
       response.discussions.forEach((item, index: number) => {
         const date = item.meta.editTime ?? item.meta.publishTime;

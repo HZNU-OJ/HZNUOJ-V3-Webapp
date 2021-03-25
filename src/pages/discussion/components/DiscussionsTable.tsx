@@ -135,6 +135,9 @@ const DiscussionsTable: React.FC<DiscussionsTableProps> = (props) => {
       message.error(requestError);
     } else {
       let _tableData: DiscussionItem[] = [];
+      response.discussions = response.discussions.sort(
+        (a, b) => b.meta.id - a.meta.id,
+      );
       response.discussions.forEach((item) => {
         _tableData.push({
           id: item.meta.id,

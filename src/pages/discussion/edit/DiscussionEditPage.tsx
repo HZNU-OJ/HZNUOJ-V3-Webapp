@@ -54,10 +54,11 @@ const DiscussionEditPage: React.FC<{}> = (props) => {
 
   async function onChangePublic() {
     setChangePublicLoading(true);
+    const setToPublicStatus = !isPublic;
     const { requestError, response } = await api.discussion.setDiscussionPublic(
       {
         discussionId: parseInt(params.id),
-        isPublic: isPublic ? false : true,
+        isPublic: setToPublicStatus,
       },
     );
 
@@ -66,12 +67,12 @@ const DiscussionEditPage: React.FC<{}> = (props) => {
     if (response?.error) {
       message.error(response.error);
     } else {
-      setIsPublic((isPublic) => !isPublic);
       message.success(
         `Set Discussion(id:${params.id}) ${
-          isPublic ? "Public" : "Private"
+          setToPublicStatus ? "Public" : "Private"
         } Successfully!`,
       );
+      setIsPublic((isPublic) => !isPublic);
     }
   }
 
