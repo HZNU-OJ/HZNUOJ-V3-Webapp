@@ -6,11 +6,28 @@ import style from "./JudgeMachinePage.module.less";
 import AntTableHeadStyles from "@/less/AntTableHead.module.less";
 import { Table, Tooltip } from "antd";
 import { ColumnsType } from "antd/es/table";
-import { useTableSearch } from "@/utils/hooks";
 import copyToClipboard from "@/utils/copyToClipboard";
 import { AddJudgeMachineModel } from "./components";
 
+import { useTableSearch, useTableFilter } from "@/utils/hooks";
+
 import api from "@/api";
+
+type statusType = "online" | "offline";
+
+function renderStatusBadge(status: statusType) {
+  const _status = status === "online" ? true : false;
+  return (
+    <>
+      <div
+        className={`${style.statusBadge} ${
+          _status ? style.online : style.offline
+        }`}
+      ></div>
+      {_status ? "Online" : "Offline"}
+    </>
+  );
+}
 
 interface JudgeClientSystemInfo {
   os: string;
@@ -36,7 +53,7 @@ interface actionItem {
 
 interface JudgeMachineItem {
   id: number;
-  status: boolean;
+  status: statusType;
   name: string;
   cpu: ApiTypes.JudgeClientInfoDto;
   memory: string;
@@ -156,7 +173,7 @@ const JudgeMachinePage: React.FC<{}> = (props) => {
           memory: getMemory(item),
           os: getOS(item),
           kernal: getKernel(item),
-          status: item.online,
+          status: item.online ? "online" : "offline",
           action: {
             id: item.id,
             key: item.key,
@@ -193,18 +210,18 @@ const JudgeMachinePage: React.FC<{}> = (props) => {
       key: "status",
       width: 80,
       align: "left",
-      render: (status: boolean) => {
-        return (
-          <>
-            <div
-              className={`${style.statusBadge} ${
-                status ? style.online : style.offline
-              }`}
-            ></div>
-            {status ? "Online" : "Offline"}
-          </>
-        );
-      },
+      ...useTableFilter(
+        "status",
+        JudgeMachineHeadTitle.status,
+        ["online", "offline"].map((status: statusType) => {
+          return {
+            title: renderStatusBadge(status),
+            value: status,
+          };
+        }),
+        160,
+      ),
+      render: renderStatusBadge,
     },
     {
       title: JudgeMachineHeadTitle.name,
