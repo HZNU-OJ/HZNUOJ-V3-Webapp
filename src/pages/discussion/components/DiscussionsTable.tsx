@@ -135,7 +135,6 @@ const DiscussionsTable: React.FC<DiscussionsTableProps> = (props) => {
       message.error(requestError);
     } else {
       let _tableData: DiscussionItem[] = [];
-      console.log(response.discussions);
       response.discussions.forEach((item) => {
         _tableData.push({
           id: item.meta.id,

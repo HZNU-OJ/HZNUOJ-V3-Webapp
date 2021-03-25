@@ -814,7 +814,7 @@ declare namespace ApiTypes {
     token?: string;
   }
   namespace Responses {
-    export type $200 = ApiTypes.ListJudgeClientsResponseDto;
+    export type $200 = string;
     export type $201 = ApiTypes.SetDiscussionPermissionsResponseDto;
   }
   export interface RevokeUserSessionRequestDto {

@@ -17,7 +17,7 @@ const DiscussionsPage: React.FC<{}> = (props) => {
   );
 
   const [publisherId, setPublisherId] = useState(
-    location?.query?.publisherId ?? 0,
+    location?.query?.publisherId ? parseInt(location.query.publisherId) : 0,
   );
 
   return (
