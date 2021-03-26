@@ -19,7 +19,7 @@ interface EditorWrapperProps {
 }
 
 const EditorWrapper: React.FC<EditorWrapperProps> = (props) => {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
 
   return (
     <>
