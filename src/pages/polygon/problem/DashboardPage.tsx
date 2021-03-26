@@ -1,65 +1,112 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "umi";
 import ProblemLayout from "./components/ProblemLayout";
 
-import { Form, Row, Col, Input, Button, Select } from "antd";
-
+import { Form, Row, Col, Input, Button, Select, message, Skeleton } from "antd";
 const { Option } = Select;
 
 import { useScreenWidthWithin } from "@/utils/hooks";
+import ProblemInfoPanel from "./components/ProblemInfoPanel";
 
-import style from "./DashboardPage.module.less";
-import FormStyle from "@/less/Form.module.less";
+import api from "@/api";
+import {
+  problemTypeEnum,
+  problemTypeList,
+} from "@/interface/problem.interface";
+
+interface DashboardPageParams {
+  id: string;
+}
+
+interface DashboardFormProps {
+  problemType: problemTypeEnum;
+  // timeLimit: number;
+  // memoryLimit: number;
+}
 
 const DashboardPage: React.FC<{}> = (props) => {
-  interface DashboardFormProps {
-    problemType: string;
-    timeLimit: number;
-    memoryLimit: number;
-  }
+  const params: DashboardPageParams = useParams();
 
-  const info = [
-    ["Problem", "sqrt-and-mul-ten"],
-    ["Problem ID", "158773"],
-    ["Owner", "Dup4"],
-    ["Package", "version 2"],
-  ];
+  const [problemId, setProblemId] = useState(params.id);
+  const [problemType, setProblemType] = useState(
+    "Traditional" as problemTypeEnum,
+  );
+  const [problemName, setProblemName] = useState("");
+  const [problemOwner, setProblemOwner] = useState("");
 
   const [form] = Form.useForm();
-
   const isMobile = useScreenWidthWithin(0, 768);
 
-  async function onFinish(formProps: DashboardFormProps) {
-    console.log(formProps);
+  const [fetchDataLoading, setFetchDataLoading] = useState(true);
+  async function fetchData() {
+    const { requestError, response } = await api.problem.getProblem({
+      id: parseInt(params.id),
+      owner: true,
+      localizedContentsOfLocale: "en_US",
+      localizedContentsTitleOnly: true,
+    });
+
+    if (requestError) message.error(requestError);
+    else {
+      setProblemType(response.meta.type);
+      setProblemName(response.localizedContentsOfLocale.title);
+      setProblemOwner(response.owner.username);
+    }
+
+    setFetchDataLoading(false);
   }
 
-  async function onValuesChange() {}
+  const [updateLoading, setUpdateLoading] = useState(false);
+  async function onFinish(formProps: DashboardFormProps) {
+    setUpdateLoading(true);
+    const { requestError, response } = await api.problem.changeProblemType({
+      problemId: parseInt(problemId),
+      type: formProps.problemType,
+    });
+
+    if (requestError) message.error(requestError);
+    else if (response.error) message.error(response.error);
+    else {
+      message.success("Update Problem Type Sucessfully!");
+    }
+    setUpdateLoading(false);
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, [updateLoading]);
 
   return (
     <ProblemLayout current={"dashboard"}>
-      <Row gutter={16}>
-        <Col xs={24} sm={24} md={24} lg={17} xl={17}>
-          <Form
-            form={form}
-            layout="vertical"
-            requiredMark={false}
-            onFinish={onFinish}
-            onValuesChange={onValuesChange}
-            initialValues={{
-              problemType: "traditional",
-            }}
-          >
-            <Form.Item
-              name="problemType"
-              label="Problem Type"
-              rules={[{ required: true }]}
+      <Skeleton
+        loading={fetchDataLoading}
+        active
+        title={true}
+        paragraph={{ rows: 4 }}
+      >
+        <Row gutter={16}>
+          <Col xs={24} sm={24} md={24} lg={17} xl={17}>
+            <Form
+              form={form}
+              layout="vertical"
+              requiredMark={false}
+              onFinish={onFinish}
+              initialValues={{
+                problemType: problemType,
+              }}
             >
-              <Select placeholder="Select a option and change input text above">
-                <Option value="traditional">Traditional</Option>
-                <Option value="interaction">Interaction</Option>
-              </Select>
-            </Form.Item>
+              <Form.Item
+                name="problemType"
+                label="Problem Type"
+                rules={[{ required: true }]}
+              >
+                <Select placeholder="Select a option and change input text above">
+                  <Option value="Traditional">Traditional</Option>
+                  <Option value="Interaction">Interaction</Option>
+                </Select>
+              </Form.Item>
 
-            <Form.Item>
+              {/* <Form.Item>
               <Form.Item name="timeLimit" label="Time Limit">
                 <Input addonAfter="ms" />
               </Form.Item>
@@ -77,38 +124,33 @@ const DashboardPage: React.FC<{}> = (props) => {
               <div className={FormStyle["form-item-footer"]}>
                 <span>Memory limit (between 4 MB and 1024 MB).</span>
               </div>
-            </Form.Item>
+            </Form.Item> */}
 
-            <Form.Item>
-              <Button
-                style={{
-                  width: isMobile ? "100%" : "",
-                }}
-                type="primary"
-                htmlType="submit"
-                // loading={updateLoading === true}
-              >
-                Submit
-              </Button>
-            </Form.Item>
-          </Form>
-        </Col>
+              <Form.Item>
+                <Button
+                  style={{
+                    width: isMobile ? "100%" : "",
+                  }}
+                  type="primary"
+                  htmlType="submit"
+                  loading={updateLoading}
+                >
+                  Submit
+                </Button>
+              </Form.Item>
+            </Form>
+          </Col>
 
-        <Col xs={24} sm={24} md={24} lg={7} xl={7}>
-          <div className={style.infoBox}>
-            {info.map((item, index) => (
-              <Row gutter={16} key={index}>
-                <Col span={8}>
-                  <p>
-                    <strong>{item[0]}:</strong>
-                  </p>
-                </Col>
-                <Col span={16}>{item[1]}</Col>
-              </Row>
-            ))}
-          </div>
-        </Col>
-      </Row>
+          <Col xs={24} sm={24} md={24} lg={7} xl={7}>
+            <ProblemInfoPanel
+              id={problemId}
+              name={problemName}
+              type={problemType}
+              owner={problemOwner}
+            />
+          </Col>
+        </Row>
+      </Skeleton>
     </ProblemLayout>
   );
 };
