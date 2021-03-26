@@ -37,31 +37,31 @@ function getSiderItemList(id: number) {
       name: "Files",
       link: getLink("files"),
     },
-    {
-      id: "checker",
-      name: "Checker",
-      link: getLink("checker"),
-    },
-    {
-      id: "validator",
-      name: "Validator",
-      link: getLink("validator"),
-    },
-    {
-      id: "tests",
-      name: "Tests",
-      link: getLink("tests"),
-    },
-    {
-      id: "solutions",
-      name: "Solutions",
-      link: getLink("solutions"),
-    },
-    {
-      id: "manageaccess",
-      name: "Manage Access",
-      link: getLink("manage-access"),
-    },
+    // {
+    //   id: "checker",
+    //   name: "Checker",
+    //   link: getLink("checker"),
+    // },
+    // {
+    //   id: "validator",
+    //   name: "Validator",
+    //   link: getLink("validator"),
+    // },
+    // {
+    //   id: "tests",
+    //   name: "Tests",
+    //   link: getLink("tests"),
+    // },
+    // {
+    //   id: "solutions",
+    //   name: "Solutions",
+    //   link: getLink("solutions"),
+    // },
+    // {
+    //   id: "manageaccess",
+    //   name: "Manage Access",
+    //   link: getLink("manage-access"),
+    // },
   ];
   return siderItemList;
 }
