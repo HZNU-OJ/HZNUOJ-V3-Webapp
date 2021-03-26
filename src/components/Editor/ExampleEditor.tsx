@@ -15,9 +15,9 @@ export type { CodeEditorProps } from "./CodeEditor";
 export interface ExampleEditorProps extends CodeEditorProps {
   loading?: boolean;
   input?: string;
-  onInputChange?: any;
+  onInputChange?: (newValue: string) => void;
   output?: string;
-  onOutputChange?: any;
+  onOutputChange?: (newValue: string) => void;
 }
 
 const ExampleEditor: React.FC<ExampleEditorProps> = (props) => {

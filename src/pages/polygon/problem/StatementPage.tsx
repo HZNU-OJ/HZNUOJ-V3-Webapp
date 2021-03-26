@@ -4,9 +4,15 @@ import ProblemLayout from "./components/ProblemLayout";
 import LazyMarkDownEditor from "@/components/Editor/LazyMarkDownEditor";
 import LazyExampleEditor from "@/components/Editor/LazyExampleEditor";
 import { useScreenWidthWithin } from "@/utils/hooks";
-import { Button, Input, message } from "antd";
+import { Button, Input, message, Space, Skeleton } from "antd";
+
+import AddSectionModel from "./components/AddSectionModel";
+
+import { PlusOutlined, MenuOutlined } from "@ant-design/icons";
+import EditorWrapper from "./components/EditorWrapper";
 
 import api from "@/api";
+import { deepCopy } from "@/utils";
 
 interface StatementPageParams {
   id: string;
@@ -15,112 +21,178 @@ interface StatementPageParams {
 const StatementPage: React.FC<{}> = (props) => {
   const params: StatementPageParams = useParams();
 
-  const [description, setDescription] = useState("");
-  const [input, setInput] = useState("");
-  const [output, setOutput] = useState("");
-  const [note, setNote] = useState("");
-
-  const [exampleInput, setExampleInput] = useState("");
-  const [exampleOutput, setExampleOutput] = useState("");
-
-  const [title, setTitle] = useState("");
-
   const isMobile = useScreenWidthWithin(0, 577);
   const mobileH = "220";
-  const DesktopH = "360";
+  const DesktopH = "320";
 
+  const [title, setTitle] = useState("");
+  const [contentSections, setContentSections] = useState(
+    [] as ApiTypes.ProblemContentSectionDto[],
+  );
+  const [samples, setSamples] = useState(
+    [] as ApiTypes.ProblemSampleDataMemberDto[],
+  );
+  const [orderIdList, setOrderIdList] = useState([] as number[]);
+
+  const [addSectionVisible, setAddSectionVisible] = useState(false);
+
+  const [fetchLoaded, setFetchLoaded] = useState(false);
   async function fetchData() {
     const { requestError, response } = await api.problem.getProblem({
       id: parseInt(params.id),
       localizedContentsOfLocale: "en_US",
       localizedContentsTitleOnly: false,
+      samples: true,
     });
 
     if (requestError) message.error(requestError);
     else if (response.error) message.error(response.error);
     else {
       setTitle(response.localizedContentsOfLocale.title);
-      // setProblemType(response.meta.type);
-      // setProblemName(response.localizedContentsOfLocale.title);
-      // setProblemStatus(response.meta.isPublic ? "Public" : "Private");
-      // setProblemOwner(response.owner.username);
+      setContentSections(response.localizedContentsOfLocale.contentSections);
+      setSamples(response.samples);
+      setOrderIdList([
+        ...new Array(
+          response.localizedContentsOfLocale.contentSections.length,
+        ).keys(),
+      ]);
     }
 
-    console.log(response);
+    setFetchLoaded(true);
   }
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  async function onSubmit() {}
+  const [updateLoading, setUpdateLoading] = useState(false);
+  async function onUpdate() {
+    setUpdateLoading(true);
+    const { requestError, response } = await api.problem.updateStatement({
+      problemId: parseInt(params.id),
+      localizedContents: [
+        {
+          locale: "en_US",
+          title: title,
+          contentSections: contentSections,
+        },
+      ],
+      samples: samples,
+      problemTagIds: [],
+    });
+
+    if (requestError) message.error(requestError);
+    else if (response.error) message.error(response.error);
+    else {
+      message.success("Update Statement Sucessfully!");
+    }
+
+    setUpdateLoading(false);
+  }
 
   return (
     <>
       <ProblemLayout current={"statement"}>
-        <p>
-          <strong>Title</strong>
-        </p>
-        <div style={{ marginBottom: 20 }}>
-          <Input value={title} onChange={(e) => setTitle(e.target.value)} />
-        </div>
+        <Skeleton
+          loading={!fetchLoaded}
+          active
+          title={true}
+          paragraph={{ rows: 8 }}
+        >
+          <Space size={"middle"} style={{ marginBottom: 10 }}>
+            <Button
+              type="primary"
+              size={"middle"}
+              loading={updateLoading}
+              onClick={onUpdate}
+            >
+              Update
+            </Button>
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              size={"middle"}
+              onClick={() => {
+                setAddSectionVisible(true);
+              }}
+            >
+              Add Section
+            </Button>
+            <Button
+              type="primary"
+              icon={<MenuOutlined />}
+              size={"middle"}
+              onClick={() => {
+                message.info("Coming Soon!");
+              }}
+            >
+              Change Order
+            </Button>
+          </Space>
 
-        <p>
-          <strong>Description</strong>
-        </p>
-        <LazyMarkDownEditor
-          height={isMobile ? mobileH : DesktopH}
-          language={"markdown"}
-          value={description}
-          onChange={(value) => setDescription(value)}
-        />
+          <h2>Title</h2>
+          <div style={{ marginBottom: 20 }}>
+            <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+          </div>
 
-        <p>
-          <strong>Example 1</strong>
-        </p>
-        <LazyExampleEditor
-          height={isMobile ? mobileH : DesktopH}
-          language={"plain"}
-          input={exampleInput}
-          output={exampleOutput}
-          onInputChange={(e) => setExampleInput(e)}
-          onOutputChange={(e) => setExampleOutput(e)}
-        />
-
-        <p>
-          <strong>Input</strong>
-        </p>
-        <LazyMarkDownEditor
-          height={isMobile ? mobileH : DesktopH}
-          language={"markdown"}
-          value={input}
-          onChange={(value) => setInput(value)}
-        />
-
-        <p>
-          <strong>Output</strong>
-        </p>
-        <LazyMarkDownEditor
-          height={isMobile ? mobileH : DesktopH}
-          language={"markdown"}
-          value={output}
-          onChange={(value) => setOutput(value)}
-        />
-
-        <p>
-          <strong>Note</strong>
-        </p>
-        <LazyMarkDownEditor
-          height={isMobile ? mobileH : DesktopH}
-          language={"markdown"}
-          value={note}
-          onChange={(value) => setNote(value)}
-        />
-
-        <Button type={"primary"} onClick={onSubmit}>
-          Submit
-        </Button>
+          <div>
+            {orderIdList.map((orderId) => (
+              <div key={orderId}>
+                <EditorWrapper title={contentSections[orderId].sectionTitle}>
+                  {contentSections[orderId].type === "Text" && (
+                    <LazyMarkDownEditor
+                      height={isMobile ? mobileH : DesktopH}
+                      language={"markdown"}
+                      value={contentSections[orderId].text}
+                      onChange={(value) => {
+                        let _contentSections = deepCopy(contentSections);
+                        _contentSections[orderId].text = value;
+                        setContentSections(_contentSections);
+                      }}
+                    />
+                  )}
+                  {contentSections[orderId].type === "Sample" && (
+                    <LazyExampleEditor
+                      height={isMobile ? mobileH : DesktopH}
+                      language={"plain"}
+                      input={
+                        samples[contentSections[orderId].sampleId].inputData
+                      }
+                      output={
+                        samples[contentSections[orderId].sampleId].outputData
+                      }
+                      onInputChange={(value) => {
+                        let _samples = deepCopy(samples);
+                        _samples[
+                          contentSections[orderId].sampleId
+                        ].inputData = value;
+                        setSamples(_samples);
+                      }}
+                      onOutputChange={(value) => {
+                        let _samples = deepCopy(samples);
+                        _samples[
+                          contentSections[orderId].sampleId
+                        ].outputData = value;
+                        setSamples(_samples);
+                      }}
+                    />
+                  )}
+                </EditorWrapper>
+              </div>
+            ))}
+          </div>
+        </Skeleton>
       </ProblemLayout>
+      <AddSectionModel
+        visible={addSectionVisible}
+        onCancel={() => setAddSectionVisible(false)}
+        contentSections={contentSections}
+        setContentSections={setContentSections}
+        samples={samples}
+        setSamples={setSamples}
+        orderIdList={orderIdList}
+        setOrderIdList={setOrderIdList}
+      />
     </>
   );
 };
