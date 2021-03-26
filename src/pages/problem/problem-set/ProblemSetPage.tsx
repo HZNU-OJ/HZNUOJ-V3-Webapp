@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { Table, Tooltip } from "antd";
+import { Table, Tooltip, message } from "antd";
 import { ColumnsType } from "antd/es/table";
 import Loading from "@/components/Loading";
 import BasicLayout from "@/layouts/BasicLayout";
@@ -8,42 +8,39 @@ import BasicLayout from "@/layouts/BasicLayout";
 import style from "./ProblemSetPage.module.less";
 import AntTableHeadStyles from "@/less/AntTableHead.module.less";
 
-import { useTableSearch } from "@/utils/hooks";
+import api from "@/api";
+
+interface ProblemTitleItem {
+  id: number;
+  title: string;
+}
 
 interface ProblemItem {
   id: number;
-  problem: string;
+  problem: ProblemTitleItem;
   submissions: number;
-  acceptance: number;
+  acceptance: string;
 }
 
 enum ProblemTableHeadTitle {
   id = "#",
-  problem = "Problem",
+  problemTitle = "Problem Title",
   submissions = "Submissions",
   acceptance = "Acceptance",
 }
 
-function getTableDataSource(): ProblemItem[] {
-  const dataSource: ProblemItem[] = [];
-  for (let i = 1; i <= 100; ++i) {
-    dataSource.push({
-      id: i,
-      problem: "A + B Problem",
-      submissions: i * 1000,
-      acceptance: (i * 367) % 10000,
-    });
+function getAcceptance(
+  acceptedSubmissionCount: number,
+  submissionCount: number,
+) {
+  if (submissionCount === 0) {
+    return (0.0).toFixed(2);
+  } else {
+    return (acceptedSubmissionCount / submissionCount).toFixed(2);
   }
-  return dataSource;
 }
 
 const ProblemSetPage: React.FC<{}> = (props) => {
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    setLoaded(true);
-  }, []);
-
   const columns: ColumnsType<ProblemItem> = [
     {
       title: ProblemTableHeadTitle.id,
@@ -54,17 +51,19 @@ const ProblemSetPage: React.FC<{}> = (props) => {
       sorter: (a, b) => a.id - b.id,
     },
     {
-      title: ProblemTableHeadTitle.problem,
+      title: ProblemTableHeadTitle.problemTitle,
       dataIndex: "problem",
       key: "problem",
       width: "540px",
       align: "left",
-      ...useTableSearch("problem", ProblemTableHeadTitle.problem),
-      render: (problem: string) => {
+      render: (problem: ProblemTitleItem) => {
         return (
-          <Tooltip placement="top" title={problem}>
-            <a href="/" className={["h-ellipsis"].join(" ")}>
-              {problem}
+          <Tooltip placement="top" title={problem.title}>
+            <a
+              href={`/problem/${problem.id}`}
+              className={["h-ellipsis"].join(" ")}
+            >
+              {problem.title}
             </a>
           </Tooltip>
         );
@@ -89,23 +88,65 @@ const ProblemSetPage: React.FC<{}> = (props) => {
     },
   ];
 
+  const [tableData, setTableData] = useState([] as ProblemItem[]);
+
+  const [fetchDataLoaded, setFetchDataLoaded] = useState(false);
+  async function fetchData() {
+    const { requestError, response } = await api.problem.queryProblemSet({
+      locale: "en_US",
+      skipCount: 0,
+      takeCount: 1000000,
+      nonpublic: false,
+      titleOnly: false,
+    });
+
+    if (requestError) {
+      message.error(requestError);
+    } else if (response.error) {
+      message.error(requestError);
+    } else {
+      console.log(response);
+      let _tableData: ProblemItem[] = [];
+      response.result.forEach((item) => {
+        _tableData.push({
+          id: item.meta.id,
+          problem: {
+            id: item.meta.id,
+            title: item.title,
+          } as ProblemTitleItem,
+          submissions: item.meta.submissionCount,
+          acceptance: getAcceptance(
+            item.meta.acceptedSubmissionCount,
+            item.meta.submissionCount,
+          ),
+        });
+      });
+      setTableData(_tableData);
+    }
+    setFetchDataLoaded(true);
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <BasicLayout current={"problem_set"}>
       <div className={style.root}>
-        {loaded === false && (
+        {fetchDataLoaded === false && (
           <div className={style.loading}>
             <Loading />
           </div>
         )}
 
-        {loaded === true && (
+        {fetchDataLoaded === true && (
           <div className={style.tableRoot}>
             <Table<ProblemItem>
               size="small"
               scroll={{ x: 1000 }}
               sticky
               columns={columns}
-              dataSource={getTableDataSource()}
+              dataSource={tableData}
               className={AntTableHeadStyles.table}
               rowKey={(record) => record.id}
               pagination={{
