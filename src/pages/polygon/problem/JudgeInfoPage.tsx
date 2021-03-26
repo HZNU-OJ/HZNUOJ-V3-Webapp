@@ -21,7 +21,6 @@ interface DashboardPageParams {
 }
 
 interface DashboardFormProps {
-  problemType: problemTypeEnum;
   timeLimit: number;
   memoryLimit: number;
 }
@@ -61,16 +60,16 @@ const JudgeInfoPage: React.FC<{}> = (props) => {
   const [updateLoading, setUpdateLoading] = useState(false);
   async function onFinish(formProps: DashboardFormProps) {
     setUpdateLoading(true);
-    const { requestError, response } = await api.problem.changeProblemType({
-      problemId: parseInt(problemId),
-      type: formProps.problemType,
-    });
+    // const { requestError, response } = await api.problem.changeProblemType({
+    //   problemId: parseInt(problemId),
+    //   type: formProps.problemType,
+    // });
 
-    if (requestError) message.error(requestError);
-    else if (response.error) message.error(response.error);
-    else {
-      message.success("Update Problem Type Sucessfully!");
-    }
+    // if (requestError) message.error(requestError);
+    // else if (response.error) message.error(response.error);
+    // else {
+    //   message.success("Update Problem Type Sucessfully!");
+    // }
     setUpdateLoading(false);
   }
 
@@ -97,17 +96,6 @@ const JudgeInfoPage: React.FC<{}> = (props) => {
                 problemType: problemType,
               }}
             >
-              <Form.Item
-                name="problemType"
-                label="Problem Type"
-                rules={[{ required: true }]}
-              >
-                <Select placeholder="Select a option and change input text above">
-                  <Option value="Traditional">Traditional</Option>
-                  <Option value="Interaction">Interaction</Option>
-                </Select>
-              </Form.Item>
-
               <Form.Item>
                 <Form.Item name="timeLimit" label="Time Limit">
                   <Input addonAfter="ms" />
