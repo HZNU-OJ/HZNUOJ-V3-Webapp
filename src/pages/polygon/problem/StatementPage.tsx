@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "umi";
 import ProblemLayout from "./components/ProblemLayout";
 import LazyMarkDownEditor from "@/components/Editor/LazyMarkDownEditor";
+import LazyExampleEditor from "@/components/Editor/LazyExampleEditor";
 import { useScreenWidthWithin } from "@/utils/hooks";
 import { Button, Input, message } from "antd";
 
@@ -18,6 +19,9 @@ const StatementPage: React.FC<{}> = (props) => {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [note, setNote] = useState("");
+
+  const [exampleInput, setExampleInput] = useState("");
+  const [exampleOutput, setExampleOutput] = useState("");
 
   const [title, setTitle] = useState("");
 
@@ -69,6 +73,18 @@ const StatementPage: React.FC<{}> = (props) => {
           language={"markdown"}
           value={description}
           onChange={(value) => setDescription(value)}
+        />
+
+        <p>
+          <strong>Example 1</strong>
+        </p>
+        <LazyExampleEditor
+          height={isMobile ? mobileH : DesktopH}
+          language={"plain"}
+          input={exampleInput}
+          output={exampleOutput}
+          onInputChange={(e) => setExampleInput(e)}
+          onOutputChange={(e) => setExampleOutput(e)}
         />
 
         <p>

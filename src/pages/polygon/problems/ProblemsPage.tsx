@@ -54,7 +54,7 @@ const ProblemsPage: React.FC<{}> = (props) => {
       locale: "en_US",
       skipCount: 0,
       takeCount: 1000000,
-      nonpublic: true,
+      nonpublic: false,
       titleOnly: true,
     });
 
