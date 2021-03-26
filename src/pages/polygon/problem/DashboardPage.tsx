@@ -76,7 +76,7 @@ const DashboardPage: React.FC<{}> = (props) => {
 
     let ok = true;
 
-    (async () => {
+    await (async () => {
       const { requestError, response } = await api.problem.changeProblemType({
         problemId: parseInt(problemId),
         type: formProps.problemType,
@@ -93,7 +93,7 @@ const DashboardPage: React.FC<{}> = (props) => {
       }
     })();
 
-    (async () => {
+    await (async () => {
       const { requestError, response } = await api.problem.setProblemPublic({
         problemId: parseInt(problemId),
         isPublic: formProps.problemStatus === "Public" ? true : false,
