@@ -13,7 +13,7 @@ import FormStyle from "@/less/Form.module.less";
 import api from "@/api";
 import {
   problemTypeEnum,
-  problemTypeList,
+  problemStatusEnum,
 } from "@/interface/problem.interface";
 
 interface DashboardPageParams {
@@ -33,6 +33,9 @@ const JudgeInfoPage: React.FC<{}> = (props) => {
     "Traditional" as problemTypeEnum,
   );
   const [problemName, setProblemName] = useState("");
+  const [problemStatus, setProblemStatus] = useState(
+    "Private" as problemStatusEnum,
+  );
   const [problemOwner, setProblemOwner] = useState("");
 
   const [form] = Form.useForm();
@@ -51,6 +54,7 @@ const JudgeInfoPage: React.FC<{}> = (props) => {
     else {
       setProblemType(response.meta.type);
       setProblemName(response.localizedContentsOfLocale.title);
+      setProblemStatus(response.meta.isPublic ? "Public" : "Private");
       setProblemOwner(response.owner.username);
     }
 
@@ -139,6 +143,7 @@ const JudgeInfoPage: React.FC<{}> = (props) => {
               id={problemId}
               name={problemName}
               type={problemType}
+              status={problemStatus}
               owner={problemOwner}
             />
           </Col>

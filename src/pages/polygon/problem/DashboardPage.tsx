@@ -11,7 +11,7 @@ import ProblemInfoPanel from "./components/ProblemInfoPanel";
 import api from "@/api";
 import {
   problemTypeEnum,
-  problemTypeList,
+  problemStatusEnum,
 } from "@/interface/problem.interface";
 
 interface DashboardPageParams {
@@ -20,8 +20,6 @@ interface DashboardPageParams {
 
 interface DashboardFormProps {
   problemType: problemTypeEnum;
-  // timeLimit: number;
-  // memoryLimit: number;
 }
 
 const DashboardPage: React.FC<{}> = (props) => {
@@ -32,6 +30,9 @@ const DashboardPage: React.FC<{}> = (props) => {
     "Traditional" as problemTypeEnum,
   );
   const [problemName, setProblemName] = useState("");
+  const [problemStatus, setProblemStatus] = useState(
+    "Private" as problemStatusEnum,
+  );
   const [problemOwner, setProblemOwner] = useState("");
 
   const [form] = Form.useForm();
@@ -50,6 +51,7 @@ const DashboardPage: React.FC<{}> = (props) => {
     else {
       setProblemType(response.meta.type);
       setProblemName(response.localizedContentsOfLocale.title);
+      setProblemStatus(response.meta.isPublic ? "Public" : "Private");
       setProblemOwner(response.owner.username);
     }
 
@@ -106,26 +108,6 @@ const DashboardPage: React.FC<{}> = (props) => {
                 </Select>
               </Form.Item>
 
-              {/* <Form.Item>
-              <Form.Item name="timeLimit" label="Time Limit">
-                <Input addonAfter="ms" />
-              </Form.Item>
-
-              <div className={FormStyle["form-item-footer"]}>
-                <span>Time limit per test (between 250 ms and 15000 ms).</span>
-              </div>
-            </Form.Item>
-
-            <Form.Item>
-              <Form.Item name="memoryLimit" label="Memory Limit">
-                <Input addonAfter="MiB" />
-              </Form.Item>
-
-              <div className={FormStyle["form-item-footer"]}>
-                <span>Memory limit (between 4 MB and 1024 MB).</span>
-              </div>
-            </Form.Item> */}
-
               <Form.Item>
                 <Button
                   style={{
@@ -147,6 +129,7 @@ const DashboardPage: React.FC<{}> = (props) => {
               id={problemId}
               name={problemName}
               type={problemType}
+              status={problemStatus}
               owner={problemOwner}
             />
           </Col>

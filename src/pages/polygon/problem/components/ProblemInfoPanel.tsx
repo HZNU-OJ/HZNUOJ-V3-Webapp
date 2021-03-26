@@ -2,12 +2,17 @@ import React from "react";
 import { Form, Row, Col, Input, Button, Select } from "antd";
 import style from "./ProblemInfoPanel.module.less";
 
-import { problemTypeEnum } from "@/interface/problem.interface";
+import {
+  problemStatusEnum,
+  problemTypeEnum,
+  problemTypeList,
+} from "@/interface/problem.interface";
 
 const problemInfoList = [
   ["ID", "id"],
   ["Name", "name"],
   ["Type", "type"],
+  ["Status", "status"],
   ["Owner", "owner"],
 ];
 
@@ -16,6 +21,7 @@ interface ProblemInfoPanelProps {
   name: string;
   owner: string;
   type: problemTypeEnum;
+  status: problemStatusEnum;
 }
 
 const ProblemInfoPanel: React.FC<ProblemInfoPanelProps> = (props) => {
