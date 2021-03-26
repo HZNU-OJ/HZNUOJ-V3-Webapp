@@ -23,6 +23,11 @@ function getSiderItemList(id: number) {
       link: getLink("dashboard"),
     },
     {
+      id: "judge-info",
+      name: "Judge Info",
+      link: getLink("judge-info"),
+    },
+    {
       id: "statement",
       name: "Statement",
       link: getLink("statement"),

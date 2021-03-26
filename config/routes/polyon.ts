@@ -20,6 +20,11 @@ export default [
     component: "@/pages/polygon/problem/DashboardPage",
   },
   {
+    path: "/polygon/problem/judge-info/:id",
+    exact: true,
+    component: "@/pages/polygon/problem/JudgeInfoPage",
+  },
+  {
     path: "/polygon/problem/statement/:id",
     exact: true,
     component: "@/pages/polygon/problem/StatementPage",
