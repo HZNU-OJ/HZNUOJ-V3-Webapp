@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { Row, Col, Space, message } from "antd";
-import { RightOutlined, DownOutlined, DeleteOutlined } from "@ant-design/icons";
+import {
+  RightOutlined,
+  DownOutlined,
+  DeleteOutlined,
+  EditOutlined,
+} from "@ant-design/icons";
 
 const CloseArrow = () => (
   <DownOutlined style={{ cursor: "pointer", color: "#3e90cc" }} />
@@ -12,6 +17,10 @@ const OpenArrow = () => (
 
 const DeleteIcon = () => (
   <DeleteOutlined style={{ cursor: "pointer", color: "#3e90cc" }} />
+);
+
+const EditIcon = () => (
+  <EditOutlined style={{ cursor: "pointer", color: "#3e90cc" }} />
 );
 
 interface EditorWrapperProps {
@@ -35,6 +44,13 @@ const EditorWrapper: React.FC<EditorWrapperProps> = (props) => {
           </Col>
           <Col md={12} style={{ textAlign: "right" }}>
             <Space size={"middle"}>
+              <div
+                onClick={() => {
+                  message.info("Coming Soon!");
+                }}
+              >
+                <EditIcon />
+              </div>
               <div
                 onClick={() => {
                   message.info("Coming Soon!");
