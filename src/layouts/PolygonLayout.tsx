@@ -23,7 +23,7 @@ function userItemListRender(itemList: menuItem[][], username: string): string {
   html += `<li class="am-dropdown" data-am-dropdown>`;
   html += `
   <a class='am-dropdown-toggle' data-am-dropdown-toggle href='javascript:;'>
-  <span class='am-icon-user'></span>&nbsp;Dup4&nbsp;<span class='am-icon-caret-down'></span>
+  <span class='am-icon-user'></span>&nbsp;${username}&nbsp;<span class='am-icon-caret-down'></span>
   </a>`;
   html += `<ul class="am-dropdown-content">`;
   for (let i = 0; i < itemList.length; ++i) {
