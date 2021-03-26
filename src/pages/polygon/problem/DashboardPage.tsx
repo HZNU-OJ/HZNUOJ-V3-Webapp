@@ -130,12 +130,13 @@ const DashboardPage: React.FC<{}> = (props) => {
                 <Button
                   style={{
                     width: isMobile ? "100%" : "",
+                    marginTop: -20,
                   }}
                   type="primary"
                   htmlType="submit"
                   loading={updateLoading}
                 >
-                  Submit
+                  Update
                 </Button>
               </Form.Item>
             </Form>
