@@ -32,6 +32,7 @@ interface JudgeInfoProps {
   memoryLimit?: number;
   runSamples?: true;
   checker?: any;
+  interactor?: any;
 }
 interface CheckerFormProps {
   judgeInfo: JudgeInfoProps;
@@ -191,6 +192,116 @@ const CheckerCustomForm: React.FC<CheckerCustomFormProps> = (props) => {
   );
 };
 
+interface CheckerFormAdapterProps extends CheckerFormProps {
+  checkerType: string;
+  testData: ApiTypes.ProblemFileDto[];
+}
+
+const CheckerFormAdapter: React.FC<CheckerFormAdapterProps> = (props) => {
+  return (
+    <>
+      {props.checkerType === "integers" && (
+        <CheckerIntegersForm
+          judgeInfo={props.judgeInfo}
+          setJudgeInfo={props.setJudgeInfo}
+        />
+      )}
+
+      {props.checkerType === "floats" && (
+        <CheckerFloatsForm
+          judgeInfo={props.judgeInfo}
+          setJudgeInfo={props.setJudgeInfo}
+        />
+      )}
+
+      {props.checkerType === "lines" && (
+        <CheckerLinesForm
+          judgeInfo={props.judgeInfo}
+          setJudgeInfo={props.setJudgeInfo}
+        />
+      )}
+
+      {props.checkerType === "binary" && (
+        <CheckerBinaryForm
+          judgeInfo={props.judgeInfo}
+          setJudgeInfo={props.setJudgeInfo}
+        />
+      )}
+
+      {props.checkerType === "custom" && (
+        <CheckerCustomForm
+          judgeInfo={props.judgeInfo}
+          setJudgeInfo={props.setJudgeInfo}
+          testData={props.testData}
+        />
+      )}
+    </>
+  );
+};
+interface InteractorFormProps extends CheckerFormProps {
+  testData: ApiTypes.ProblemFileDto[];
+}
+
+const InteractorForm: React.FC<InteractorFormProps> = (props) => {
+  const [filename, setFilename] = useState(
+    props.judgeInfo.interactor?.filename ?? "",
+  );
+
+  async function setInteractorType(filename: string) {
+    props.setJudgeInfo((judgeInfo: JudgeInfoProps) => {
+      return Object.assign({}, judgeInfo, {
+        interactor: {
+          interface: "stdio",
+          language: "cpp",
+          compileAndRunOptions: {
+            compiler: "g++",
+            std: "c++17",
+            O: "2",
+            m: "64",
+          },
+          filename: filename,
+        },
+      });
+    });
+  }
+
+  useEffect(() => {
+    if (filename === "") setInteractorType(filename);
+  }, []);
+
+  return (
+    <>
+      <div style={{ width: "100%" }}>
+        <h3>Interactor</h3>
+        <Select
+          style={{ width: "100%" }}
+          value={filename}
+          onChange={(e) => {
+            setFilename(e.toString());
+            setInteractorType(e.toString());
+          }}
+        >
+          {props.testData.map((file) => {
+            return (
+              <Option key={file.filename} value={file.filename}>
+                {file.filename}
+              </Option>
+            );
+          })}
+        </Select>
+        <div
+          style={{
+            marginTop: 0,
+          }}
+          className={FormStyle["form-item-footer"]}
+        >
+          <span>{`Select a file representing custom interactor.`}</span>
+        </div>
+      </div>
+    </>
+  );
+};
+
 interface JudgeInfoParams {
   id: string;
 }
@@ -214,6 +325,8 @@ const JudgeInfoPage: React.FC<{}> = (props) => {
   const [testData, setTestData] = useState([] as ApiTypes.ProblemFileDto[]);
   const [fetchDataLoading, setFetchDataLoading] = useState(true);
 
+  const [checkerType, setCheckerType] = useState("integers");
+
   async function fetchData() {
     const { requestError, response } = await api.problem.getProblem({
       id: parseInt(params.id),
@@ -234,12 +347,12 @@ const JudgeInfoPage: React.FC<{}> = (props) => {
       setSubmittable(response.submittable);
       setJudgeInfo(response.judgeInfo);
       setTestData(response.testData);
-      setCheckerType(response.judgeInfo.checker.type);
+      if (response.meta.type === "Traditional") {
+        setCheckerType(response.judgeInfo.checker?.type);
+      }
       setFetchDataLoading(false);
     }
   }
-
-  const [checkerType, setCheckerType] = useState("integers");
 
   const [updateLoading, setUpdateLoading] = useState(false);
   async function onUpdate() {
@@ -360,50 +473,33 @@ const JudgeInfoPage: React.FC<{}> = (props) => {
                 </div>
               </Form.Item>
 
-              <Form.Item name="checker" label="Checker">
-                <Select
-                  onChange={(e) => {
-                    setCheckerType(e.toString());
-                  }}
-                >
-                  <Option value="integers">Integers</Option>
-                  <Option value="floats">Floats</Option>
-                  <Option value="lines">Lines</Option>
-                  <Option value="binary">Binary</Option>
-                  <Option value="custom">Custom</Option>
-                </Select>
-              </Form.Item>
+              {problemType === "Traditional" && (
+                <>
+                  <Form.Item name="checker" label="Checker">
+                    <Select
+                      onChange={(e) => {
+                        setCheckerType(e.toString());
+                      }}
+                    >
+                      <Option value="integers">Integers</Option>
+                      <Option value="floats">Floats</Option>
+                      <Option value="lines">Lines</Option>
+                      <Option value="binary">Binary</Option>
+                      <Option value="custom">Custom</Option>
+                    </Select>
+                  </Form.Item>
 
-              {checkerType === "integers" && (
-                <CheckerIntegersForm
-                  judgeInfo={judgeInfo}
-                  setJudgeInfo={setJudgeInfo}
-                />
+                  <CheckerFormAdapter
+                    judgeInfo={judgeInfo}
+                    setJudgeInfo={setJudgeInfo}
+                    checkerType={checkerType}
+                    testData={testData}
+                  />
+                </>
               )}
 
-              {checkerType === "floats" && (
-                <CheckerFloatsForm
-                  judgeInfo={judgeInfo}
-                  setJudgeInfo={setJudgeInfo}
-                />
-              )}
-
-              {checkerType === "lines" && (
-                <CheckerLinesForm
-                  judgeInfo={judgeInfo}
-                  setJudgeInfo={setJudgeInfo}
-                />
-              )}
-
-              {checkerType === "binary" && (
-                <CheckerBinaryForm
-                  judgeInfo={judgeInfo}
-                  setJudgeInfo={setJudgeInfo}
-                />
-              )}
-
-              {checkerType === "custom" && (
-                <CheckerCustomForm
+              {problemType === "Interaction" && (
+                <InteractorForm
                   judgeInfo={judgeInfo}
                   setJudgeInfo={setJudgeInfo}
                   testData={testData}
