@@ -163,7 +163,7 @@ const DashboardPage: React.FC<{}> = (props) => {
                 <Button
                   style={{
                     width: isMobile ? "100%" : "",
-                    marginTop: -10,
+                    marginTop: -30,
                   }}
                   type="primary"
                   htmlType="submit"

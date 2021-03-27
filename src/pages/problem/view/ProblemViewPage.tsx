@@ -71,24 +71,28 @@ const ProblemViewPage: React.FC<{}> = (props) => {
   const [samples, setSamples] = useState(
     [] as ApiTypes.ProblemSampleDataMemberDto[],
   );
+  const [timeLimit, setTimeLimit] = useState(0);
+  const [memoryLimit, setMemoryLimit] = useState(0);
   async function fetchData() {
     const { requestError, response } = await api.problem.getProblem({
       id: parseInt(params.id),
       localizedContentsOfLocale: "en_US",
       localizedContentsTitleOnly: false,
       samples: true,
+      judgeInfo: true,
     });
 
     if (requestError) message.error(requestError);
     else if (response.error) message.error(response.error);
     else {
-      console.log(response);
       setTitle(response.localizedContentsOfLocale.title);
       setType(response.meta.type);
       setSubmissionCount(response.meta.submissionCount);
       setAcceptedSubmissionCount(response.meta.acceptedSubmissionCount);
       setContentSections(response.localizedContentsOfLocale.contentSections);
       setSamples(response.samples);
+      setTimeLimit(response.judgeInfo?.timeLimit);
+      setMemoryLimit(response.judgeInfo?.memoryLimit);
       setFetchDataLoaded(true);
     }
   }
@@ -115,6 +119,8 @@ const ProblemViewPage: React.FC<{}> = (props) => {
                 type={type}
                 submissionCount={submissionCount}
                 acceptedSubmissionCount={acceptedSubmissionCount}
+                timeLimit={timeLimit}
+                memoryLimit={memoryLimit}
               />
               <Divider />
               <Row gutter={16} align="top">

@@ -11,6 +11,8 @@ interface ProblemViewHeaderProps {
   type: string;
   submissionCount: number;
   acceptedSubmissionCount: number;
+  timeLimit: number;
+  memoryLimit: number;
 }
 
 const ProblemViewHeader: React.FC<ProblemViewHeaderProps> = (props) => {
@@ -23,9 +25,11 @@ const ProblemViewHeader: React.FC<ProblemViewHeaderProps> = (props) => {
               className={style.problemTitle}
             >{`#${props.id}. ${props.title}`}</div>
             <div className={`${style.tag} ${style.type}`}>{props.type}</div>
-            <div className={[style.tag, style.time].join(" ")}>{clock} ms</div>
+            <div className={[style.tag, style.time].join(" ")}>
+              {props.timeLimit} ms
+            </div>
             <div className={[style.tag, style.memory].join(" ")}>
-              {memory} MiB
+              {props.memoryLimit} MiB
             </div>
           </div>
         </Col>
