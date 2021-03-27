@@ -40,10 +40,10 @@ const EditorWrapper: React.FC<EditorWrapperProps> = (props) => {
         }}
       >
         <Row gutter={16} align={"top"}>
-          <Col md={12} style={{ textAlign: "left" }}>
+          <Col xs={12} style={{ textAlign: "left" }}>
             <h2>{props.title}</h2>
           </Col>
-          <Col md={12} style={{ textAlign: "right" }}>
+          <Col xs={12} style={{ textAlign: "right" }}>
             <Space size={"middle"}>
               <div
                 onClick={() => {
