@@ -1,26 +1,6 @@
-import React, { useEffect, useState } from "react";
-import LazyMarkdownContent from "@/markdown/LazyMarkdownContent";
-
-import { Skeleton } from "antd";
-
-import api from "@/api";
-
+import React, { useState } from "react";
 import { ExampleBox } from "@/components/ExampleBox";
-
-const input = `3
-8.19 1.47 3.83 3.91 12.25 2.26 1.71 4.57 7.10 0.14 0.41 3.77 3.34 7.06 7.26 2.89 0.09 6.85 6.36 9.41 2.58 1.09 1.59 0.21 1.58 0.08
-Thisisaexample
-8.19 1.47 3.83 3.91 12.25 2.26 1.71 4.57 7.10 0.14 0.41 3.77 3.34 7.06 7.26 2.89 0.09 6.85 6.36 9.41 2.58 1.09 1.59 0.21 1.58 0.08
-AertrtsaBereDET
-8.19 1.47 3.83 3.91 12.25 2.26 1.71 4.57 7.10 0.14 0.41 3.77 3.34 7.06 7.26 2.89 0.09 6.85 6.36 9.41 2.58 1.09 1.59 0.21 1.58 0.08
-Thequickbrownfoxjumpsoverthelazydog`;
-
-const output = `case #0:
-eeTaaiisshlmpx
-case #1:
-eeeEttTaArrrsDB
-case #2:
-eeetTaooooinrrshhdclmpuufgwybvkxjqz`;
+import LazyMarkdownContent from "@/markdown/LazyMarkdownContent";
 
 interface AmazeUIDetailsProps {
   hide?: boolean;
@@ -45,71 +25,49 @@ const AmazeUIDetails: React.FC<AmazeUIDetailsProps> = (props) => {
         className="am-panel-bd"
         style={{ padding: "10px", display: hide ? "none" : "" }}
       >
-        {props.children}
+        <div
+          style={{
+            marginBottom: -20,
+          }}
+        >
+          {props.children}
+        </div>
       </div>
     </div>
   );
 };
 
-const StatementTab: React.FC<{}> = (props) => {
-  const [contentA, setContentA] = useState("");
-  const [contentB, setContentB] = useState("");
-  const [loadingA, setLoadingA] = useState(true);
-  const [loadingB, setLoadingB] = useState(true);
+interface StatementTabProps {
+  contentSections: ApiTypes.ProblemContentSectionDto[];
+  samples: ApiTypes.ProblemSampleDataMemberDto[];
+}
 
-  async function getContentA() {
-    const { requestError, response } = await api.app.getMd({ id: "a" });
-
-    setContentA(response.content);
-    setLoadingA(false);
-  }
-
-  async function getContentB() {
-    const { requestError, response } = await api.app.getMd({ id: "b" });
-
-    setContentB(response.content);
-    setLoadingB(false);
-  }
-
-  // getContentA();
-
-  useEffect(() => {
-    getContentA();
-    getContentB();
-  }, []);
-
-  // setTimeout(() => {
-  //   getContentB();
-  // }, 2000);
-
+const StatementTab: React.FC<StatementTabProps> = (props) => {
   return (
     <>
-      <Skeleton title={true} loading={false} active>
-        <AmazeUIDetails title="Description">
-          <LazyMarkdownContent
-            content={contentA}
-            noSanitize={true}
-            loading={loadingA}
-          />
-        </AmazeUIDetails>
-
-        <AmazeUIDetails title="Input">
-          <LazyMarkdownContent
-            content={contentB}
-            noSanitize={true}
-            loading={loadingB}
-          />
-        </AmazeUIDetails>
-
-        <AmazeUIDetails title="Output"></AmazeUIDetails>
-
-        {/* <AmazeUIDetails title="Example"> */}
-        <ExampleBox input={input} output={output} />
-        <ExampleBox input={input} output={output} />
-        {/* </AmazeUIDetails> */}
-
-        <AmazeUIDetails title="Note"></AmazeUIDetails>
-      </Skeleton>
+      {props.contentSections.map((contentSection, index: number) => {
+        if (contentSection.type === "Text") {
+          return (
+            <div key={index}>
+              <AmazeUIDetails title={contentSection.sectionTitle}>
+                <LazyMarkdownContent
+                  content={contentSection.text}
+                  noSanitize={true}
+                />
+              </AmazeUIDetails>
+            </div>
+          );
+        } else if (contentSection.type === "Sample") {
+          return (
+            <div key={index}>
+              <ExampleBox
+                input={props.samples[contentSection.sampleId].inputData}
+                output={props.samples[contentSection.sampleId].outputData}
+              />
+            </div>
+          );
+        }
+      })}
     </>
   );
 };
