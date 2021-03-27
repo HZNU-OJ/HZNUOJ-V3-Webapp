@@ -202,7 +202,9 @@ const FileUpload: React.FC<FileUploadProps> = (props) => {
           if (newFileList[i].uuid === fileUuid) {
             newFileList[i] = Object.assign({}, fileList[i], {
               action: Object.assign({}, fileList[i].action, {
-                upload: uploadInfo,
+                upload: uploadInfo
+                  ? Object.assign({}, fileList[i].action.upload, uploadInfo)
+                  : null,
               }),
             });
             return newFileList;
