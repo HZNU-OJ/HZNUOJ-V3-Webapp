@@ -25,10 +25,11 @@ const EditIcon = () => (
 
 interface EditorWrapperProps {
   title: string;
+  visible?: boolean;
 }
 
 const EditorWrapper: React.FC<EditorWrapperProps> = (props) => {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(props.visible ?? true);
 
   return (
     <>
