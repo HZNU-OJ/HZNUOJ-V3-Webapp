@@ -75,7 +75,7 @@ const UsersPage: React.FC<{}> = (props) => {
       title: UsersTableHeadTitle.username,
       dataIndex: "username",
       key: "username",
-      width: 180,
+      width: 420,
       align: "left",
       ...useTableSearch("username", UsersTableHeadTitle.username),
       render: (username: string) => (
@@ -131,7 +131,7 @@ const UsersPage: React.FC<{}> = (props) => {
                 hideOnSinglePage: true,
                 showQuickJumper: true,
                 showSizeChanger: true,
-                defaultPageSize: 32,
+                defaultPageSize: 16,
                 pageSizeOptions: ["8", "16", "32", "64", "128", "256"],
               }}
             />
