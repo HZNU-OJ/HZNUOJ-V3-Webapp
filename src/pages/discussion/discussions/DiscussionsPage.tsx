@@ -5,19 +5,20 @@ import style from "./DiscussionsPage.module.less";
 import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useHistory, useLocation, useModel } from "umi";
+import { useUrlQuery } from "@/utils/hooks";
 
 const DiscussionsPage: React.FC<{}> = (props) => {
   const location = useLocation();
   const history = useHistory();
 
+  const [urlQuery, setUrlQUery] = useUrlQuery({
+    publisherId: 0,
+  });
+
   const { initialState, loading } = useModel("@@initialState");
 
   const [isMe, setIsMe] = useState(
-    initialState?.userMeta?.id == (location?.query?.publisherId ?? 0),
-  );
-
-  const [publisherId, setPublisherId] = useState(
-    location?.query?.publisherId ? parseInt(location.query.publisherId) : 0,
+    initialState?.userMeta?.id == urlQuery.publisherId,
   );
 
   return (
@@ -39,7 +40,7 @@ const DiscussionsPage: React.FC<{}> = (props) => {
             </div>
           )}
           <div className={style.table}>
-            <DiscussionsTable publisherId={publisherId} isMe={isMe} />
+            <DiscussionsTable publisherId={urlQuery.publisherId} isMe={isMe} />
           </div>
         </div>
       </BasicLayout>
