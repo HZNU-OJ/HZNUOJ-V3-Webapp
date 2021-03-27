@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useLocation } from "umi";
+import { useParams } from "umi";
 import { Row, Col, Affix, message } from "antd";
 
 import BasicLayout from "@/layouts/BasicLayout";
@@ -19,6 +19,8 @@ import {
 
 import { menuItem } from "@/interface/Menu.interface";
 
+import { useUrlQuery } from "@/utils/hooks";
+
 import api from "@/api";
 interface ProblemViewPageParams {
   id: string;
@@ -26,8 +28,11 @@ interface ProblemViewPageParams {
 
 const ProblemViewPage: React.FC<{}> = (props) => {
   const params: ProblemViewPageParams = useParams();
-  const location = useLocation();
-  const [tab, setTab] = useState(location?.query?.tab ?? "statement");
+
+  const [urlQuery, setUrlQuery] = useUrlQuery({
+    tab: "statement",
+  });
+
   const pathname = location.pathname;
 
   const [fetchDataLoaded, setFetchDataLoaded] = useState(false);
@@ -92,10 +97,6 @@ const ProblemViewPage: React.FC<{}> = (props) => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    setTab(location?.query?.tab ?? "statement");
-  });
-
   return (
     <>
       <BasicLayout current={"problem_set"}>
@@ -125,14 +126,14 @@ const ProblemViewPage: React.FC<{}> = (props) => {
                   xl={{ span: 21, order: 1 }}
                 >
                   <>
-                    {tab === "statement" && (
+                    {urlQuery.tab === "statement" && (
                       <StatementTab
                         contentSections={contentSections}
                         samples={samples}
                       />
                     )}
-                    {tab === "submit" && <SubmitTab />}
-                    {tab === "submissions" && <SubmissionsTab />}
+                    {urlQuery.tab === "submit" && <SubmitTab />}
+                    {urlQuery.tab === "submissions" && <SubmissionsTab />}
                     {/* {tab === "statistics" && <StatisticsTab />} */}
                   </>
                 </Col>
@@ -146,7 +147,7 @@ const ProblemViewPage: React.FC<{}> = (props) => {
                 >
                   {isMobile && (
                     <SiderMenu
-                      current={tab}
+                      current={urlQuery.tab}
                       menuItemList={SiderMenuItemList}
                       direction={"right"}
                     />
@@ -155,7 +156,7 @@ const ProblemViewPage: React.FC<{}> = (props) => {
                   {!isMobile && (
                     <Affix offsetTop={10}>
                       <SiderMenu
-                        current={tab}
+                        current={urlQuery.tab}
                         menuItemList={SiderMenuItemList}
                         direction={"right"}
                       />

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useModel, history, useLocation, useParams } from "umi";
+import { useParams } from "umi";
 import { Row, Col, Affix } from "antd";
 import SiderMenu from "@/components/SiderMenu";
 import PolygonLayout from "@/layouts/PolygonLayout";

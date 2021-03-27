@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Checkbox, message, Row, Col } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { history, useModel, useLocation, Helmet } from "umi";
+import { history, useModel, Helmet } from "umi";
 import BasicLayout from "@/layouts/BasicLayout";
+import { useUrlQuery } from "@/utils/hooks";
 
 import { getCustomTitle } from "@/utils";
 
@@ -20,7 +21,10 @@ interface LoginFormProps {
 
 const LoginPage: React.FC<{}> = () => {
   const { getToken, signIn } = useAuthToken();
-  const location = useLocation();
+
+  const [urlQuery, setUrlQuery] = useUrlQuery({
+    redirect: "/",
+  });
 
   const [loading, setLoading] = useState(false);
 
@@ -52,7 +56,7 @@ const LoginPage: React.FC<{}> = () => {
       signIn(response.token);
       refresh();
       message.success(`Welcome back, ${response.username}!`);
-      const redirectPath = location?.query?.redirect ?? "/";
+      const redirectPath = urlQuery.redirect;
       history.replace(redirectPath);
     }
   }

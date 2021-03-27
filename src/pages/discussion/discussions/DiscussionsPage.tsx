@@ -4,11 +4,10 @@ import DiscussionsTable from "../components/DiscussionsTable";
 import style from "./DiscussionsPage.module.less";
 import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { useHistory, useLocation, useModel } from "umi";
+import { useHistory, useModel } from "umi";
 import { useUrlQuery } from "@/utils/hooks";
 
 const DiscussionsPage: React.FC<{}> = (props) => {
-  const location = useLocation();
   const history = useHistory();
 
   const [urlQuery, setUrlQUery] = useUrlQuery({

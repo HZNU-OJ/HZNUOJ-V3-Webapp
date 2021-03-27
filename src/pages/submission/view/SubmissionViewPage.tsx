@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useLocation } from "umi";
+import { useParams } from "umi";
 import BasicLayout from "@/layouts/BasicLayout";
 
 import { Collapse, Tooltip } from "antd";
@@ -73,7 +73,6 @@ eeetTaooooinrrshhdclmpuufgwybvkxjqz`;
 
 const SubmissionViewPage: React.FC<{}> = (props) => {
   const params: SubmissionViewPageParams = useParams();
-  const location = useLocation();
   const isMobile = useScreenWidthWithin(0, 992);
 
   return (

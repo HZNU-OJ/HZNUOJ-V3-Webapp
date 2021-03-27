@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Row, Col, Form, Input, Button, message } from "antd";
-import { useLocation, useModel } from "umi";
+import { useModel } from "umi";
 
 import { LockOutlined, MailOutlined, SafetyOutlined } from "@ant-design/icons";
 
@@ -13,16 +13,18 @@ import { menuItem } from "@/interface/Menu.interface";
 import { useScreenWidthWithin, useRecaptcha } from "@/utils/hooks";
 import api from "@/api";
 
+import { useUrlQuery } from "@/utils/hooks";
+
 const SiderMenuItemList: menuItem[] = [
   {
-    id: "change_password",
+    id: "change-password",
     name: "Change Password",
-    link: "/settings/security?tab=change_password",
+    link: "/settings/security?tab=change-password",
   },
   {
-    id: "change_email",
+    id: "change-email",
     name: "Change Email",
-    link: "/settings/security?tab=change_email",
+    link: "/settings/security?tab=change-email",
   },
 ];
 
@@ -296,24 +298,20 @@ const ChangeEmailComponent: React.FC<{}> = (props) => {
 };
 
 const SecurityPage: React.FC<{}> = (props) => {
-  const location = useLocation();
-  const [tab, setTab] = useState("change_password");
-
-  useEffect(() => {
-    const _tab = location?.query?.tab ?? "change_password";
-    setTab(_tab);
+  const [urlQuery, setUrlQuery] = useUrlQuery({
+    tab: "change-password",
   });
 
   return (
     <SettingsLayout current="security">
       <Row gutter={16} align="top">
         <Col xs={24} sm={24} md={18} lg={18} xl={18}>
-          {tab === "change_password" && <ChangePasswordComponent />}
-          {tab === "change_email" && <ChangeEmailComponent />}
+          {urlQuery.tab === "change-password" && <ChangePasswordComponent />}
+          {urlQuery.tab === "change-email" && <ChangeEmailComponent />}
         </Col>
         <Col xs={24} sm={24} md={6} lg={6} xl={6}>
           <SiderMenu
-            current={tab}
+            current={urlQuery.tab}
             menuItemList={SiderMenuItemList}
             direction={"left"}
           />
