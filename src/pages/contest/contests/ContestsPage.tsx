@@ -16,7 +16,6 @@ import { useTableSearch, useTableFilter } from "@/utils/hooks";
 interface ContestItem {
   id: number;
   contestName: string;
-  writers: string;
   start: number;
   end: number;
   status: string;
@@ -27,7 +26,6 @@ interface ContestItem {
 enum ContestTableHeadTitle {
   id = "#",
   contestName = "Contest Name",
-  writers = "Writers",
   start = "Start",
   end = "End",
   status = "Status",
@@ -63,8 +61,7 @@ function getTableDataSource(): ContestItem[] {
   for (let i = 1; i <= 100; ++i) {
     dataSource.push({
       id: i,
-      contestName: `2020 Intelligent Video Coding Contest ${i}`,
-      writers: ["Dup4", "Hsueh-", "ltslts"].join("\n"),
+      contestName: `The Hangzhou Normal U Qualification Trials for ZJPSC 2021`,
       start: 1613656156 + i * 100,
       end: 1613656156 + 10 * i * 100,
       status: Frozen2Running(
@@ -94,7 +91,7 @@ const ContestsPage: React.FC<{}> = (props) => {
       title: ContestTableHeadTitle.contestName,
       dataIndex: "contestName",
       key: "contestName",
-      width: "320px",
+      width: "480px",
       align: "center",
       ...useTableSearch("contestName", ContestTableHeadTitle.contestName),
       render: (contestName: string) => {
@@ -108,18 +105,10 @@ const ContestsPage: React.FC<{}> = (props) => {
       },
     },
     {
-      title: ContestTableHeadTitle.writers,
-      dataIndex: "writers",
-      key: "writers",
-      width: "100px",
-      align: "center",
-      ...useTableSearch("writers", ContestTableHeadTitle.writers),
-    },
-    {
       title: ContestTableHeadTitle.start,
       dataIndex: "start",
       key: "start",
-      width: "160px",
+      width: "120px",
       align: "center",
       sorter: (a, b) => a.start - b.start,
       render: contestTimeRender,
@@ -128,7 +117,7 @@ const ContestsPage: React.FC<{}> = (props) => {
       title: ContestTableHeadTitle.end,
       dataIndex: "end",
       key: "end",
-      width: "160px",
+      width: "120px",
       align: "center",
       sorter: (a, b) => a.end - b.end,
       render: contestTimeRender,
@@ -163,13 +152,13 @@ const ContestsPage: React.FC<{}> = (props) => {
       width: "100px",
       align: "center",
     },
-    {
-      title: "Standings",
-      dataIndex: "standings",
-      key: "standings",
-      width: "100px",
-      align: "center",
-    },
+    // {
+    //   title: "Standings",
+    //   dataIndex: "standings",
+    //   key: "standings",
+    //   width: "100px",
+    //   align: "center",
+    // },
     {
       title: "Mode",
       dataIndex: "mode",
@@ -215,7 +204,7 @@ const ContestsPage: React.FC<{}> = (props) => {
                 hideOnSinglePage: true,
                 showQuickJumper: true,
                 showSizeChanger: true,
-                defaultPageSize: 32,
+                defaultPageSize: 16,
                 pageSizeOptions: ["8", "16", "32", "64", "128", "256"],
               }}
             />
