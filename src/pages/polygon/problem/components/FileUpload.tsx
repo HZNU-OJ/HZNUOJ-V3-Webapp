@@ -38,28 +38,6 @@ function getFilesTypeInDTO(type: FilesType) {
   }
 }
 
-async function downloadProblemFile(
-  problemId: number,
-  type: FilesType,
-  filename: string,
-) {
-  if (!filename) return message.error("NO_SUCH_FILE");
-
-  const { requestError, response } = await api.problem.downloadProblemFiles({
-    problemId,
-    type,
-    filenameList: [filename],
-  });
-
-  if (requestError) {
-    return message.error(requestError);
-  } else if (response.downloadInfo.length === 0) {
-    return message.error("NO_SUCH_FILE");
-  }
-
-  downloadFile(response.downloadInfo[0].downloadUrl);
-}
-
 interface FileUploadInfo {
   file: File;
   progressType:
@@ -102,15 +80,11 @@ const FileUpload: React.FC<FileUploadProps> = (props) => {
 
   const [fileList, setFileList] = useState([] as FileTableItem[]);
   const [fetchDataLoaded, setFetchDataLoaded] = useState(false);
-  async function fetchData(
-    idType: "id" | "displayId",
-    id: number,
-    type: FilesType,
-  ) {
+  async function fetchData() {
     const { requestError, response } = await api.problem.getProblem({
-      [idType]: id,
-      testData: type === "TestData",
-      additionalFiles: type === "AdditionalFile",
+      id: props.id,
+      testData: props.type === "TestData",
+      additionalFiles: props.type === "AdditionalFile",
       permissionOfCurrentUser: true,
     });
 
@@ -120,7 +94,7 @@ const FileUpload: React.FC<FileUploadProps> = (props) => {
       message.error(response.error);
     } else {
       let _filesList: FileTableItem[] = [];
-      response[getFilesTypeInDTO(type)].forEach(
+      response[getFilesTypeInDTO(props.type)].forEach(
         (file: ApiTypes.ProblemFileDto) => {
           _filesList.push({
             uuid: file.uuid,
@@ -140,7 +114,7 @@ const FileUpload: React.FC<FileUploadProps> = (props) => {
   }
 
   useEffect(() => {
-    fetchData("id", props.id, props.type);
+    fetchData();
   }, []);
 
   function transformResponseToFileTableItems(
@@ -150,13 +124,34 @@ const FileUpload: React.FC<FileUploadProps> = (props) => {
       uuid: uuid(),
       filename: file.filename,
       size: file.size,
+      action: {
+        filename: file.filename,
+      },
     }));
   }
 
-  async function onDeleteFiles(type: FilesType, filenames: string[]) {
+  async function downloadProblemFile(filename: string) {
+    if (!filename) return message.error("NO_SUCH_FILE");
+
+    const { requestError, response } = await api.problem.downloadProblemFiles({
+      problemId: props.id,
+      type: props.type,
+      filenameList: [filename],
+    });
+
+    if (requestError) {
+      return message.error(requestError);
+    } else if (response.downloadInfo.length === 0) {
+      return message.error("NO_SUCH_FILE");
+    }
+
+    downloadFile(response.downloadInfo[0].downloadUrl);
+  }
+
+  async function onDeleteFiles(filenames: string[]) {
     const { requestError, response } = await api.problem.removeProblemFiles({
       problemId: props.id,
-      type,
+      type: props.type,
       filenames: filenames,
     });
 
@@ -169,6 +164,9 @@ const FileUpload: React.FC<FileUploadProps> = (props) => {
       message.error(response.error);
       return;
     }
+
+    message.success(`deleted successfully`);
+    fetchData();
   }
 
   async function onUploadFiles(files: File[]) {
@@ -203,9 +201,9 @@ const FileUpload: React.FC<FileUploadProps> = (props) => {
         for (const i in newFileList) {
           if (newFileList[i].uuid === fileUuid) {
             newFileList[i] = Object.assign({}, fileList[i], {
-              upload: uploadInfo
-                ? Object.assign({}, fileList[i].action.upload, uploadInfo)
-                : null,
+              action: Object.assign({}, fileList[i].action, {
+                upload: uploadInfo,
+              }),
             });
             return newFileList;
           }
@@ -347,10 +345,26 @@ const FileUpload: React.FC<FileUploadProps> = (props) => {
           return (
             <>
               <Space size={"middle"}>
-                <div>
+                <div
+                  style={{
+                    cursor: "pointer",
+                    color: "#3e90cc",
+                  }}
+                  onClick={() => {
+                    downloadProblemFile(action.filename);
+                  }}
+                >
                   <DownloadOutlined />
                 </div>
-                <div>
+                <div
+                  style={{
+                    cursor: "pointer",
+                    color: "#3e90cc",
+                  }}
+                  onClick={() => {
+                    onDeleteFiles([action.filename]);
+                  }}
+                >
                   <DeleteOutlined />
                 </div>
               </Space>
