@@ -14,7 +14,10 @@ const CodeBox: React.FC<CodeBoxProps> = (props) => {
         <div
           className={`language-${props.language}`}
           dangerouslySetInnerHTML={{
-            __html: highlight(props.code, props.language),
+            __html:
+              props.language === "dangerouslySetInnerHTML"
+                ? props.code
+                : highlight(props.code, props.language),
           }}
         ></div>
       </pre>

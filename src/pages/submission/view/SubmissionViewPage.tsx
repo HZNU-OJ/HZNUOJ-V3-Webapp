@@ -5,7 +5,7 @@ import Loading from "@/components/Loading";
 import { Collapse, Tooltip, message } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 const { Panel } = Collapse;
-
+import AnsiUp from "ansi_up";
 import style from "./SubmissionViewPage.module.less";
 import CodeBoxStyle from "@/components/CodeBox.module.less";
 
@@ -81,6 +81,8 @@ const SubmissionViewPage: React.FC<{}> = (props) => {
   const params: SubmissionViewPageParams = useParams();
   const isMobile = useScreenWidthWithin(0, 992);
 
+  const converter = new AnsiUp();
+
   const [codeLanguage, setCodeLanguage] = useState("cpp");
   const [code, setCode] = useState("");
   const [compileInfo, setCompileInfo] = useState({
@@ -135,7 +137,12 @@ const SubmissionViewPage: React.FC<{}> = (props) => {
                     />
                   </Tooltip> */}
                 </p>
-                <CodeBox language={"plaintext"} code={compileInfo.message} />
+                {/* <div dangerouslySetInnerHTML={{__html: converter.ansi_to_html(compileInfo.message)}}>
+                </div> */}
+                <CodeBox
+                  language={"dangerouslySetInnerHTML"}
+                  code={converter.ansi_to_html(compileInfo.message)}
+                />
               </>
             )}
 
