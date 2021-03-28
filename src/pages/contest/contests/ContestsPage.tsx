@@ -194,7 +194,7 @@ const ContestsPage: React.FC<{}> = (props) => {
           <div className={style.tableRoot}>
             <Table<ContestItem>
               size="small"
-              scroll={{ x: 920 }}
+              scroll={{ x: 1100 }}
               sticky
               columns={columns}
               dataSource={[]}

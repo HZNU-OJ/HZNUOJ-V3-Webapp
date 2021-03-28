@@ -50,20 +50,20 @@ function topBar(
     { id: "dashboard", name: "Dashboard", link: `/contest/${contestId}` },
     {
       id: "submissions",
-      name: "Submission",
-      link: `/contest/submissions/${contestId}`,
+      name: "Submissions",
+      link: `/contest/${contestId}/submissions`,
     },
     {
       id: "standings",
       name: "Standings",
-      link: `/contest/standings/${contestId}`,
+      link: `/contest/${contestId}/standings`,
     },
     {
       id: "clarifications",
       name: "Clarifications",
-      link: `/contest/clarifications/${contestId}`,
+      link: `/contest/${contestId}/clarifications`,
     },
-    { id: "print", name: "Print", link: `/contest/print/${contestId}` },
+    // { id: "print", name: "Print", link: `/contest/print/${contestId}` },
   ];
   const enterItemList = [{ id: "enter", name: "Enter", link: "/login" }];
 

@@ -9,4 +9,9 @@ export default [
     component: "@/pages/admin/general/JudgeMachinePage",
     exact: true,
   },
+  {
+    path: "/admin/contests",
+    component: "@/pages/admin/contests/ContestsPage",
+    exact: true,
+  },
 ];

@@ -199,6 +199,9 @@ declare namespace ApiTypes {
   export interface GetAllProblemTagsResponseDto {
     tags: ApiTypes.LocalizedProblemTagDto[];
   }
+  export interface GetContentDto {
+    content: string;
+  }
   export interface GetDiscussionAndRepliesRequestDto {
     locale: "en_US";
     discussionId: number;
@@ -265,12 +268,6 @@ declare namespace ApiTypes {
     error?: "PERMISSION_DENIED" | "NO_SUCH_DISCUSSION";
     permissions?: ApiTypes.DiscussionPermissionsDto;
     haveManagePermissionsPermission?: boolean;
-  }
-  export interface GetIdDto {
-    id: string;
-  }
-  export interface GetMdDto {
-    content: string;
   }
   export interface GetProblemRequestDto {
     id?: number;
@@ -461,15 +458,11 @@ declare namespace ApiTypes {
   }
   namespace Parameters {
     export type Email = string;
-    export type Id = string;
     export type Jsonp = string;
     export type Query = string;
     export type Token = string;
     export type Username = string;
     export type Wildcard = "Start" | "End" | "Both";
-  }
-  export interface PathParameters {
-    id: ApiTypes.Parameters.Id;
   }
   export interface PreferenceConfig {
     siteName: string;
@@ -814,7 +807,7 @@ declare namespace ApiTypes {
     token?: string;
   }
   namespace Responses {
-    export type $200 = string;
+    export type $200 = ApiTypes.GetContentDto;
     export type $201 = ApiTypes.SetDiscussionPermissionsResponseDto;
   }
   export interface RevokeUserSessionRequestDto {
