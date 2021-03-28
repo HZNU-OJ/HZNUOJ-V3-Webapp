@@ -124,17 +124,19 @@ const SubmissionViewPage: React.FC<{}> = (props) => {
         {fetchDataLoading === false && (
           <>
             <CodeBox language={codeLanguage} code={code} />
-            <p>
-              <strong>Compilation Message</strong>
-              <Tooltip title="6194541 bytes omitted">
-                <InfoCircleOutlined
-                  style={{ marginLeft: "5px", fontSize: "14px" }}
-                />
-              </Tooltip>
-            </p>
 
             {compileInfo.success === false && (
-              <CodeBox language={"plaintext"} code={compileInfo.message} />
+              <>
+                <p>
+                  <strong>Compilation Message</strong>
+                  {/* <Tooltip title="6194541 bytes omitted">
+                    <InfoCircleOutlined
+                      style={{ marginLeft: "5px", fontSize: "14px" }}
+                    />
+                  </Tooltip> */}
+                </p>
+                <CodeBox language={"plaintext"} code={compileInfo.message} />
+              </>
             )}
 
             {/* <p>
