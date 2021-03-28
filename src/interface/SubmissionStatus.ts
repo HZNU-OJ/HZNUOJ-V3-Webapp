@@ -43,3 +43,25 @@ export enum SubmissionStatusAll {
   Running = "Running",
   Skipped = "Skipped",
 }
+
+export const SubmissionStatusList = [
+  "Accepted",
+  "WrongAnswer",
+  "Pending",
+  "RuntimeError",
+  "TimeLimitExceeded",
+  "MemoryLimitExceeded",
+  "OutputLimitExceeded",
+  "ConfigurationError",
+  "SystemError",
+  "Canceled",
+  "CompilationError",
+  "FileError",
+  "PartiallyCorrect",
+  "JudgementFailed",
+  "Waiting",
+  "Preparing",
+  "Compiling",
+  "Running",
+  "Skipped",
+];

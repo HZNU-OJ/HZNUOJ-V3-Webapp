@@ -73,6 +73,7 @@ const ProblemViewPage: React.FC<{}> = (props) => {
   );
   const [timeLimit, setTimeLimit] = useState(0);
   const [memoryLimit, setMemoryLimit] = useState(0);
+  const [lastSubmissionContent, setLastSubmissionContent] = useState({});
   async function fetchData() {
     const { requestError, response } = await api.problem.getProblem({
       id: parseInt(params.id),
@@ -81,6 +82,7 @@ const ProblemViewPage: React.FC<{}> = (props) => {
       samples: true,
       judgeInfo: true,
       statistics: true,
+      lastSubmissionAndLastAcceptedSubmission: true,
     });
 
     if (requestError) message.error(requestError);
@@ -94,6 +96,7 @@ const ProblemViewPage: React.FC<{}> = (props) => {
       setSamples(response.samples);
       setTimeLimit(response.judgeInfo?.timeLimit);
       setMemoryLimit(response.judgeInfo?.memoryLimit);
+      setLastSubmissionContent(response.lastSubmission.lastSubmissionContent);
       setFetchDataLoaded(true);
     }
   }
@@ -140,9 +143,14 @@ const ProblemViewPage: React.FC<{}> = (props) => {
                       />
                     )}
                     {urlQuery.tab === "submit" && (
-                      <SubmitTab id={parseInt(params.id)} />
+                      <SubmitTab
+                        id={parseInt(params.id)}
+                        lastSubmissionContent={lastSubmissionContent}
+                      />
                     )}
-                    {urlQuery.tab === "submissions" && <SubmissionsTab />}
+                    {urlQuery.tab === "submissions" && (
+                      <SubmissionsTab id={parseInt(params.id)} />
+                    )}
                     {/* {tab === "statistics" && <StatisticsTab />} */}
                   </>
                 </Col>

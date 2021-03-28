@@ -103,7 +103,6 @@ const ProfilePage: React.FC<{}> = (props) => {
       username: initialState.userMeta.username,
     });
     if (response) {
-      console.log(response);
       const _profile: UpdateProfileFormProps = {
         username: response.meta.username,
         nickname: response.meta.nickname,

@@ -13,45 +13,9 @@ import { useScreenWidthWithin } from "@/utils/hooks";
 import { CodeBox } from "@/components/CodeBox";
 import { ExampleDiffBox } from "@/components/ExampleBox";
 
+import SubmissionsTable from "../components/SubmissionsTable";
+
 import api from "@/api";
-
-const code = `#include <bits/stdc++.h>
-
-int main() {
-
-  string a = "https://www.baidu.com";  string a = "https://www.baidu.com";  string a = "https://www.baidu.com";  string a = "https://www.baidu.com";  string a = "https://www.baidu.com";  string a = "https://www.baidu.com";
-  return 0;
-}`;
-
-const text = `
-  A dog is a type of domesticated animal.
-  Known for its loyalty and faithfulness,
-  it can be found as a welcome guest in many households across the world.
-`;
-
-const CompilationMessage = `/sandbox/source/Main.cs(1,2): error CS1024: Preprocessor directive expected
-/sandbox/source/Main.cs(2,7): error CS1041: Identifier expected; 'namespace' is a keyword
-/sandbox/source/Main.cs(2,20): error CS1514: { expected
-/sandbox/source/Main.cs(3,2): error CS1024: Preprocessor directive expected
-/sandbox/source/Main.cs(4,2): error CS1024: Preprocessor directive expected
-/sandbox/source/Main.cs(6,2): error CS1032: Cannot define/undefine preprocessor symbols after first token in file
-/sandbox/source/Main.cs(6,14): error CS1025: Single-line comment or end-of-line expected
-/sandbox/source/Main.cs(10,27): error CS1018: Keyword 'this' or 'base' expected
-/sandbox/source/Main.cs(10,27): error CS1002: ; expected
-/sandbox/source/Main.cs(10,31): error CS1001: Identifier expected
-/sandbox/source/Main.cs(10,32): error CS1002: ; expected
-/sandbox/source/Main.cs(10,32): error CS1519: Invalid token ',' in class, struct, or interface member declaration
-/sandbox/source/Main.cs(10,38): error CS1001: Identifier expected
-/sandbox/source/Main.cs(12,15): error CS0650: Bad array declarator: To declare a managed array the rank specifier precedes the variable's identifier. To declare a fixed size buffer field, use the fixed keyword before the field type.
-/sandbox/source/Main.cs(12,16): error CS0270: Array size cannot be specified in a variable declaration (try initializing with a 'new' expression)
-/sandbox/source/Main.cs(13,9): error CS0650: Bad array declarator: To declare a managed array the rank specifier precedes the variable's identifier. To declare a fixed size buffer field, use the fixed keyword before the field type.
-/sandbox/source/Main.cs(13,10): error CS0270: Array size cannot be specified in a variable declaration (try initializing with a 'new' expression)
-/sandbox/source/Main.cs(14,10): error CS0650: Bad array declarator: To declare a managed array the rank specifier precedes the variable's identifier. To declare a fixed size buffer field, use the fixed keyword before the field type.
-/sandbox/source/Main.cs(14,11): error CS0270: Array size cannot be specified in a variable declaration (try initializing with a 'new' expression)
-/sandbox/source/Main.cs(15,10): error CS0650: Bad array declarator: To declare a managed array the rank specifier precedes the variable's identifier. To declare a fixed size buffer field, use the fixed keyword before the field type.
-/sandbox/source/Main.cs(15,11): error CS0270: Array size cannot be specified in a variable declaration (try initializing with a 'new' expression)
-/sandbox/source/Main.cs(76,2): error CS1513: } expected
-`;
 
 interface SubmissionViewPageParams {
   id: string;
@@ -101,7 +65,6 @@ const SubmissionViewPage: React.FC<{}> = (props) => {
     if (requestError) message.error(requestError);
     else if (response.error) message.error(response.error);
     else {
-      console.log(response);
       setCodeLanguage(response.meta.codeLanguage);
       setCode(response.content?.code);
       setCompileInfo(response.progress?.compile);
@@ -125,7 +88,16 @@ const SubmissionViewPage: React.FC<{}> = (props) => {
 
         {fetchDataLoading === false && (
           <>
-            <CodeBox language={codeLanguage} code={code} />
+            <SubmissionsTable
+              query={{
+                minId: parseInt(params.id),
+                maxId: parseInt(params.id),
+              }}
+            />
+
+            <div style={{ marginTop: 20 }}>
+              <CodeBox language={codeLanguage} code={code} />
+            </div>
 
             {compileInfo.success === false && (
               <>

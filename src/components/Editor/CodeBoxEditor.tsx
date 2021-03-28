@@ -16,6 +16,8 @@ export interface CodeBoxEditorProps extends CodeEditorProps {
   loading?: boolean;
   onSubmit?: any;
   submitButtonLoading?: boolean;
+  language: string;
+  setLanguage: any;
 }
 
 const CodeBoxEditor: React.FC<CodeBoxEditorProps> = (props) => {
@@ -59,15 +61,18 @@ const CodeBoxEditor: React.FC<CodeBoxEditorProps> = (props) => {
                   }}
                 >
                   <Select
-                    defaultValue="cpp"
+                    value={props.language}
+                    onChange={(e) => props.setLanguage(e.toString())}
+                    // defaultValue="cpp"
                     style={{
                       width: isMobile ? "100%" : 220,
+                      fontWeight: "bold",
                     }}
                   >
-                    <Option value="c">C</Option>
-                    <Option value="cpp">C++</Option>
-                    <Option value="java">Java</Option>
-                    <Option value="python">Python</Option>
+                    <Option value="c">C 11</Option>
+                    <Option value="cpp">C++ 17</Option>
+                    <Option value="java">Java 11</Option>
+                    <Option value="python">Python 3.9</Option>
                   </Select>
                 </div>
               </Col>

@@ -5,15 +5,52 @@ import LazyCodeBoxEditor from "@/components/Editor/LazyCodeBoxEditor";
 import { useScreenWidthWithin } from "@/utils/hooks";
 import { useRecaptcha } from "@/utils/hooks";
 import api from "@/api";
+import SubmissionsTable from "@/pages/submission/components/SubmissionsTable";
+
+const languageCompileOptions = {
+  c: {
+    language: "c",
+    compileAndRunOptions: {
+      compiler: "gcc",
+      std: "c11",
+      O: "2",
+      m: "64",
+    },
+  },
+  cpp: {
+    language: "cpp",
+    compileAndRunOptions: {
+      compiler: "g++",
+      std: "c++17",
+      O: "2",
+      m: "64",
+    },
+  },
+  java: {
+    language: "java",
+    compileAndRunOptions: {},
+  },
+  python: {
+    language: "python",
+    compileAndRunOptions: {
+      version: "3.9",
+    },
+  },
+};
 
 interface SubmitTabProps {
   id: number;
+  lastSubmissionContent: any;
 }
 
 const SubmitTab: React.FC<SubmitTabProps> = (props) => {
-  const [loading, setLoading] = useState(true);
-
-  const [codeValue, setCodeValue] = useState("");
+  const [codeValue, setCodeValue] = useState(
+    props.lastSubmissionContent?.code ?? "",
+  );
+  const [language, setLanguage] = useState(
+    props.lastSubmissionContent?.language ?? "cpp",
+  );
+  const [submissionId, setSubmissionId] = useState(-1);
 
   const isMobile = useScreenWidthWithin(0, 577);
 
@@ -27,14 +64,8 @@ const SubmitTab: React.FC<SubmitTabProps> = (props) => {
       {
         problemId: props.id,
         content: {
-          language: "cpp",
           code: codeValue,
-          compileAndRunOptions: {
-            compiler: "g++",
-            std: "c++17",
-            O: "2",
-            m: "64",
-          },
+          ...languageCompileOptions[language],
           skipSamples: true,
         },
       },
@@ -45,30 +76,35 @@ const SubmitTab: React.FC<SubmitTabProps> = (props) => {
     else if (response.error) message.error(response.error);
     else {
       message.success("Submit Successfully!");
+      setSubmissionId(response.submissionId);
       setSubmitLoading(false);
     }
   }
 
   return (
     <div className={style.root}>
-      {loading === false && (
-        <div className={style.loading}>
-          <Spin tip="loading..."></Spin>
+      {submissionId !== -1 && (
+        <div style={{ marginBottom: 20 }}>
+          <SubmissionsTable
+            query={{
+              minId: submissionId,
+              maxId: submissionId,
+            }}
+          />
         </div>
       )}
 
-      {loading === true && (
-        <LazyCodeBoxEditor
-          height={isMobile ? "220" : "500"}
-          value={codeValue}
-          language={"cpp"}
-          onSubmit={onSubmit}
-          submitButtonLoading={submitLoading}
-          onChange={(e) => {
-            setCodeValue(e);
-          }}
-        />
-      )}
+      <LazyCodeBoxEditor
+        height={isMobile ? "220" : "500"}
+        value={codeValue}
+        language={language}
+        setLanguage={setLanguage}
+        onSubmit={onSubmit}
+        submitButtonLoading={submitLoading}
+        onChange={(e) => {
+          setCodeValue(e);
+        }}
+      />
     </div>
   );
 };
