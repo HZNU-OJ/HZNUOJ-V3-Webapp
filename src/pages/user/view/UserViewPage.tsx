@@ -27,7 +27,7 @@ const UserViewPage: React.FC<{}> = (props) => {
   const isMobile = useScreenWidthWithin(0, 577);
 
   async function getUserProfile(username: string) {
-    const { requestError, response } = await api.user.getUserProfile({
+    const { requestError, response } = await api.user.getUserMeta({
       username: username,
     });
 
