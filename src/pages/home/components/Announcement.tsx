@@ -71,7 +71,7 @@ const Announcement: React.FC<{}> = (props) => {
             <td style={{ textAlign: "left" }} className={"h-ellipsis"}>
               <a href={`/discussion/${item.meta.id}`}>
                 <Tooltip placement="top" title={item.meta.title}>
-                  <span>{item.meta.title}</span>
+                  <span style={{ fontWeight: "bold" }}>{item.meta.title}</span>
                 </Tooltip>
               </a>
             </td>
