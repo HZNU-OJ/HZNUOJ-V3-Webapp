@@ -54,6 +54,7 @@ interface SubmissionsQuery {
   status?: SubmissionStatus;
   minId?: number;
   maxId?: number;
+  takeCount?: number;
 }
 
 enum SubmissionTableHeadTitle {
@@ -109,6 +110,8 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
   const [fetchDataLoading, setFetchDataLoading] = useState(true);
   const [tableData, setTableData] = useState([] as SubmissionItem[]);
 
+  let timeOut = null;
+
   function normalizeQuery(query: Record<string, string>): SubmissionsQuery {
     const result: SubmissionsQuery = {
       problemId: Number(query.problemId) ? Number(query.problemId) : null,
@@ -139,10 +142,12 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
   }
 
   async function fetchData(query: SubmissionsQuery) {
+    let takeCount = 1000000;
+    if (query?.takeCount) takeCount = query.takeCount;
     const { requestError, response } = await api.submission.querySubmission({
       ...query,
       locale: "en_US",
-      takeCount: 1000000,
+      takeCount: takeCount,
     });
 
     if (requestError) message.error(requestError);
@@ -187,16 +192,26 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
         });
       });
       setTableData(_tableData);
+      if (
+        _tableData.some((data) =>
+          ["Preparing", "Compiling", "Running", "Waiting"].includes(
+            data.status,
+          ),
+        )
+      ) {
+        if (timeOut) clearTimeout(timeOut);
+        console.log(timeOut);
+        timeOut = setTimeout(() => {
+          fetchData(props.query);
+        }, 200);
+      }
       setFetchDataLoading(false);
     }
   }
 
   useEffect(() => {
     fetchData(props.query);
-    const interval = setInterval(() => {
-      fetchData(props.query);
-    }, 1000);
-  }, []);
+  }, [props.query]);
 
   const columns: ColumnsType<SubmissionItem> = [
     {

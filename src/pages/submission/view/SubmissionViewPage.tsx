@@ -91,7 +91,8 @@ const SubmissionViewPage: React.FC<{}> = (props) => {
             <SubmissionsTable
               query={{
                 minId: parseInt(params.id),
-                maxId: parseInt(params.id),
+                takeCount: 1,
+                // maxId: parseInt(params.id),
               }}
             />
 
@@ -99,7 +100,7 @@ const SubmissionViewPage: React.FC<{}> = (props) => {
               <CodeBox language={codeLanguage} code={code} />
             </div>
 
-            {compileInfo.success === false && (
+            {compileInfo?.success === false && (
               <>
                 <p>
                   <strong>Compilation Message</strong>
