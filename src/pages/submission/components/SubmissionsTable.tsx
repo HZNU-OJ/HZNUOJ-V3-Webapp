@@ -289,7 +289,11 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
       width: "60px",
       align: "center",
       ...useTableSearch("who", SubmissionTableHeadTitle.who),
-      render: (who: string) => <a href={`/user/${who}`}>{who}</a>,
+      render: (who: string) => (
+        <a href={`/user/${who}`} target={"_blank"}>
+          {who}
+        </a>
+      ),
     },
     {
       title: SubmissionTableHeadTitle.when,
