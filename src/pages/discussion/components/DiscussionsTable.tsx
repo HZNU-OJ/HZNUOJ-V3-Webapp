@@ -107,7 +107,7 @@ const DiscussionsTable: React.FC<DiscussionsTableProps> = (props) => {
           <>
             <div
               style={{
-                padding: 5,
+                padding: "0px 5px",
               }}
             >
               <a href={`/discussion/${action.id}/edit`}>Edit</a>
