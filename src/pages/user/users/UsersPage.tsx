@@ -67,7 +67,7 @@ const UsersPage: React.FC<{}> = (props) => {
       title: UsersTableHeadTitle.rank,
       dataIndex: "rank",
       key: "rank",
-      width: "5%",
+      width: "24px",
       align: "left",
       sorter: (a, b) => a.rank - b.rank,
     },
@@ -75,10 +75,10 @@ const UsersPage: React.FC<{}> = (props) => {
       title: UsersTableHeadTitle.avatar,
       dataIndex: "avatar",
       key: "avatar",
-      width: "5%",
-      align: "center",
+      width: "38px",
+      align: "left",
       render: (avatar) => (
-        <div style={{ width: "32px" }}>
+        <div style={{ width: "32px", height: "32px", margin: 0, padding: 0 }}>
           <UserAvatar userAvatar={avatar} imageSize={32} />
         </div>
       ),
@@ -87,7 +87,7 @@ const UsersPage: React.FC<{}> = (props) => {
       title: UsersTableHeadTitle.username,
       dataIndex: "username",
       key: "username",
-      width: "60%",
+      width: "520px",
       align: "left",
       ...useTableSearch("username", UsersTableHeadTitle.username),
       render: (username: string) => (
@@ -106,7 +106,7 @@ const UsersPage: React.FC<{}> = (props) => {
       title: UsersTableHeadTitle.acCount,
       dataIndex: "acCount",
       key: "acCount",
-      width: "10%",
+      width: "48px",
       align: "center",
       sorter: (a, b) => a.acCount - b.acCount,
     },
@@ -114,7 +114,7 @@ const UsersPage: React.FC<{}> = (props) => {
       title: UsersTableHeadTitle.rating,
       dataIndex: "rating",
       key: "rating",
-      width: "10%",
+      width: "48px",
       align: "center",
       sorter: (a, b) => a.rating - b.rating,
     },
@@ -127,7 +127,7 @@ const UsersPage: React.FC<{}> = (props) => {
           <Table<UserItem>
             loading={fetchDataLoading}
             size="small"
-            // scroll={{ x: 1100 }}
+            scroll={{ x: 1100 }}
             sticky
             columns={columns}
             dataSource={tableData}
