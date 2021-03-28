@@ -34,9 +34,9 @@ function getAcceptance(
   submissionCount: number,
 ) {
   if (submissionCount === 0) {
-    return (0.0).toFixed(2);
+    return (0.0 * 100).toFixed(2);
   } else {
-    return (acceptedSubmissionCount / submissionCount).toFixed(2);
+    return ((acceptedSubmissionCount * 100.0) / submissionCount).toFixed(2);
   }
 }
 
@@ -82,9 +82,6 @@ const ProblemSetPage: React.FC<{}> = (props) => {
       key: "acceptance",
       width: "100px",
       align: "right",
-      render: (acceptance: number) => {
-        return `${acceptance / 100}%`;
-      },
     },
   ];
 
@@ -105,7 +102,6 @@ const ProblemSetPage: React.FC<{}> = (props) => {
     } else if (response.error) {
       message.error(requestError);
     } else {
-      console.log(response);
       let _tableData: ProblemItem[] = [];
       response.result.forEach((item) => {
         _tableData.push({

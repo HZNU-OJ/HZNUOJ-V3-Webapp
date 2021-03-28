@@ -197,7 +197,7 @@ const ContestsPage: React.FC<{}> = (props) => {
               scroll={{ x: 920 }}
               sticky
               columns={columns}
-              dataSource={getTableDataSource()}
+              dataSource={[]}
               className={AntTableHeadStyles.table}
               rowKey={(record) => record.id}
               pagination={{

@@ -80,6 +80,7 @@ const ProblemViewPage: React.FC<{}> = (props) => {
       localizedContentsTitleOnly: false,
       samples: true,
       judgeInfo: true,
+      statistics: true,
     });
 
     if (requestError) message.error(requestError);
@@ -138,7 +139,9 @@ const ProblemViewPage: React.FC<{}> = (props) => {
                         samples={samples}
                       />
                     )}
-                    {urlQuery.tab === "submit" && <SubmitTab />}
+                    {urlQuery.tab === "submit" && (
+                      <SubmitTab id={parseInt(params.id)} />
+                    )}
                     {urlQuery.tab === "submissions" && <SubmissionsTab />}
                     {/* {tab === "statistics" && <StatisticsTab />} */}
                   </>

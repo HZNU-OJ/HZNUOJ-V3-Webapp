@@ -14,6 +14,8 @@ export type { CodeEditorProps } from "./CodeEditor";
 
 export interface CodeBoxEditorProps extends CodeEditorProps {
   loading?: boolean;
+  onSubmit?: any;
+  submitButtonLoading?: boolean;
 }
 
 const CodeBoxEditor: React.FC<CodeBoxEditorProps> = (props) => {
@@ -27,10 +29,12 @@ const CodeBoxEditor: React.FC<CodeBoxEditorProps> = (props) => {
 
   const submitButton = (
     <Button
+      loading={props.submitButtonLoading ?? false}
       type={"primary"}
       style={{
         width: isMobile ? "100%" : 120,
       }}
+      onClick={props.onSubmit ?? (() => {})}
     >
       Submit
     </Button>
