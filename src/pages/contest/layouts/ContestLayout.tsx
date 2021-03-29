@@ -159,6 +159,7 @@ const Header: React.FC<HeaderProps> = (props) => {
 interface ContestLayoutProps {
   current: string;
   maxWidth?: string;
+  disableHeader?: boolean;
 }
 
 interface ContestLayoutParams {
@@ -202,10 +203,12 @@ const ContestLayout: React.FC<ContestLayoutProps> = (props) => {
           >
             <div className={style.secondRoot}>
               <div className={style.main}>
-                <div className={style.contestHeader}>
-                  <ContestHeader />
-                  <Divider />
-                </div>
+                {!props.disableHeader && (
+                  <div className={style.contestHeader}>
+                    <ContestHeader />
+                    <Divider />
+                  </div>
+                )}
                 {props.children}
               </div>
               <Footer />

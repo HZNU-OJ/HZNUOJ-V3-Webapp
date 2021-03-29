@@ -9,11 +9,11 @@ export default [
     component: "@/pages/contest/dashboard/DashboardPage",
     exact: true,
   },
-  // {
-  //   path: "/contest/:id/problem/:pid",
-  //   component: "@/pages/contest/dashboard/DashboardPage",
-  //   exact: true,
-  // },
+  {
+    path: "/contest/:id/problem/:pid",
+    component: "@/pages/contest/problem/ProblemPage",
+    exact: true,
+  },
   {
     path: "/contest/:id/submissions",
     component: "@/pages/contest/submissions/SubmissionsPage",
