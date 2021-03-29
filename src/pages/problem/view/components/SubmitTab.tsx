@@ -47,13 +47,15 @@ const SubmitTab: React.FC<SubmitTabProps> = (props) => {
   const [codeValue, setCodeValue] = useState(
     props.lastSubmissionContent?.code ?? "",
   );
+
   const [language, setLanguage] = useState(
     props.lastSubmissionContent?.language ?? "cpp",
   );
+
+  const [takeCount, setTakeCount] = useState(0);
+
   const [submissionId, setSubmissionId] = useState(-1);
-
   const isMobile = useScreenWidthWithin(0, 577);
-
   const recaptcha = useRecaptcha();
 
   const [submitLoading, setSubmitLoading] = useState(false);
@@ -76,6 +78,7 @@ const SubmitTab: React.FC<SubmitTabProps> = (props) => {
     else if (response.error) message.error(response.error);
     else {
       message.success("Submit Successfully!");
+      setTakeCount((takeCount) => takeCount + 1);
       setSubmissionId(response.submissionId);
       setSubmitLoading(false);
     }
@@ -87,8 +90,8 @@ const SubmitTab: React.FC<SubmitTabProps> = (props) => {
         <div style={{ marginBottom: 20 }}>
           <SubmissionsTable
             query={{
-              minId: submissionId,
-              takeCount: 1,
+              maxId: submissionId,
+              takeCount: takeCount,
             }}
           />
         </div>
