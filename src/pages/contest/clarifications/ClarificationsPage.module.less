@@ -13,6 +13,7 @@
 @vertical-line-width: 2px;
 @vertical-line-color: #3e90cc;
 @vertical-line-left: 36px;
+@vertical-line-right: 36px;
 
 .boxList {
   position: relative;
@@ -27,9 +28,20 @@
     margin-top: -@vertical-line-height;
   }
 
+  &.left {
+    &::before {
+      left: @vertical-line-left;
+    }
+  }
+
+  &.right {
+    &::before {
+      right: @vertical-line-right;
+    }
+  }
+
   &::before {
     position: absolute;
-    left: @vertical-line-left;
     display: block;
     width: @vertical-line-width;
     height: @vertical-line-height;

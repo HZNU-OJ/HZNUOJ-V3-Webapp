@@ -199,7 +199,7 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
           ),
         )
       ) {
-        if (timeOut) clearTimeout(timeOut);
+        if (timeOut != null) clearTimeout(timeOut);
         timeOut = setTimeout(() => {
           fetchData(props.query);
         }, 200);
@@ -209,7 +209,10 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
   }
 
   useEffect(() => {
-    fetchData(props.query);
+    if (timeOut != null) clearTimeout(timeOut);
+    timeOut = setTimeout(() => {
+      fetchData(props.query);
+    }, 200);
   }, [props.query]);
 
   const columns: ColumnsType<SubmissionItem> = [
@@ -234,7 +237,7 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
       title: SubmissionTableHeadTitle.status,
       dataIndex: "status",
       key: "status",
-      width: "80px",
+      width: "100px",
       align: "center",
       ...useTableFilter(
         "status",

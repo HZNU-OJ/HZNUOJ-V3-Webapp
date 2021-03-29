@@ -91,7 +91,7 @@ const SubmitTab: React.FC<SubmitTabProps> = (props) => {
           <SubmissionsTable
             query={{
               maxId: submissionId,
-              takeCount: takeCount,
+              takeCount: 1,
             }}
           />
         </div>
