@@ -200,7 +200,6 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
         )
       ) {
         if (timeOut) clearTimeout(timeOut);
-        console.log(timeOut);
         timeOut = setTimeout(() => {
           fetchData(props.query);
         }, 200);
