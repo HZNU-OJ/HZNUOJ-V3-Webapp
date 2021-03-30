@@ -5,7 +5,7 @@ import { useParams } from "umi";
 import { DiscussionBox } from "@/pages/discussion/view/components";
 import LazyMarkDownEditor from "@/components/Editor/LazyMarkDownEditor";
 import { useScreenWidthWithin } from "@/utils/hooks";
-
+import ReplyModel from "./components/ReplyModel";
 import api from "@/api";
 import style from "./ClarificationsPage.module.less";
 
@@ -22,6 +22,10 @@ const ClarificationsPage: React.FC<{}> = (props) => {
   const [publishTime, setPublishTime] = useState("");
   const isMobile = useScreenWidthWithin(0, 577);
   const [editorValue, setEditorValue] = useState("");
+
+  const [replyModelVisibleList, setReplyModelVisibleList] = useState(
+    new Array(6).fill(false),
+  );
 
   async function fetchData() {
     const {

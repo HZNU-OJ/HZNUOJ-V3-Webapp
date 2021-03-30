@@ -269,7 +269,7 @@ const ContestLayout: React.FC<ContestLayoutProps> = (props) => {
                   </div>
                 )}
 
-                {contestStatus > 0 && (
+                {contestStatus >= 0 && (
                   <>
                     <div className={style.root} style={{ maxWidth: "1200px" }}>
                       {props.children}
