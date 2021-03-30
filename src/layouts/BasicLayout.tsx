@@ -58,11 +58,15 @@ function topBar(
 
   const userItemList = [
     [
-      {
-        id: "my_profile",
-        name: "My Profile",
-        link: `/user/${username}`,
-      },
+      ...(isAdmin
+        ? [
+            {
+              id: "my_profile",
+              name: "My Profile",
+              link: `/user/${username}`,
+            },
+          ]
+        : []),
       {
         id: "my_submissions",
         name: "My Submissions",
@@ -93,11 +97,15 @@ function topBar(
         ]
       : [],
     [
-      {
-        id: "settings",
-        name: "Settings",
-        link: "/settings",
-      },
+      ...(isAdmin
+        ? [
+            {
+              id: "settings",
+              name: "Settings",
+              link: "/settings",
+            },
+          ]
+        : []),
       {
         id: "logout",
         name: "Logout",
