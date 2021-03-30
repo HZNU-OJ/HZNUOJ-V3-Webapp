@@ -10,7 +10,7 @@ import {
   getTimeRemaining,
 } from "./model";
 import FormatTableDate from "@/components/FormatTableDate";
-
+import { ContestStatusColorList } from "@/interface/Contest";
 class ProgressBig extends React.Component {
   timer: any = null;
 
@@ -93,7 +93,7 @@ class ProgressBig extends React.Component {
                 style[status_type[this.state.status]],
               ].join(" ")}
             ></div>
-            <b>
+            <b style={{ color: ContestStatusColorList[this.state.status] }}>
               {status_type[this.state.status]}&nbsp;
               {this.state.status === 0 && this.state.time_pending}
             </b>
