@@ -1,15 +1,16 @@
 import { useModel, useParams } from "umi";
-import React, { useEffect } from "react";
-
+import React, { useEffect, useState } from "react";
+import { Statistic } from "antd";
+const { Countdown } = Statistic;
 import Footer from "@/components/Footer";
 import Loading from "@/components/Loading";
-
 import style from "./ContestLayout.module.less";
-
 import { menuItem } from "@/interface/menu.interface";
-
 import Divider from "@/components/Divider";
 import ContestHeader from "../components/ContestHeader";
+import { getStatus } from "../components/progress/model";
+
+import api from "@/api";
 
 function topBarItemRender(current: string, itemList: menuItem[]): string {
   let html = "";
@@ -156,6 +157,17 @@ const Header: React.FC<HeaderProps> = (props) => {
   );
 };
 
+const PendingClock: React.FC<{}> = (props) => {
+  const deadline = Date.now() + 1000 * 60 * 60 * 24 * 2 + 1000 * 30; // Moment is also OK
+  return (
+    <>
+      <div>
+        <Countdown title="" value={deadline} format="D [Days] H : m : s " />
+      </div>
+    </>
+  );
+};
+
 interface ContestLayoutProps {
   current: string;
   maxWidth?: string;
@@ -170,25 +182,66 @@ const ContestLayout: React.FC<ContestLayoutProps> = (props) => {
   const { initialState, loading } = useModel("@@initialState");
   const params: ContestLayoutParams = useParams();
 
+  if (params.id !== "2") {
+    return <></>;
+  }
+
+  interface ContestConfig {
+    startTime: number;
+    endTime: number;
+    frozenTime: number;
+    contestName: string;
+  }
+
+  const [contestConfig, setContestConfig] = useState(null);
+  const [contestStatus, setContestStatus] = useState(0);
+  const [fetchDataLoading, setFetchDataLoading] = useState(true);
+  async function fetchData() {
+    // const { requestError, response } = await api.contest.getConfig();
+    // if (requestError) message.error(requestError);
+    // else {
+    let _contestConfig = {
+      startTime: 1617165000,
+      endTime: 1617183000,
+      frozenTime: 3600,
+      contestName: "The Hangzhou Normal U Qualification Trials for ZJPSC 2021",
+    } as ContestConfig;
+    setContestConfig(_contestConfig);
+    setContestStatus(
+      getStatus(
+        _contestConfig.startTime,
+        _contestConfig.endTime,
+        _contestConfig.frozenTime,
+      ),
+    );
+    setFetchDataLoading(false);
+    // }
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   useEffect(() => {
     window.$(".am-dropdown").dropdown();
   });
 
   return (
     <>
-      {loading === true && (
-        <div
-          style={{
-            height: "calc(100vh)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Loading />
-        </div>
-      )}
-      {loading === false && (
+      {loading ||
+        (fetchDataLoading && (
+          <div
+            style={{
+              height: "calc(100vh)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Loading />
+          </div>
+        ))}
+      {(loading || fetchDataLoading) === false && (
         <>
           <Header
             current={props.current}
@@ -198,18 +251,31 @@ const ContestLayout: React.FC<ContestLayoutProps> = (props) => {
           <div
             className={style.root}
             style={{
-              maxWidth: props.maxWidth ? props.maxWidth : "",
+              maxWidth: "1560px",
+              // props.maxWidth ? props.maxWidth : "",
             }}
           >
             <div className={style.secondRoot}>
               <div className={style.main}>
                 {!props.disableHeader && (
                   <div className={style.contestHeader}>
-                    <ContestHeader />
+                    <ContestHeader
+                      startTime={contestConfig.startTime}
+                      endTime={contestConfig.endTime}
+                      frozenTime={contestConfig.frozenTime}
+                      contestName={contestConfig.contestName}
+                    />
                     <Divider />
                   </div>
                 )}
-                {props.children}
+
+                {contestStatus > 0 && (
+                  <>
+                    <div className={style.root} style={{ maxWidth: "1200px" }}>
+                      {props.children}
+                    </div>
+                  </>
+                )}
               </div>
               <Footer />
             </div>

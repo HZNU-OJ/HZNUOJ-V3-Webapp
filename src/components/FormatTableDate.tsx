@@ -3,7 +3,7 @@ import { Tooltip } from "antd";
 import { formatDateTime } from "@/utils/formatDateTime";
 
 interface FormatTableDateProps {
-  date: string;
+  date: string | number | Date;
 }
 
 const FormatTableDate: React.FC<FormatTableDateProps> = (props) => {

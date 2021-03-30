@@ -16,6 +16,11 @@ export function formatDateTime(
   date: Date | string | number,
   dateOnly?: boolean,
 ): [JSX.Element | string, string] {
+  if (typeof date === "number") {
+    if (date.toString().length === 10) {
+      date = date * 1000;
+    }
+  }
   if (!(date instanceof Date)) date = new Date(date);
   let month = (date.getMonth() + 1).toString();
   let day = date.getDate().toString();

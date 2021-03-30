@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-import { Row, Col } from "antd";
+import { Row, Col, Button } from "antd";
 import style from "./DiscussionBox.module.less";
 import { CaretUpOutlined, CaretDownOutlined } from "@ant-design/icons";
 import { formatDateTime } from "@/utils/formatDateTime";
-
+import { useScreenWidthWithin } from "@/utils/hooks";
 import LazyMarkdownContent from "@/markdown/LazyMarkdownContent";
 
 interface DiscussionBoxProps {
@@ -15,17 +15,47 @@ interface DiscussionBoxProps {
 }
 
 const DiscussionBox: React.FC<DiscussionBoxProps> = (props) => {
+  const isMobile = useScreenWidthWithin(0, 577);
+
+  const replyButton = (
+    <Button
+      type={"primary"}
+      style={{
+        height: 24,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: isMobile ? 2 : -2,
+        width: isMobile ? "100%" : 120,
+      }}
+    >
+      Reply
+    </Button>
+  );
+
   return (
     <div className={style.root}>
       <div className={`am-panel am-panel-primary ${style.panel}`}>
         <div className={`${style["panel-header"]}`}>
           <Row gutter={16} align={"top"}>
-            <Col>
+            <Col xs={24} sm={18} md={20}>
               <span>
                 <a href={`/user/${props.username}`}>{props.username}</a>
                 &nbsp; commented {formatDateTime(props.publishTime)[1]}
               </span>
             </Col>
+            {props.onReply && (
+              <Col xs={24} sm={6} md={4}>
+                <div
+                  style={{
+                    width: isMobile ? "100%" : "",
+                    float: "right",
+                  }}
+                >
+                  {replyButton}
+                </div>
+              </Col>
+            )}
           </Row>
         </div>
         <div className={`${style["panel-body"]}`}>

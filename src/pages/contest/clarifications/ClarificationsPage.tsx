@@ -75,6 +75,7 @@ const ClarificationsPage: React.FC<{}> = (props) => {
                   username={username}
                   content={content}
                   publishTime={publishTime}
+                  onReply={() => {}}
                 />
               </div>
               <div className={`${style.discussionBox} ${style.right}`}>
@@ -82,6 +83,7 @@ const ClarificationsPage: React.FC<{}> = (props) => {
                   username={username}
                   content={content}
                   publishTime={publishTime}
+                  onReply={() => {}}
                 />
               </div>
               <div className={`${style.discussionBox} ${style.right}`}>
@@ -89,6 +91,7 @@ const ClarificationsPage: React.FC<{}> = (props) => {
                   username={username}
                   content={content}
                   publishTime={publishTime}
+                  onReply={() => {}}
                 />
               </div>
               <div className={`${style.discussionBox} ${style.right}`}>
@@ -96,6 +99,7 @@ const ClarificationsPage: React.FC<{}> = (props) => {
                   username={username}
                   content={content}
                   publishTime={publishTime}
+                  onReply={() => {}}
                 />
               </div>
               <div className={`${style.discussionBox} ${style.left}`}>
@@ -103,6 +107,7 @@ const ClarificationsPage: React.FC<{}> = (props) => {
                   username={username}
                   content={content}
                   publishTime={publishTime}
+                  onReply={() => {}}
                 />
               </div>
               <div className={`${style.discussionBox} ${style.right}`}>
@@ -110,6 +115,7 @@ const ClarificationsPage: React.FC<{}> = (props) => {
                   username={username}
                   content={content}
                   publishTime={publishTime}
+                  onReply={() => {}}
                 />
               </div>
             </div>
