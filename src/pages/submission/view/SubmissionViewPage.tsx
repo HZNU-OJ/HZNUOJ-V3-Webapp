@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "umi";
 import BasicLayout from "@/layouts/BasicLayout";
 import Loading from "@/components/Loading";
-import { Collapse, message, Row, Col } from "antd";
+import { Collapse, message, Row, Col, Space } from "antd";
 const { Panel } = Collapse;
 import AnsiUp from "ansi_up";
 import style from "./SubmissionViewPage.module.less";
 import CodeBoxStyle from "@/components/CodeBox.module.less";
-
+import { SubmissionStatus } from "@/interface/SubmissionStatus";
+import { SubmissionStatusRender } from "@/pages/submission/components/SubmissionStatusRender";
+import formatFileSize from "@/utils/formatFileSize";
 import { useScreenWidthWithin } from "@/utils/hooks";
 import { CodeBox } from "@/components/CodeBox";
 import { ExampleDiffBox } from "@/components/ExampleBox";
@@ -73,9 +75,18 @@ function TestCaseResultRender(
   memoryUsed: number,
 ) {
   return (
-    <span>{`Testcase ${id} ${result} ${timeUsed.toFixed(
-      0,
-    )} ${memoryUsed}`}</span>
+    <Space size={"large"}>
+      <span>
+        <b>{`Testcase #${id}`}</b>
+      </span>
+      <span>{SubmissionStatusRender(result as SubmissionStatus)}</span>
+      <span>
+        <b>{`${timeUsed.toFixed(0)} ms`}</b>
+      </span>
+      <span>
+        <b>{formatFileSize(memoryUsed)}</b>
+      </span>
+    </Space>
   );
 }
 

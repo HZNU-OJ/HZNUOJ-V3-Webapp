@@ -4,8 +4,10 @@ import { ColumnsType } from "antd/es/table";
 import { useTableFilter, useTableSearch } from "@/utils/hooks";
 import { isValidUsername } from "@/utils/validators";
 import { CodeLanguage } from "@/interface/CodeLanguage";
-import { SubmissionStatus } from "@/interface/SubmissionStatus";
 
+import { SubmissionStatusRender } from "./SubmissionStatusRender";
+
+import { SubmissionStatus } from "@/interface/SubmissionStatus";
 import { SubmissionStatusList } from "@/interface/SubmissionStatus";
 
 import formatFileSize from "@/utils/formatFileSize";
@@ -76,18 +78,6 @@ function problemRender(problem: ProblemItem) {
         <div className={"h-ellipsis"}>{title}</div>
       </Tooltip>
     </a>
-  );
-}
-
-function getStatusText(status: SubmissionStatus) {
-  return status.replace(/([A-Z])/g, " $1").slice(1);
-}
-
-function statusRender(status: SubmissionStatus) {
-  return (
-    <span className={StatusTextStyle[status]} style={{ fontWeight: "bold" }}>
-      {getStatusText(status)}
-    </span>
   );
 }
 
@@ -244,12 +234,12 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
         SubmissionTableHeadTitle.status,
         SubmissionStatusList.map((item: SubmissionStatus) => {
           return {
-            title: statusRender(item),
+            title: SubmissionStatusRender(item),
             value: item,
           };
         }),
       ),
-      render: statusRender,
+      render: SubmissionStatusRender,
     },
     {
       title: SubmissionTableHeadTitle.time,

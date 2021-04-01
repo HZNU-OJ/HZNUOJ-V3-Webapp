@@ -168,7 +168,11 @@ const ExampleDiffBox: React.FC<ExampleDiffBoxProps> = (props) => {
               </Tooltip>
             )}
           </div>
-          <pre>{props.testcaseResult.userOutput}</pre>
+          <pre>
+            {props.testcaseResult?.userOutput?.data ??
+              props.testcaseResult?.output ??
+              ""}
+          </pre>
         </div>
       )}
 
