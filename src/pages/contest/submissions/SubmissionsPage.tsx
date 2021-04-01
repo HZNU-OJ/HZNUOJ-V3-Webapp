@@ -1,10 +1,16 @@
 import React from "react";
+import { useModel } from "umi";
 import styles from "./SubmissionsPage.module.less";
 import SubmissionsTable from "@/pages/submission/components/SubmissionsTable";
 import { useUrlQuery } from "@/utils/hooks";
 import ContestLayout from "../layouts/ContestLayout";
 
-const SubmissionsPage: React.FC<{}> = (props) => {
+interface SubmissionsProps {
+  username: string;
+}
+
+const SubmissionsPage: React.FC<SubmissionsProps> = (props) => {
+  const { initialState, loading } = useModel("@@initialState");
   const [urlQuery, setUrlQuery] = useUrlQuery({
     username: "",
   });

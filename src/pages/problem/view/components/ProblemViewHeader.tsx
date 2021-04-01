@@ -2,9 +2,6 @@ import React from "react";
 import { Row, Col, Statistic } from "antd";
 import style from "./ProblemViewHeader.module.less";
 
-const clock = 2000;
-const memory = 512;
-
 interface ProblemViewHeaderProps {
   id: string;
   title: string;

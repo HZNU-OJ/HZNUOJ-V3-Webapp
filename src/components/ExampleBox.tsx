@@ -5,9 +5,7 @@ import downloadFile from "@/utils/downloadFile";
 import { message, Tooltip } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 
-const url =
-  "https://wi-ki.top/attachments/article/4/9e1168e0-c1f9-11ea-80b5-174c378018d1/ZoomOut_ZH-CN4471982075_1920x1080.jpg";
-// const url = "https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Italic.woff";
+import api from "@/api";
 
 interface CopyBtnProps {
   text: string;
@@ -58,19 +56,35 @@ const ExampleBox: React.FC<ExampleBoxProps> = (props) => {
 
 export { ExampleBox };
 
+async function downloadProblemFile(problemId: number, filename: string) {
+  if (!filename) return message.error("NO_SUCH_FILE");
+
+  const { requestError, response } = await api.problem.downloadProblemFiles({
+    problemId: problemId,
+    type: "TestData",
+    filenameList: [filename],
+  });
+
+  if (requestError) {
+    return message.error(requestError);
+  } else if (response.downloadInfo.length === 0) {
+    return message.error("NO_SUCH_FILE");
+  }
+
+  downloadFile(response.downloadInfo[0].downloadUrl);
+}
+
 interface DownloadBtnProps {
-  url: string;
+  problemId: number;
+  filename: string;
 }
 
 const DownloadBtn: React.FC<DownloadBtnProps> = (props) => {
-  const downloadAction = async (url: string) => {
-    downloadFile(url);
-  };
   return (
     <div
       className={style.downloadBtn}
       onClick={() => {
-        downloadAction(props.url);
+        downloadProblemFile(props.problemId, props.filename);
       }}
     >
       Download
@@ -79,53 +93,91 @@ const DownloadBtn: React.FC<DownloadBtnProps> = (props) => {
 };
 
 interface ExampleDiffBoxProps {
-  input: string;
-  output: string;
-  yourOutput: string;
-  checkerMessage: string;
+  meta: ApiTypes.SubmissionMetaDto;
+  testcaseResult: any;
 }
 
 const ExampleDiffBox: React.FC<ExampleDiffBoxProps> = (props) => {
   return (
     <div className={style.exampleRoot}>
-      <div className={style.input}>
-        <div className={style.title}>
-          <>
-            input
-            <Tooltip title="6194541 bytes omitted">
-              <InfoCircleOutlined
-                style={{ marginLeft: "5px", fontSize: "14px" }}
-              />
-            </Tooltip>
-          </>
-          <DownloadBtn url={url} />
+      {props.testcaseResult.input && (
+        <div className={style.input}>
+          <div className={style.title}>
+            <>
+              input
+              {props.testcaseResult?.input?.omittedLength && (
+                <Tooltip
+                  title={`${props.testcaseResult?.input?.omittedLength} bytes omitted`}
+                >
+                  <InfoCircleOutlined
+                    style={{ marginLeft: "5px", fontSize: "14px" }}
+                  />
+                </Tooltip>
+              )}
+            </>
+            <DownloadBtn
+              problemId={props.meta.problem.id}
+              filename={props.testcaseResult.testcaseInfo.inputFile}
+            />
+          </div>
+          <pre>
+            {props.testcaseResult?.input.data ??
+              props.testcaseResult?.input ??
+              ""}
+          </pre>
         </div>
-        <pre>{props.input}</pre>
-      </div>
+      )}
 
-      <div className={style.output}>
-        <div className={style.title}>
-          output
-          <DownloadBtn url={url} />
+      {props.testcaseResult?.output && (
+        <div className={style.output}>
+          <div className={style.title}>
+            output
+            {props.testcaseResult?.output?.omittedLength && (
+              <Tooltip
+                title={`${props.testcaseResult?.output?.omittedLength} bytes omitted`}
+              >
+                <InfoCircleOutlined
+                  style={{ marginLeft: "5px", fontSize: "14px" }}
+                />
+              </Tooltip>
+            )}
+            <DownloadBtn
+              problemId={props.meta.problem.id}
+              filename={props.testcaseResult.testcaseInfo.outputFile}
+            />
+          </div>
+          <pre>
+            {props.testcaseResult?.output.data ??
+              props.testcaseResult?.output ??
+              ""}
+          </pre>
         </div>
-        <pre>{props.output}</pre>
-      </div>
+      )}
 
-      <div className={style.yourOutput}>
-        <div className={style.title}>
-          Your output
-          <DownloadBtn url={url} />
+      {props.testcaseResult?.userOutput && (
+        <div className={style.yourOutput}>
+          <div className={style.title}>
+            Your output
+            {props.testcaseResult?.userOutput?.omittedLength && (
+              <Tooltip
+                title={`${props.testcaseResult?.userOutput?.omittedLength} bytes omitted`}
+              >
+                <InfoCircleOutlined
+                  style={{ marginLeft: "5px", fontSize: "14px" }}
+                />
+              </Tooltip>
+            )}
+          </div>
+          <pre>{props.testcaseResult.userOutput}</pre>
         </div>
-        <pre>{props.yourOutput}</pre>
-      </div>
+      )}
 
-      <div className={style.checkerMessage}>
-        <div className={style.title}>
-          Checker message
-          <DownloadBtn url={url} />
+      {props.testcaseResult?.checkerMessage && (
+        <div className={style.checkerMessage}>
+          <div className={style.title}>Checker message</div>
+          <pre>{props.testcaseResult?.checkerMessage}</pre>
         </div>
-        <pre>{props.checkerMessage}</pre>
-      </div>
+      )}
     </div>
   );
 };
