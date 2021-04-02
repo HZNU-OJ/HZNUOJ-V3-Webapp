@@ -6,6 +6,7 @@ import LazyExampleEditor from "@/components/Editor/LazyExampleEditor";
 import { useScreenWidthWithin } from "@/utils/hooks";
 import { Button, Input, message, Space, Skeleton } from "antd";
 
+import ChangeSectionOrderModel from "./components/ChangeSectionOrder";
 import AddSectionModel from "./components/AddSectionModel";
 
 import { PlusOutlined, MenuOutlined } from "@ant-design/icons";
@@ -34,6 +35,9 @@ const StatementPage: React.FC<{}> = (props) => {
   );
   const [orderIdList, setOrderIdList] = useState([] as number[]);
   const [addSectionVisible, setAddSectionVisible] = useState(false);
+  const [changeSectionOrderVisible, setChangeSectionOrderVisible] = useState(
+    false,
+  );
 
   const [fetchLoaded, setFetchLoaded] = useState(false);
   async function fetchData() {
@@ -47,6 +51,7 @@ const StatementPage: React.FC<{}> = (props) => {
     if (requestError) message.error(requestError);
     else if (response.error) message.error(response.error);
     else {
+      console.log(response);
       setTitle(response.localizedContentsOfLocale.title);
       setContentSections(response.localizedContentsOfLocale.contentSections);
       setSamples(response.samples);
@@ -68,22 +73,35 @@ const StatementPage: React.FC<{}> = (props) => {
   async function onUpdate() {
     setUpdateLoading(true);
     let _contentSections = [] as ApiTypes.ProblemContentSectionDto[];
-    let _samples = [] as ApiTypes.ProblemSampleDataMemberDto[];
 
     contentSections.forEach((item, index) => {
-      if (orderIdList.includes(index)) {
+      const findSortIndex = (_index: number) => {
+        let sortIndex = -1;
+        orderIdList.forEach((orderId: number, index: number) => {
+          if (orderId === _index) {
+            sortIndex = index;
+          }
+        });
+        return sortIndex;
+      };
+      const sortIndex = findSortIndex(index);
+      if (sortIndex !== -1) {
         let _item = deepCopy(item);
-        if (item.type === "Sample") {
-          _samples.push(samples[_item.sampleId]);
-          _item.sampleId = _samples.length - 1;
-        }
+        _item["sortIndex"] = sortIndex;
         _contentSections.push(_item);
       }
     });
 
-    // console.log(_contentSections);
-    // console.log(_samples);
-    // return;
+    _contentSections.sort((a, b) => a["sortIndex"] - b["sortIndex"]);
+    _contentSections.forEach((item) => delete item["sortIndex"]);
+
+    let _samples = [] as ApiTypes.ProblemSampleDataMemberDto[];
+    _contentSections.forEach((item) => {
+      if (item.type === "Sample") {
+        _samples.push(samples[item.sampleId]);
+        item.sampleId = _samples.length - 1;
+      }
+    });
 
     const { requestError, response } = await api.problem.updateStatement({
       problemId: parseInt(params.id),
@@ -159,7 +177,7 @@ const StatementPage: React.FC<{}> = (props) => {
               icon={<MenuOutlined />}
               size={"middle"}
               onClick={() => {
-                message.info("Coming Soon!");
+                setChangeSectionOrderVisible(true);
               }}
             >
               Change Order
@@ -233,6 +251,13 @@ const StatementPage: React.FC<{}> = (props) => {
         setSamples={setSamples}
         orderIdList={orderIdList}
         setOrderIdList={setOrderIdList}
+      />
+      <ChangeSectionOrderModel
+        visible={changeSectionOrderVisible}
+        onCancel={() => setChangeSectionOrderVisible(false)}
+        orderList={orderIdList}
+        setOrderList={setOrderIdList}
+        contentSections={contentSections}
       />
     </>
   );
