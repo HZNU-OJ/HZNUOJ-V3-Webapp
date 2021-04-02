@@ -46,6 +46,8 @@ function topBar(
   current: string,
   contestId: number,
   username?: string | null,
+  id?: number | null,
+  isAdmin?: boolean | null,
 ) {
   const leftItemList = [
     { id: "dashboard", name: "Dashboard", link: `/contest/${contestId}` },
@@ -70,35 +72,54 @@ function topBar(
 
   const userItemList = [
     [
-      {
-        id: "my_profile",
-        name: "My Profile",
-        link: `/user/${username}`,
-      },
+      ...(isAdmin
+        ? [
+            {
+              id: "my_profile",
+              name: "My Profile",
+              link: `/user/${username}`,
+            },
+          ]
+        : []),
       {
         id: "my_submissions",
         name: "My Submissions",
-        link: "/",
+        link: `/submissions?username=${username ?? ""}`,
       },
+      ...(isAdmin
+        ? [
+            {
+              id: "my_discussions",
+              name: "My Discussions",
+              link: `/discussions?publisherId=${id ?? ""}`,
+            },
+          ]
+        : []),
     ],
+    isAdmin
+      ? [
+          {
+            id: "polygon",
+            name: "Polygon",
+            link: "/polygon",
+          },
+          {
+            id: "administration",
+            name: "Administration",
+            link: "/admin",
+          },
+        ]
+      : [],
     [
-      {
-        id: "polygon",
-        name: "Polygon",
-        link: "/polygon",
-      },
-      {
-        id: "admin",
-        name: "Admin",
-        link: "/admin",
-      },
-    ],
-    [
-      {
-        id: "settings",
-        name: "Settings",
-        link: "/settings",
-      },
+      ...(isAdmin
+        ? [
+            {
+              id: "settings",
+              name: "Settings",
+              link: "/settings",
+            },
+          ]
+        : []),
       {
         id: "logout",
         name: "Logout",
@@ -142,6 +163,8 @@ interface HeaderProps {
   current: string;
   contestId: number;
   username?: string | null;
+  id?: number | null;
+  isAdmin?: boolean | null;
 }
 
 const Header: React.FC<HeaderProps> = (props) => {
@@ -152,6 +175,8 @@ const Header: React.FC<HeaderProps> = (props) => {
         props.current,
         props.contestId,
         props.username,
+        props.id,
+        props.isAdmin,
       )}
     ></div>
   );
@@ -243,6 +268,8 @@ const ContestLayout: React.FC<ContestLayoutProps> = (props) => {
             current={props.current}
             contestId={parseInt(params.id)}
             username={initialState?.userMeta?.username}
+            id={initialState?.userMeta?.id}
+            isAdmin={initialState?.userMeta?.isAdmin}
           />
           <div
             className={style.root}
