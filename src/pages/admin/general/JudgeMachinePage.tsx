@@ -13,6 +13,16 @@ import { useTableSearch, useTableFilter } from "@/utils/hooks";
 
 import api from "@/api";
 
+import { DeleteOutlined, KeyOutlined } from "@ant-design/icons";
+
+const DeleteIcon = () => (
+  <DeleteOutlined style={{ cursor: "pointer", color: "#3e90cc" }} />
+);
+
+const KeyIcon = () => (
+  <KeyOutlined style={{ cursor: "pointer", color: "#3e90cc" }} />
+);
+
 type statusType = "online" | "offline";
 
 function renderStatusBadge(status: statusType) {
@@ -275,7 +285,7 @@ const JudgeMachinePage: React.FC<{}> = (props) => {
                 message.success("Copied!");
               }}
             >
-              Key
+              <KeyIcon />
             </a>
             <Popconfirm
               title={`Are you sure to delete the judge machine?`}
@@ -289,7 +299,9 @@ const JudgeMachinePage: React.FC<{}> = (props) => {
                 loading: deleteLoading,
               }}
             >
-              <a>Del</a>
+              <a>
+                <DeleteIcon />
+              </a>
             </Popconfirm>
           </Space>
         );
