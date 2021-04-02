@@ -46,12 +46,9 @@ const LoginPage: React.FC<{}> = () => {
       password: formProps.password,
     });
 
-    if (response?.error) {
-      if (response.error === "WRONG_PASSWORD") {
-        message.error("Password Error!");
-      } else {
-        message.error("Login failed!");
-      }
+    if (requestError) message.error(requestError);
+    else if (response?.error) {
+      message.error(response.error);
     } else if (response.token && response.username) {
       signIn(response.token);
       refresh();
