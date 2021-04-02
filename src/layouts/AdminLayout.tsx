@@ -1,4 +1,4 @@
-import { useModel } from "umi";
+import { useModel, history } from "umi";
 import React, { useEffect } from "react";
 
 import Footer from "@/components/Footer";
@@ -7,6 +7,8 @@ import Loading from "@/components/Loading";
 import style from "./AdminLayout.module.less";
 
 import { menuItem } from "@/interface/menu.interface";
+
+import { useAuthToken } from "@/utils/hooks";
 
 function topBarItemRender(current: string, itemList: menuItem[]): string {
   let html = "";
@@ -103,6 +105,14 @@ interface AdminLayoutProps {
 
 const AdminLayout: React.FC<AdminLayoutProps> = (props) => {
   const { initialState, loading } = useModel("@@initialState");
+
+  const { getToken } = useAuthToken();
+
+  useEffect(() => {
+    if (getToken() === "") {
+      history.push("/login");
+    }
+  }, []);
 
   useEffect(() => {
     window.$(".am-dropdown").dropdown();
