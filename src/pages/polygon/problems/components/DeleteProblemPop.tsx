@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { Popconfirm } from "antd";
 
+import { DeleteOutlined } from "@ant-design/icons";
+
+const DeleteIcon = () => (
+  <DeleteOutlined style={{ cursor: "pointer", color: "#3e90cc" }} />
+);
+
 interface DeleteProblemPopProps {
   id: number;
   name?: string;
@@ -31,7 +37,7 @@ const DeleteProblemPop: React.FC<DeleteProblemPopProps> = (props) => {
           setVisible(true);
         }}
       >
-        Del
+        <DeleteIcon />
       </a>
     </Popconfirm>
   );

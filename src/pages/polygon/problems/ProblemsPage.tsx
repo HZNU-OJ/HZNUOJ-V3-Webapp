@@ -12,6 +12,16 @@ import {
   problemTypeList,
 } from "@/interface/problem.interface";
 
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+
+const DeleteIcon = () => (
+  <DeleteOutlined style={{ cursor: "pointer", color: "#3e90cc" }} />
+);
+
+const EditIcon = () => (
+  <EditOutlined style={{ cursor: "pointer", color: "#3e90cc" }} />
+);
+
 import api from "@/api";
 
 interface ProblemActionParams {
@@ -180,7 +190,10 @@ const ProblemsPage: React.FC<{}> = (props) => {
       render: (problemActionItem: ProblemActionParams) => {
         return (
           <Space size={"middle"}>
-            <a href={`/polygon/problem/${problemActionItem.id}`}>Edit</a>
+            <a href={`/polygon/problem/${problemActionItem.id}`}>
+              <EditIcon />
+            </a>
+
             <Popconfirm
               title={`Are you sure to delete the problem?`}
               onConfirm={() => {
@@ -193,7 +206,9 @@ const ProblemsPage: React.FC<{}> = (props) => {
                 loading: deleteLoading,
               }}
             >
-              <a>Del</a>
+              <a>
+                <DeleteIcon />
+              </a>
             </Popconfirm>
           </Space>
         );
