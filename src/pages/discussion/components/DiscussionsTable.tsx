@@ -7,6 +7,12 @@ import { formatDateTime } from "@/utils/formatDateTime";
 import style from "./DiscussionsTable.module.less";
 import api from "@/api";
 
+import { EditOutlined } from "@ant-design/icons";
+
+const EditIcon = () => (
+  <EditOutlined style={{ cursor: "pointer", color: "#3e90cc" }} />
+);
+
 interface titleItem {
   id: number;
   name: string;
@@ -110,7 +116,9 @@ const DiscussionsTable: React.FC<DiscussionsTableProps> = (props) => {
                 padding: "0px 5px",
               }}
             >
-              <a href={`/discussion/${action.id}/edit`}>Edit</a>
+              <a href={`/discussion/${action.id}/edit`}>
+                <EditIcon />
+              </a>
             </div>
           </>
         );
