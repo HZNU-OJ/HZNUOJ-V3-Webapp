@@ -33,7 +33,6 @@ const StatementPage: React.FC<{}> = (props) => {
     [] as ApiTypes.ProblemSampleDataMemberDto[],
   );
   const [orderIdList, setOrderIdList] = useState([] as number[]);
-
   const [addSectionVisible, setAddSectionVisible] = useState(false);
 
   const [fetchLoaded, setFetchLoaded] = useState(false);
@@ -68,16 +67,34 @@ const StatementPage: React.FC<{}> = (props) => {
   const [updateLoading, setUpdateLoading] = useState(false);
   async function onUpdate() {
     setUpdateLoading(true);
+    let _contentSections = [] as ApiTypes.ProblemContentSectionDto[];
+    let _samples = [] as ApiTypes.ProblemSampleDataMemberDto[];
+
+    contentSections.forEach((item, index) => {
+      if (orderIdList.includes(index)) {
+        let _item = deepCopy(item);
+        if (item.type === "Sample") {
+          _samples.push(samples[_item.sampleId]);
+          _item.sampleId = _samples.length - 1;
+        }
+        _contentSections.push(_item);
+      }
+    });
+
+    // console.log(_contentSections);
+    // console.log(_samples);
+    // return;
+
     const { requestError, response } = await api.problem.updateStatement({
       problemId: parseInt(params.id),
       localizedContents: [
         {
           locale: "en_US",
           title: title,
-          contentSections: contentSections,
+          contentSections: _contentSections,
         },
       ],
-      samples: samples,
+      samples: _samples,
       problemTagIds: [],
     });
 
@@ -88,6 +105,25 @@ const StatementPage: React.FC<{}> = (props) => {
     }
 
     setUpdateLoading(false);
+  }
+
+  function getOnDeleteFunc(index: number) {
+    return () => {
+      setOrderIdList([
+        ...orderIdList.slice(0, index),
+        ...orderIdList.slice(index + 1),
+      ]);
+    };
+  }
+
+  function getOnEditOk(index: number) {
+    return (sectionName: string) => {
+      let _contentSections: ApiTypes.ProblemContentSectionDto[] = deepCopy(
+        contentSections,
+      );
+      _contentSections[orderIdList[index]].sectionTitle = sectionName;
+      setContentSections(_contentSections);
+    };
   }
 
   return (
@@ -136,9 +172,14 @@ const StatementPage: React.FC<{}> = (props) => {
           </div>
 
           <div>
-            {orderIdList.map((orderId) => (
+            {orderIdList.map((orderId, index) => (
               <div key={orderId}>
-                <EditorWrapper title={contentSections[orderId].sectionTitle}>
+                <EditorWrapper
+                  title={contentSections[orderId].sectionTitle}
+                  sectionName={contentSections[orderIdList[index]].sectionTitle}
+                  onEditOk={getOnEditOk(index)}
+                  onDelete={getOnDeleteFunc(index)}
+                >
                   {contentSections[orderId].type === "Text" && (
                     <LazyMarkDownEditor
                       height={isMobile ? mobileH : DesktopH}

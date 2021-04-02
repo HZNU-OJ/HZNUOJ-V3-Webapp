@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Row, Col, Space, message } from "antd";
+import React, { useState, useEffect } from "react";
+import { Row, Col, Space, message, Popconfirm, Input } from "antd";
 import {
   RightOutlined,
   DownOutlined,
@@ -23,13 +23,101 @@ const EditIcon = () => (
   <EditOutlined style={{ cursor: "pointer", color: "#3e90cc" }} />
 );
 
+import { Modal, Form } from "antd";
+
+interface RenameSectionModel {
+  visible: boolean;
+  sectionName: string;
+  onOk: (sectionName: string) => void;
+  onCancel?: any;
+}
+
+const RenameSectionModel: React.FC<RenameSectionModel> = (props) => {
+  const [form] = Form.useForm();
+  interface RenameSectionModelParams {
+    sectionName: string;
+  }
+
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  async function submitAction(value: RenameSectionModelParams) {
+    setConfirmLoading(true);
+    props.onOk(value.sectionName);
+    setConfirmLoading(false);
+  }
+
+  useEffect(() => {
+    form.setFieldsValue({
+      sectionName: props.sectionName,
+    });
+  }, [props.visible]);
+
+  return (
+    <>
+      <Modal
+        title={"Rename Section"}
+        okText={"Submit"}
+        cancelText={"Cancel"}
+        getContainer={false}
+        maskClosable={true}
+        destroyOnClose={true}
+        visible={props.visible}
+        confirmLoading={confirmLoading}
+        onCancel={props.onCancel ?? (() => {})}
+        onOk={() => {
+          form
+            .validateFields()
+            .then((values) => {
+              form.resetFields();
+              form.setFieldsValue(values);
+              submitAction(values);
+            })
+            .catch((info) => {
+              console.log("Confirm Error:", info);
+            });
+        }}
+      >
+        <Form
+          form={form}
+          layout="vertical"
+          style={{
+            width: "98%",
+            margin: 5,
+            marginBottom: -40,
+          }}
+        >
+          <Form.Item>
+            <Form.Item
+              name="sectionName"
+              label="Section Name"
+              rules={[{ required: true }]}
+            >
+              <Input />
+            </Form.Item>
+          </Form.Item>
+        </Form>
+      </Modal>
+    </>
+  );
+};
+
 interface EditorWrapperProps {
   title: string;
+  sectionName: string;
   visible?: boolean;
+  onDelete?: any;
+  onEditOk: (sectionName: string) => void;
 }
 
 const EditorWrapper: React.FC<EditorWrapperProps> = (props) => {
   const [visible, setVisible] = useState(props.visible ?? true);
+  const [renameSectionVisible, setRenameSectionVisible] = useState(false);
+
+  function getOnOk() {
+    return (sectionName: string) => {
+      props.onEditOk(sectionName);
+      setRenameSectionVisible(false);
+    };
+  }
 
   return (
     <>
@@ -47,18 +135,26 @@ const EditorWrapper: React.FC<EditorWrapperProps> = (props) => {
             <Space size={"middle"}>
               <div
                 onClick={() => {
-                  message.info("Coming Soon!");
+                  setRenameSectionVisible(true);
                 }}
               >
                 <EditIcon />
               </div>
-              <div
-                onClick={() => {
-                  message.info("Coming Soon!");
+
+              <Popconfirm
+                title="Are you sure to delete this section?"
+                onConfirm={() => {
+                  props.onDelete && props.onDelete();
                 }}
+                okText="Yes"
+                cancelText="No"
+                placement="topRight"
               >
-                <DeleteIcon />
-              </div>
+                <a href="">
+                  <DeleteIcon />
+                </a>
+              </Popconfirm>
+
               <div
                 onClick={() => {
                   setVisible((visible) => !visible);
@@ -80,6 +176,14 @@ const EditorWrapper: React.FC<EditorWrapperProps> = (props) => {
       >
         {props.children}
       </div>
+      <RenameSectionModel
+        visible={renameSectionVisible}
+        sectionName={props.sectionName}
+        onOk={getOnOk()}
+        onCancel={() => {
+          setRenameSectionVisible(false);
+        }}
+      />
     </>
   );
 };
