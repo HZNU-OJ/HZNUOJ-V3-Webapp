@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { message, Table, Tooltip } from "antd";
+import { TablePaginationConfig } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { useTableFilter, useTableSearch } from "@/utils/hooks";
 import { isValidUsername } from "@/utils/validators";
@@ -94,6 +95,7 @@ export enum SubmissionProgressType {
 
 interface SubmissionsTableProps {
   query?: SubmissionsQuery;
+  pagination?: false | TablePaginationConfig;
 }
 
 const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
@@ -308,13 +310,21 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
         dataSource={tableData}
         className={AntTableHeadStyles.table}
         rowKey={(record) => record.id}
-        pagination={{
-          hideOnSinglePage: true,
-          showQuickJumper: true,
-          showSizeChanger: true,
-          defaultPageSize: 16,
-          pageSizeOptions: ["8", "16", "32", "64", "128", "256"],
-        }}
+        pagination={
+          props.pagination === false
+            ? false
+            : Object.assign(
+                {},
+                {
+                  hideOnSinglePage: true,
+                  showQuickJumper: true,
+                  showSizeChanger: true,
+                  defaultPageSize: 16,
+                  pageSizeOptions: ["8", "16", "32", "64", "128", "256"],
+                },
+                props.pagination,
+              )
+        }
       />
     </div>
   );
