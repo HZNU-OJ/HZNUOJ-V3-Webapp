@@ -1,6 +1,17 @@
 import dayjs from "dayjs";
-import "dayjs/locale/zh-cn";
-dayjs.locale("zh-cn");
+// import "dayjs/locale/zh-cn";
+// dayjs.locale("zh-cn");
+
+export function formatUserRegisterTime(date: Date | string | number) {
+  if (typeof date === "number") {
+    if (date.toString().length === 10) {
+      date = date * 1000;
+    }
+  }
+  if (!(date instanceof Date)) date = new Date(date);
+
+  return dayjs(date).format("MMMM D, YYYY");
+}
 
 export function formatUnixTimeStamp(
   unixTimeStamp: string | number,

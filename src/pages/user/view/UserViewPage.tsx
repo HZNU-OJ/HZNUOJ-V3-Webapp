@@ -3,7 +3,6 @@ import { useModel, useParams } from "umi";
 import { Row, Col, message } from "antd";
 import Loading from "@/components/Loading";
 import BasicLayout from "@/layouts/BasicLayout";
-
 import { DataView, LeftPanel, SubwayGraph, RatingGraph } from "./components";
 
 import style from "./UserViewPage.module.less";
