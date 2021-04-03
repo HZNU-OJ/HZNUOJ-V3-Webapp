@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Spin, message } from "antd";
+import { useModel, history } from "umi";
+import { useAuthToken } from "@/utils/hooks";
 import style from "./SubmitTab.module.less";
 import LazyCodeBoxEditor from "@/components/Editor/LazyCodeBoxEditor";
 import { useScreenWidthWithin } from "@/utils/hooks";
@@ -44,6 +46,16 @@ interface SubmitTabProps {
 }
 
 const SubmitTab: React.FC<SubmitTabProps> = (props) => {
+  const { initialState, loading } = useModel("@@initialState");
+
+  const { getToken } = useAuthToken();
+
+  useEffect(() => {
+    if (getToken() === "") {
+      history.push("/login");
+    }
+  }, []);
+
   const [codeValue, setCodeValue] = useState(
     props.lastSubmissionContent?.code ?? "",
   );
@@ -52,9 +64,6 @@ const SubmitTab: React.FC<SubmitTabProps> = (props) => {
     props.lastSubmissionContent?.language ?? "cpp",
   );
 
-  const [takeCount, setTakeCount] = useState(0);
-
-  const [submissionId, setSubmissionId] = useState(-1);
   const isMobile = useScreenWidthWithin(0, 577);
   const recaptcha = useRecaptcha();
 
@@ -78,25 +87,12 @@ const SubmitTab: React.FC<SubmitTabProps> = (props) => {
     else if (response.error) message.error(response.error);
     else {
       message.success("Submit Successfully!");
-      setTakeCount((takeCount) => takeCount + 1);
-      setSubmissionId(response.submissionId);
-      setSubmitLoading(false);
     }
+    setSubmitLoading(false);
   }
 
   return (
     <div className={style.root}>
-      {submissionId !== -1 && (
-        <div style={{ marginBottom: 20 }}>
-          <SubmissionsTable
-            query={{
-              maxId: submissionId,
-              takeCount: 1,
-            }}
-          />
-        </div>
-      )}
-
       <LazyCodeBoxEditor
         height={isMobile ? "220" : "500"}
         value={codeValue}
@@ -108,6 +104,18 @@ const SubmitTab: React.FC<SubmitTabProps> = (props) => {
           setCodeValue(e);
         }}
       />
+
+      <div style={{ marginBottom: 20 }}>
+        <SubmissionsTable
+          query={{
+            submitter: initialState.userMeta.username,
+            problemId: props.id,
+          }}
+          pagination={{
+            defaultPageSize: 4,
+          }}
+        />
+      </div>
     </div>
   );
 };

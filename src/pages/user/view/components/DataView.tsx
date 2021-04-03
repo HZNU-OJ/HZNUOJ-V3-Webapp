@@ -1,21 +1,26 @@
 import React from "react";
 import style from "../UserViewPage.module.less";
-
 import { Row, Col, Statistic } from "antd";
 
-const DataView: React.FC<{}> = (props) => {
+interface DataViewProps {
+  acceptedProblemCount: number;
+  submissionCount: number;
+  rating: number;
+}
+
+const DataView: React.FC<DataViewProps> = (props) => {
   return (
     <>
       <div className={`${style.border} ${style.dataView}`}>
         <Row gutter={16} align="top">
           <Col span={8}>
-            <Statistic title="AC." value={1223} />
+            <Statistic title="AC." value={props.acceptedProblemCount} />
           </Col>
           <Col span={8}>
-            <Statistic title="SUBS." value={256999} />
+            <Statistic title="SUBS." value={props.submissionCount} />
           </Col>
           <Col span={8}>
-            <Statistic title="Rating." value={2294} />
+            <Statistic title="Rating." value={props.rating} />
           </Col>
         </Row>
       </div>
