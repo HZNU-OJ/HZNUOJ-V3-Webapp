@@ -7,7 +7,7 @@ import { DiscussionViewHeader, DiscussionBox } from "./components";
 
 import BasicLayout from "@/layouts/BasicLayout";
 import LazyMarkDownEditor from "@/components/Editor/LazyMarkDownEditor";
-import { useScreenWidthWithin } from "@/utils/hooks";
+import { useScreenWidthWithin, useRecaptcha } from "@/utils/hooks";
 import style from "./DiscussionViewPage.module.less";
 
 import api from "@/api";
@@ -19,12 +19,20 @@ interface DiscussionViewPageParams {
 const DiscussionViewPage: React.FC<{}> = (props) => {
   const params = useParams() as DiscussionViewPageParams;
 
+  const recaptcha = useRecaptcha();
+
+  const [replySubmitCount, setReplySubmitCount] = useState(0);
+  const [submitLoading, setSubmitLoading] = useState(false);
+
   const [loaded, setLoaded] = useState(false);
   const [title, setTitle] = useState("");
   const [replyCount, setReplyCount] = useState(0);
   const [content, setContent] = useState("");
   const [username, setUsername] = useState("");
   const [publishTime, setPublishTime] = useState("");
+  const [repliesHead, setRepliesHead] = useState(
+    [] as ApiTypes.DiscussionReplyDto[],
+  );
 
   const isMobile = useScreenWidthWithin(0, 577);
   const [editorValue, setEditorValue] = useState("");
@@ -54,13 +62,37 @@ const DiscussionViewPage: React.FC<{}> = (props) => {
         response.discussion.meta.editTime ??
           response.discussion.meta.publishTime,
       );
+      setRepliesHead(response.repliesHead);
       setLoaded(true);
+    }
+  }
+
+  async function onReply() {
+    setSubmitLoading(true);
+    const {
+      requestError,
+      response,
+    } = await api.discussion.createDiscussionReply(
+      {
+        discussionId: parseInt(params.id),
+        content: editorValue,
+        isPublic: true,
+      },
+      recaptcha("createDiscussionReply"),
+    );
+
+    if (requestError) message.error(requestError);
+    else if (response.error) message.error(response.error);
+    else {
+      message.success("Reply Successfully!");
+      setReplySubmitCount((replySubmitCount) => replySubmitCount + 1);
+      setSubmitLoading(false);
     }
   }
 
   useEffect(() => {
     fetchDiscussion();
-  }, []);
+  }, [replySubmitCount]);
 
   return (
     <>
@@ -96,29 +128,29 @@ const DiscussionViewPage: React.FC<{}> = (props) => {
                   publishTime={publishTime}
                 />
               </div>
-              {/* <div className={style.discussionBox}>
-              <DiscussionBox />
-            </div>
-            <div className={style.discussionBox}>
-              <DiscussionBox />
-            </div>
-            <div className={style.discussionBox}>
-              <DiscussionBox />
-            </div>
-            <div className={style.discussionBox}>
-              <DiscussionBox />
-            </div>
-            <div className={style.discussionBox}>
-              <DiscussionBox />
-            </div> */}
-              {/* <div className={style.markdownEditor}>
-              <LazyMarkDownEditor
-                height={isMobile ? "220" : "500"}
-                language={"markdown"}
-                value={editorValue}
-                onChange={(value) => setEditorValue(value)}
-              />
-            </div> */}
+              <>
+                {repliesHead.map((repliesHead, index) => (
+                  <div className={style.discussionBox} key={index}>
+                    <DiscussionBox
+                      username={repliesHead.publisher.username}
+                      content={repliesHead.content}
+                      publishTime={
+                        repliesHead.editTime ?? repliesHead.publishTime
+                      }
+                    />
+                  </div>
+                ))}
+              </>
+              <div className={style.markdownEditor}>
+                <LazyMarkDownEditor
+                  height={isMobile ? "220" : "380"}
+                  language={"markdown"}
+                  value={editorValue}
+                  onChange={(value) => setEditorValue(value)}
+                  onSubmit={onReply}
+                  onSubmitLoading={submitLoading}
+                />
+              </div>
             </div>
           </Skeleton>
         </div>

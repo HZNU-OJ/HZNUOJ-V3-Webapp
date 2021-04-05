@@ -18,6 +18,7 @@ import LazyMarkdownContent from "@/markdown/LazyMarkdownContent";
 export interface MarkDownEditorProps extends CodeEditorProps {
   loading?: boolean;
   onSubmit?: any;
+  onSubmitLoading?: boolean;
 }
 
 const MarkDownEditor: React.FC<MarkDownEditorProps> = (props) => {
@@ -36,6 +37,8 @@ const MarkDownEditor: React.FC<MarkDownEditorProps> = (props) => {
         width: isMobile ? "100%" : 120,
         marginBottom: isMobile ? "" : "5px",
       }}
+      loading={props.onSubmitLoading ?? false}
+      onClick={props.onSubmit ?? (() => {})}
     >
       Submit
     </Button>
