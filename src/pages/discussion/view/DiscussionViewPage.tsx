@@ -53,7 +53,6 @@ const DiscussionViewPage: React.FC<{}> = (props) => {
     } else if (response.error) {
       message.error(response.error);
     } else {
-      console.log(response);
       setTitle(response.discussion.meta.title);
       setReplyCount(response.discussion.meta.replyCount);
       setContent(response.discussion.content);
