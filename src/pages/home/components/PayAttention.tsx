@@ -6,7 +6,7 @@ const PayAttention: React.FC<{}> = (props) => {
       <div className="am-panel-hd" style={{ padding: "2px 5px", fontSize: 16 }}>
         Pay Attention
       </div>
-      <div className="am-panel-bd">Kwords is so handsome.</div>
+      <div className="am-panel-bd">Welcome to HZNU Online Judge V3!</div>
     </div>
   );
 };

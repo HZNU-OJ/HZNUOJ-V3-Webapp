@@ -42,6 +42,18 @@ declare namespace ApiTypes {
     usernameAvailable?: boolean;
     emailAvailable?: boolean;
   }
+  export interface CreateContestRequestDto {
+    contestName: string;
+    startTime: {};
+    endTime: {};
+    frozenStartTime?: {};
+    frozenEndTime?: {};
+    isPublic?: boolean;
+  }
+  export interface CreateContestResponseDto {
+    error?: "PERMISSION_DENIED" | "NO_SUCH_PROBLEM_TAG" | "FAILED";
+    id?: number;
+  }
   export interface CreateDiscussionReplyRequestDto {
     discussionId: number;
     content: string;
@@ -185,6 +197,18 @@ declare namespace ApiTypes {
     error?: "NO_SUCH_SUBMISSION" | "NO_SUCH_FILE" | "PERMISSION_DENIED";
     url?: string;
   }
+  export interface EditContestRequestDto {
+    contestId: number;
+    contestName: string;
+    startTime: {};
+    endTime: {};
+    frozenStartTime?: {};
+    frozenEndTime?: {};
+    isPublic?: boolean;
+  }
+  export interface EditContestResponseDto {
+    error?: "PERMISSION_DENIED" | "NO_SUCH_PROBLEM_TAG" | "FAILED";
+  }
   export interface FileUploadInfoDto {
     uuid?: string;
     size: number;
@@ -198,6 +222,13 @@ declare namespace ApiTypes {
   }
   export interface GetAllProblemTagsResponseDto {
     tags: ApiTypes.LocalizedProblemTagDto[];
+  }
+  export interface GetClarificationsRequestDto {
+    contestId: number;
+    all?: boolean;
+  }
+  export interface GetClarificationsResponseDto {
+    error?: "PERMISSION_DENIED" | "NO_SUCH_PROBLEM_TAG" | "FAILED";
   }
   export interface GetContentDto {
     content: string;
@@ -349,6 +380,10 @@ declare namespace ApiTypes {
     permissionSetPublic?: boolean;
     permissionDelete?: boolean;
   }
+  export interface GetSubmissionStaticsResponseDto {
+    accepted: number[];
+    rejected: number[];
+  }
   export interface GetUserDetailRequestDto {
     userId?: number;
     username?: string;
@@ -412,6 +447,14 @@ declare namespace ApiTypes {
   export interface GetVersionDto {
     version: string;
   }
+  export interface ImportUserRequestDto {
+    username: string;
+    nickname: string;
+    password: string;
+  }
+  export interface ImportUserResponseDto {
+    error?: "PERMISSION_DENIED" | "NO_SUCH_PROBLEM_TAG" | "FAILED";
+  }
   export interface JudgeClientInfoDto {
     id: number;
     name: string;
@@ -459,7 +502,9 @@ declare namespace ApiTypes {
   namespace Parameters {
     export type Email = string;
     export type Jsonp = string;
+    export type Now = string;
     export type Query = string;
+    export type Timezone = string;
     export type Token = string;
     export type Username = string;
     export type Wildcard = "Start" | "End" | "Both";
@@ -662,8 +707,8 @@ declare namespace ApiTypes {
     titleLocale: "en_US";
   }
   export interface QueryParameters {
-    username?: ApiTypes.Parameters.Username;
-    email?: ApiTypes.Parameters.Email;
+    timezone: ApiTypes.Parameters.Timezone;
+    now: ApiTypes.Parameters.Now;
   }
   export interface QueryProblemSetRequestDto {
     locale: "en_US";
@@ -786,7 +831,7 @@ declare namespace ApiTypes {
   export interface RenameProblemFileResponseDto {
     error?: "NO_SUCH_PROBLEM" | "PERMISSION_DENIED" | "NO_SUCH_FILE";
   }
-  export type RequestBody = ApiTypes.SetDiscussionPermissionsRequestDto;
+  export type RequestBody = ApiTypes.ImportUserRequestDto;
   export interface ResetJudgeClientKeyRequestDto {
     id: number;
   }
@@ -807,8 +852,8 @@ declare namespace ApiTypes {
     token?: string;
   }
   namespace Responses {
-    export type $200 = ApiTypes.GetContentDto;
-    export type $201 = ApiTypes.SetDiscussionPermissionsResponseDto;
+    export type $200 = ApiTypes.GetSubmissionStaticsResponseDto;
+    export type $201 = ApiTypes.ImportUserResponseDto;
   }
   export interface RevokeUserSessionRequestDto {
     userId: number;
@@ -991,6 +1036,7 @@ declare namespace ApiTypes {
   }
   export interface SubmitRequestDto {
     problemId: number;
+    contestId: number;
     content: {};
     uploadInfo?: ApiTypes.FileUploadInfoDto;
   }

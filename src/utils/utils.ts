@@ -33,3 +33,11 @@ export function timeFormat(timeStamp: number) {
   d = d < 10 ? "0" + d : d;
   return y + "-" + m + "-" + d;
 }
+
+export function getTimeZone() {
+  try {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+  } catch {
+    return "";
+  }
+}

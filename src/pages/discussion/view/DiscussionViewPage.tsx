@@ -37,11 +37,15 @@ const DiscussionViewPage: React.FC<{}> = (props) => {
       locale: "en_US",
       discussionId: parseInt(params.id),
       getDiscussion: true,
+      queryRepliesType: "HeadTail",
     });
 
     if (requestError) {
       message.error(requestError);
+    } else if (response.error) {
+      message.error(response.error);
     } else {
+      console.log(response);
       setTitle(response.discussion.meta.title);
       setReplyCount(response.discussion.meta.replyCount);
       setContent(response.discussion.content);

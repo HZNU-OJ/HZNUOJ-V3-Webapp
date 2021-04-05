@@ -5,18 +5,11 @@ import Loading from "@/components/Loading";
 import BasicLayout from "@/layouts/BasicLayout";
 import { DataView, LeftPanel, SubwayGraph, RatingGraph } from "./components";
 
+import { getTimeZone } from "@/utils";
 import api from "@/api";
 import style from "./UserViewPage.module.less";
 
 import { useScreenWidthWithin } from "@/utils/hooks";
-
-function getTimeZone() {
-  try {
-    return Intl.DateTimeFormat().resolvedOptions().timeZone || "";
-  } catch {
-    return "";
-  }
-}
 
 interface UserViewPageParams {
   username?: string;

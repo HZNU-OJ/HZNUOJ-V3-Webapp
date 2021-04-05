@@ -8,6 +8,7 @@ import * as ImportedProblemApi from "./modules/problem";
 import * as ImportedJudgeClientApi from "./modules/judge-client";
 import * as ImportedDiscussionApi from "./modules/discussion";
 import * as ImportedContestApi from "./modules/contest";
+import * as ImportedHomepageApi from "./modules/homepage";
 
 export const app = ImportedAppApi;
 export const user = ImportedUserApi;
@@ -17,3 +18,4 @@ export const problem = ImportedProblemApi;
 export const judgeClient = ImportedJudgeClientApi;
 export const discussion = ImportedDiscussionApi;
 export const contest = ImportedContestApi;
+export const homepage = ImportedHomepageApi;

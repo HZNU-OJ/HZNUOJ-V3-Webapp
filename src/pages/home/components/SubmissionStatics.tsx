@@ -1,8 +1,15 @@
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-function getChartObj() {
+import { getTimeZone } from "@/utils";
+
+import api from "@/api";
+import { message, Skeleton } from "antd";
+
+function getChartObj(
+  submissionStaticsData: ApiTypes.GetSubmissionStaticsResponseDto,
+) {
   return {
     colors: ["#E1FFB5", "#C8D6FA"],
     chart: {
@@ -71,25 +78,58 @@ function getChartObj() {
       {
         name: "Accepted",
         showInLegend: false,
-        data: [122, 222, 333, 4440, 1024, 666, 555],
+        data: submissionStaticsData.accepted,
       },
       {
         name: "Rejected",
         showInLegend: false,
-        data: [1000, 2000, 3000, 8000, 7000, 6000, 5000],
+        data: submissionStaticsData.rejected,
       },
     ],
   };
 }
 
 const SubmissionStatics: React.FC<{}> = (props) => {
+  const [submissionStaticsData, setSubmissionStaticsData] = useState({
+    accepted: [],
+    rejected: [],
+  } as ApiTypes.GetSubmissionStaticsResponseDto);
+  const [fetchDataLoading, setFetchDataLoading] = useState(true);
+  async function fetchData() {
+    const now = new Date();
+    const { requestError, response } = await api.homepage.getSubmissionStatics({
+      timezone: getTimeZone(),
+      now: now.toISOString(),
+    });
+
+    if (requestError) message.error(requestError);
+    else {
+      setSubmissionStaticsData(response);
+      setFetchDataLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <div className="am-panel am-panel-primary" style={{ fontSize: 15 }}>
       <div className="am-panel-hd" style={{ padding: "2px 5px", fontSize: 16 }}>
         Submission Statics
       </div>
-      <div className="am-panel-bd">
-        <HighchartsReact highcharts={Highcharts} options={getChartObj()} />
+      <div className="am-panel-bd" style={{ marginLeft: -10 }}>
+        <Skeleton
+          active
+          title={true}
+          paragraph={{ rows: 8 }}
+          loading={fetchDataLoading}
+        >
+          <HighchartsReact
+            highcharts={Highcharts}
+            options={getChartObj(submissionStaticsData)}
+          />
+        </Skeleton>
       </div>
     </div>
   );
