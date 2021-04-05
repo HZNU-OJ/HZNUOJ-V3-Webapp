@@ -51,7 +51,6 @@ const StatementPage: React.FC<{}> = (props) => {
     if (requestError) message.error(requestError);
     else if (response.error) message.error(response.error);
     else {
-      console.log(response);
       setTitle(response.localizedContentsOfLocale.title);
       setContentSections(response.localizedContentsOfLocale.contentSections);
       setSamples(response.samples);

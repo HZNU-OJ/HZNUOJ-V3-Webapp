@@ -93,6 +93,17 @@ const SubmitTab: React.FC<SubmitTabProps> = (props) => {
 
   return (
     <div className={style.root}>
+      <div style={{ marginBottom: 10 }}>
+        <SubmissionsTable
+          query={{
+            submitter: initialState.userMeta.username,
+            problemId: props.id,
+          }}
+          pagination={{
+            defaultPageSize: 2,
+          }}
+        />
+      </div>
       <LazyCodeBoxEditor
         height={isMobile ? "220" : "500"}
         value={codeValue}
@@ -104,18 +115,6 @@ const SubmitTab: React.FC<SubmitTabProps> = (props) => {
           setCodeValue(e);
         }}
       />
-
-      <div style={{ marginBottom: 20 }}>
-        <SubmissionsTable
-          query={{
-            submitter: initialState.userMeta.username,
-            problemId: props.id,
-          }}
-          pagination={{
-            defaultPageSize: 4,
-          }}
-        />
-      </div>
     </div>
   );
 };
