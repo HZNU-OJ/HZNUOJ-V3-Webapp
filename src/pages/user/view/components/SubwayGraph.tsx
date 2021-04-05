@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Row, Col, Space } from "antd";
 import CalendarHeatmap from "react-calendar-heatmap";
 import ReactTooltip from "react-tooltip";
 import style from "../UserViewPage.module.less";
 import "react-calendar-heatmap/dist/styles.css";
 
 const today = new Date();
-const INF = 0x3f3f3f3f;
 
 function shiftDate(date: Date, numDays: number) {
   const newDate = new Date(date);
@@ -13,41 +13,47 @@ function shiftDate(date: Date, numDays: number) {
   return newDate;
 }
 
-const randomValues = getRange(365).map((index) => {
-  const count = getRandomInt(0, 50);
-  return {
-    date: shiftDate(today, -index),
-    count: count,
-    color: Math.ceil(count / 51 / 0.25),
-  };
-});
-
-function getRange(count: number) {
-  return Array.from({ length: count }, (_, i) => i);
-}
-
-function getRandomInt(min: number, max: number) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-interface Count {
+interface CountItem {
   date: Date;
   count: number;
   color: number;
 }
 
-function timeFormat(timeStamp: number) {
-  let date = new Date(timeStamp * 1000);
-  let y: number | string = date.getFullYear();
-  let m: number | string = date.getMonth() + 1;
-  m = m < 10 ? "0" + m : m;
-  let d: number | string = date.getDate();
-  d = d < 10 ? "0" + d : d;
-  return y + "-" + m + "-" + d;
+function getRange(count: number) {
+  return Array.from({ length: count }, (_, i) => i);
 }
 
-const SubwayGraph: React.FC<{}> = (props) => {
-  const submitCount = randomValues;
+interface SubwayGraphProps {
+  username: string;
+  submissionCountPerDay: number[];
+}
+
+const SubwayGraph: React.FC<SubwayGraphProps> = (props) => {
+  const [countList, setCountList] = useState([] as CountItem[]);
+
+  function getCountPerDay(index: number) {
+    return props.submissionCountPerDay.slice(-index)[0];
+  }
+
+  async function getCountList() {
+    let maxValue = 20;
+    for (let i = 1; i <= 366; ++i) {
+      maxValue = Math.max(maxValue, getCountPerDay(i));
+    }
+    setCountList(
+      getRange(366).map((index) => {
+        return {
+          date: shiftDate(today, -index + 1),
+          count: getCountPerDay(index),
+          color: Math.ceil(getCountPerDay(index) / (maxValue + 1) / 0.25),
+        } as CountItem;
+      }),
+    );
+  }
+
+  useEffect(() => {
+    getCountList();
+  }, [props.submissionCountPerDay]);
 
   return (
     <>
@@ -55,7 +61,7 @@ const SubwayGraph: React.FC<{}> = (props) => {
         <CalendarHeatmap
           startDate={shiftDate(today, -365)}
           endDate={today}
-          values={submitCount}
+          values={countList}
           classForValue={(value) => {
             if (!value) {
               return "color-empty";
@@ -73,6 +79,37 @@ const SubwayGraph: React.FC<{}> = (props) => {
           weekdayLabels={["Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"]}
         />
         <ReactTooltip />
+        <Row gutter={16} align={"top"} className={style["subwayGraph-footer"]}>
+          <Col xs={12}>
+            <a
+              href={`/submissions?username=${props.username}`}
+              target={"_blank"}
+            >
+              Search this user's submissions
+            </a>
+          </Col>
+          <Col xs={12} style={{ textAlign: "right" }}>
+            <Space size={"small"}>
+              <span>Less</span>
+              <div
+                className={`${style["subwayGraph-square"]} ${style["color-github-0"]}`}
+              ></div>
+              <div
+                className={`${style["subwayGraph-square"]} ${style["color-github-1"]}`}
+              ></div>
+              <div
+                className={`${style["subwayGraph-square"]} ${style["color-github-2"]}`}
+              ></div>
+              <div
+                className={`${style["subwayGraph-square"]} ${style["color-github-3"]}`}
+              ></div>
+              <div
+                className={`${style["subwayGraph-square"]} ${style["color-github-4"]}`}
+              ></div>
+              <span>More</span>
+            </Space>
+          </Col>
+        </Row>
       </div>
     </>
   );

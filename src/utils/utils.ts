@@ -23,3 +23,13 @@ export const getJSON = (url: string) => {
 export const getCustomTitle = (prefix: string): string => {
   return [prefix, customConfig.title].join(" - ");
 };
+
+export function timeFormat(timeStamp: number) {
+  let date = new Date(timeStamp * 1000);
+  let y: number | string = date.getFullYear();
+  let m: number | string = date.getMonth() + 1;
+  m = m < 10 ? "0" + m : m;
+  let d: number | string = date.getDate();
+  d = d < 10 ? "0" + d : d;
+  return y + "-" + m + "-" + d;
+}

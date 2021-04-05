@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useModel, useParams } from "umi";
+import { useParams } from "umi";
 import { Row, Col, message } from "antd";
 import Loading from "@/components/Loading";
 import BasicLayout from "@/layouts/BasicLayout";
 import { DataView, LeftPanel, SubwayGraph, RatingGraph } from "./components";
 
-import style from "./UserViewPage.module.less";
-
 import api from "@/api";
+import style from "./UserViewPage.module.less";
 
 import { useScreenWidthWithin } from "@/utils/hooks";
 
@@ -27,9 +26,6 @@ const UserViewPage: React.FC<{}> = (props) => {
   const params: UserViewPageParams = useParams();
 
   const [loading, setLoading] = useState(true);
-  const [profile, setProfile] = useState(
-    {} as ApiTypes.GetUserProfileResponseDto,
-  );
   const [userDetail, setUserDetail] = useState(
     {} as ApiTypes.GetUserDetailResponseDto,
   );
@@ -48,8 +44,6 @@ const UserViewPage: React.FC<{}> = (props) => {
     else if (response.error) message.error(response.error);
     else {
       setUserDetail(response);
-      // setProfile(response);
-      console.log(response);
       setLoading(false);
     }
   }
@@ -90,7 +84,10 @@ const UserViewPage: React.FC<{}> = (props) => {
                     marginTop: 10,
                   }}
                 >
-                  <SubwayGraph />
+                  <SubwayGraph
+                    username={params.username}
+                    submissionCountPerDay={userDetail.submissionCountPerDay}
+                  />
                 </div>
                 <div style={{ marginTop: 10 }}>
                   <RatingGraph />
