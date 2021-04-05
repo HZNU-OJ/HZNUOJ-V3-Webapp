@@ -79,6 +79,7 @@ const ProblemsTable: React.FC<{}> = (props) => {
       key: "acceptance",
       width: "100px",
       align: "right",
+      render: (acceptNum: number) => <span>{acceptNum}%</span>,
     },
   ];
 
