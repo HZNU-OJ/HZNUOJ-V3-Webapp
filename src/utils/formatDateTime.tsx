@@ -2,6 +2,16 @@ import dayjs from "dayjs";
 // import "dayjs/locale/zh-cn";
 // dayjs.locale("zh-cn");
 
+export function changeTimeStampToDate(date: Date | string | number): Date {
+  if (typeof date === "number") {
+    if (date.toString().length === 10) {
+      date = date * 1000;
+    }
+  }
+  if (!(date instanceof Date)) date = new Date(date);
+  return date;
+}
+
 export function formatUserRegisterTime(date: Date | string | number) {
   if (typeof date === "number") {
     if (date.toString().length === 10) {
@@ -27,12 +37,7 @@ export function formatDateTime(
   date: Date | string | number,
   dateOnly?: boolean,
 ): [JSX.Element | string, string] {
-  if (typeof date === "number") {
-    if (date.toString().length === 10) {
-      date = date * 1000;
-    }
-  }
-  if (!(date instanceof Date)) date = new Date(date);
+  date = changeTimeStampToDate(date);
   let month = (date.getMonth() + 1).toString();
   let day = date.getDate().toString();
   let hour = date.getHours().toString();

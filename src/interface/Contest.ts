@@ -25,3 +25,9 @@ export enum ContestStatus {
   frozen = "FROZEN",
   finished = "FINISHED",
 }
+
+export enum ContestMode {
+  icpc = "ICPC",
+  ioi = "IOI",
+  codeForces = "CodeForces",
+}
