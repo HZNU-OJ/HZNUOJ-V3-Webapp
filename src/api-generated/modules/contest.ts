@@ -12,6 +12,10 @@ export const editContest = createPostApi<
   ApiTypes.EditContestRequestDto,
   ApiTypes.EditContestResponseDto
 >("contest/editContest", false);
+export const getContestList = createPostApi<
+  ApiTypes.GetContestListRequestDto,
+  ApiTypes.GetContestListResponseDto
+>("contest/getContestList", false);
 export const getClarifications = createPostApi<
   ApiTypes.GetClarificationsRequestDto,
   ApiTypes.GetClarificationsResponseDto

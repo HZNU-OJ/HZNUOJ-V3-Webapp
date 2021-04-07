@@ -42,6 +42,15 @@ declare namespace ApiTypes {
     usernameAvailable?: boolean;
     emailAvailable?: boolean;
   }
+  export interface ContestMetaDto {
+    id: number;
+    contestName: string;
+    startTime: string; // date-time
+    endTime: string; // date-time
+    frozenStartTime?: string; // date-time
+    frozenEndTime?: string; // date-time
+    isPublic: boolean;
+  }
   export interface CreateContestRequestDto {
     contestName: string;
     startTime: {};
@@ -232,6 +241,16 @@ declare namespace ApiTypes {
   }
   export interface GetContentDto {
     content: string;
+  }
+  export interface GetContestListRequestDto {
+    hasPrivate: boolean;
+    skipCount: number;
+    takeCount: number;
+  }
+  export interface GetContestListResponseDto {
+    error?: "TAKE_TOO_MANY";
+    contestMetas?: ApiTypes.ContestMetaDto[];
+    count?: number;
   }
   export interface GetDiscussionAndRepliesRequestDto {
     locale: "en_US";
@@ -538,6 +557,7 @@ declare namespace ApiTypes {
     submissionStatistics: number;
     userList: number;
     userAuditLogs: number;
+    contestList: number;
     discussions: number;
     searchDiscussionsPreview: number;
     discussionReplies: number;
