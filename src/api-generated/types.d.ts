@@ -400,6 +400,7 @@ declare namespace ApiTypes {
   }
   export interface GetUserListRequestDto {
     sortBy: "acceptedProblemCount" | "rating";
+    hasContestUser: boolean;
     skipCount: number;
     takeCount: number;
   }

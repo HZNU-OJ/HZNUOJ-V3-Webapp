@@ -36,6 +36,7 @@ const UsersPage: React.FC<{}> = (props) => {
   async function fetchData() {
     const { requestError, response } = await api.user.getUserList({
       sortBy: "acceptedProblemCount",
+      hasContestUser: false,
       skipCount: 0,
       takeCount: 1000000,
     });
