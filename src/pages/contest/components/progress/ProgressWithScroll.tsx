@@ -37,7 +37,8 @@ class ProgressWithScroll extends React.Component {
     this.setState({
       start_time: props.start_time,
       end_time: props.end_time,
-      frozen_time: props.frozen_time,
+      frozen_start_time: props.frozen_start_time,
+      frozen_end_time: props.frozen_end_time,
       search: props.search,
       history: props.history,
     });
@@ -45,7 +46,12 @@ class ProgressWithScroll extends React.Component {
     const setStatusAndWIdth = () => {
       const width = getWidth(props.start_time, props.end_time);
       this.setState({
-        status: getStatus(props.start_time, props.end_time, props.frozen_time),
+        status: getStatus(
+          props.start_time,
+          props.end_time,
+          props.frozen_start_time,
+          props.frozen_end_time,
+        ),
         width: width,
       });
       if (!this.pauseUpdate) {
@@ -170,7 +176,8 @@ class ProgressWithScroll extends React.Component {
   state = {
     start_time: 0,
     end_time: 0,
-    frozen_time: 0,
+    frozen_start_time: 0,
+    frozen_end_time: 0,
     status: 0,
     width: 0,
     scroll_width: 0,

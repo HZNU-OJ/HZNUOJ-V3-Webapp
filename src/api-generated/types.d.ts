@@ -252,6 +252,13 @@ declare namespace ApiTypes {
     contestMetas?: ApiTypes.ContestMetaDto[];
     count?: number;
   }
+  export interface GetContestMetaRequestDto {
+    id: number;
+  }
+  export interface GetContestMetaResponseDto {
+    error?: "PERMISSION_DENIED" | "NO_SUCH_CONTEST";
+    contestMeta?: ApiTypes.ContestMetaDto;
+  }
   export interface GetDiscussionAndRepliesRequestDto {
     locale: "en_US";
     discussionId: number;
@@ -467,12 +474,12 @@ declare namespace ApiTypes {
   export interface GetVersionDto {
     version: string;
   }
-  export interface ImportUserRequestDto {
+  export interface ImportContestUsersRequestDto {
     username: string;
     nickname: string;
     password: string;
   }
-  export interface ImportUserResponseDto {
+  export interface ImportContestUsersResponseDto {
     error?: "PERMISSION_DENIED" | "NO_SUCH_PROBLEM_TAG" | "FAILED";
   }
   export interface JudgeClientInfoDto {
@@ -852,7 +859,7 @@ declare namespace ApiTypes {
   export interface RenameProblemFileResponseDto {
     error?: "NO_SUCH_PROBLEM" | "PERMISSION_DENIED" | "NO_SUCH_FILE";
   }
-  export type RequestBody = ApiTypes.ImportUserRequestDto;
+  export type RequestBody = ApiTypes.ImportContestUsersRequestDto;
   export interface ResetJudgeClientKeyRequestDto {
     id: number;
   }
@@ -874,7 +881,7 @@ declare namespace ApiTypes {
   }
   namespace Responses {
     export type $200 = ApiTypes.GetSubmissionStaticsResponseDto;
-    export type $201 = ApiTypes.ImportUserResponseDto;
+    export type $201 = ApiTypes.ImportContestUsersResponseDto;
   }
   export interface RevokeUserSessionRequestDto {
     userId: number;

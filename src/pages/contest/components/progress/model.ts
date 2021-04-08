@@ -22,12 +22,22 @@ export const status_type = ["PENDING", "RUNNING", "FROZEN", "FINISHED"];
 export function getStatus(
   start_time: number,
   end_time: number,
-  frozen_time: number,
+  frozen_start_time?: number,
+  frozen_end_time?: number,
 ) {
   const now = getNowTimeStamp();
-  if (now < start_time) return 0;
+  if (now < start_time) {
+    return 0;
+  }
+
   if (now >= end_time) return 3;
-  if (now >= end_time - frozen_time) return 2;
+
+  if (frozen_start_time && frozen_end_time) {
+    if (now >= frozen_start_time && now <= frozen_end_time) {
+      return 2;
+    }
+  }
+
   return 1;
 }
 

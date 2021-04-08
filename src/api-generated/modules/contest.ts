@@ -12,6 +12,10 @@ export const editContest = createPostApi<
   ApiTypes.EditContestRequestDto,
   ApiTypes.EditContestResponseDto
 >("contest/editContest", false);
+export const getContestMeta = createPostApi<
+  ApiTypes.GetContestMetaRequestDto,
+  ApiTypes.GetContestMetaResponseDto
+>("contest/getContestMeta", false);
 export const getContestList = createPostApi<
   ApiTypes.GetContestListRequestDto,
   ApiTypes.GetContestListResponseDto
@@ -20,10 +24,10 @@ export const getClarifications = createPostApi<
   ApiTypes.GetClarificationsRequestDto,
   ApiTypes.GetClarificationsResponseDto
 >("contest/getClarifications", false);
-export const importUser = createPostApi<
-  ApiTypes.ImportUserRequestDto,
-  ApiTypes.ImportUserResponseDto
->("contest/importUser", false);
+export const importContestUsers = createPostApi<
+  ApiTypes.ImportContestUsersRequestDto,
+  ApiTypes.ImportContestUsersResponseDto
+>("contest/importContestUsers", false);
 export const getConfig = createGetApi<void, ApiTypes.GetContentDto>(
   "contest/config",
 );

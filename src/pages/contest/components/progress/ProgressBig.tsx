@@ -19,13 +19,19 @@ class ProgressBig extends React.Component {
       head_item: props.head_item,
       start_time: props.start_time,
       end_time: props.end_time,
-      frozen_time: props.frozen_time,
+      frozen_start_time: props.frozen_start_time,
+      frozen_end_time: props.frozen_end_time,
       search: props.search,
       history: props.history,
     });
     const setDynamicParams = () => {
       this.setState({
-        status: getStatus(props.start_time, props.end_time, props.frozen_time),
+        status: getStatus(
+          props.start_time,
+          props.end_time,
+          props.frozen_start_time,
+          props.frozen_end_time,
+        ),
         time_elapsed: getTimeElapsed(props.start_time, props.end_time),
         time_remaining: getTimeRemaining(props.start_time, props.end_time),
         time_pending: getTimePending(props.start_time),
@@ -57,7 +63,8 @@ class ProgressBig extends React.Component {
     head_item: null,
     start_time: 0,
     end_time: 0,
-    frozen_time: 0,
+    frozen_start_time: 0,
+    frozen_end_time: 0,
     status: 0,
     time_elapsed: 0,
     time_remaining: 0,
@@ -109,7 +116,8 @@ class ProgressBig extends React.Component {
         <ProgressWithScroll
           start_time={this.state.start_time}
           end_time={this.state.end_time}
-          frozen_time={this.state.frozen_time}
+          frozen_start_time={this.state.frozen_start_time}
+          frozen_end_time={this.state.frozen_end_time}
           search={this.state.search}
           history={this.state.history}
         />

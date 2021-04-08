@@ -4,10 +4,11 @@ import style from "./ContestHeader.module.less";
 import { ProgressBig } from "./progress/ProgressBig";
 
 interface ContestHeaderProps {
+  contestName: string;
   startTime: number;
   endTime: number;
-  frozenTime: number;
-  contestName: string;
+  frozenStartTime: number;
+  frozenEndTime: number;
 }
 
 const ContestHeader: React.FC<ContestHeaderProps> = (props) => {
@@ -22,7 +23,8 @@ const ContestHeader: React.FC<ContestHeaderProps> = (props) => {
           head_item={<></>}
           start_time={props.startTime}
           end_time={props.endTime}
-          frozen_time={props.frozenTime}
+          frozen_start_time={props.frozenStartTime}
+          frozen_end_time={props.frozenEndTime}
           history={history}
           search={location.search}
         />

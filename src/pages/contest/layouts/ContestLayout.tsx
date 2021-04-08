@@ -1,6 +1,6 @@
 import { useModel, useParams } from "umi";
 import React, { useEffect, useState } from "react";
-import { Statistic } from "antd";
+import { Statistic, message } from "antd";
 const { Countdown } = Statistic;
 import Footer from "@/components/Footer";
 import Loading from "@/components/Loading";
@@ -195,7 +195,8 @@ const PendingClock: React.FC<{}> = (props) => {
 
 interface ContestLayoutProps {
   current: string;
-  maxWidth?: string;
+  maxRootWidth?: string;
+  maxBodyWidth?: string;
   disableHeader?: boolean;
 }
 
@@ -214,28 +215,47 @@ const ContestLayout: React.FC<ContestLayoutProps> = (props) => {
     contestName: string;
   }
 
+  const [contestMeta, setContestMeta] = useState(
+    null as ApiTypes.ContestMetaDto,
+  );
   const [contestConfig, setContestConfig] = useState(null);
   const [contestStatus, setContestStatus] = useState(0);
   const [fetchDataLoading, setFetchDataLoading] = useState(true);
   async function fetchData() {
-    // const { requestError, response } = await api.contest.getConfig();
+    const { requestError, response } = await api.contest.getContestMeta({
+      id: parseInt(params.id),
+    });
+
+    if (requestError) message.error(requestError);
+    else if (response.error) message.error(response.error);
+    else {
+      setContestMeta(response.contestMeta);
+      setContestStatus(
+        getStatus(
+          Date.parse(response.contestMeta.startTime) / 1000,
+          Date.parse(response.contestMeta.endTime) / 1000,
+          response.contestMeta.frozenStartTime
+            ? Date.parse(response.contestMeta.frozenStartTime) / 1000
+            : null,
+          response.contestMeta.frozenEndTime
+            ? Date.parse(response.contestMeta.frozenEndTime) / 1000
+            : null,
+        ),
+      );
+      // console.log(response);
+      // console.log(Date.parse(response.contestMeta.startTime) / 1000);
+      setFetchDataLoading(false);
+    }
     // if (requestError) message.error(requestError);
     // else {
-    let _contestConfig = {
-      startTime: 1617165000,
-      endTime: 1617183000,
-      frozenTime: 3600,
-      contestName: "The Hangzhou Normal U Qualification Trials for ZJPSC 2021",
-    } as ContestConfig;
-    setContestConfig(_contestConfig);
-    setContestStatus(
-      getStatus(
-        _contestConfig.startTime,
-        _contestConfig.endTime,
-        _contestConfig.frozenTime,
-      ),
-    );
-    setFetchDataLoading(false);
+    // let _contestConfig = {
+    //   startTime: 1617165000,
+    //   endTime: 1617183000,
+    //   frozenTime: 3600,
+    //   contestName: "The Hangzhou Normal U Qualification Trials for ZJPSC 2021",
+    // } as ContestConfig;
+    // setContestConfig(_contestConfig);
+
     // }
   }
 
@@ -262,6 +282,7 @@ const ContestLayout: React.FC<ContestLayoutProps> = (props) => {
             <Loading />
           </div>
         ))}
+
       {(loading || fetchDataLoading) === false && (
         <>
           <Header
@@ -271,11 +292,11 @@ const ContestLayout: React.FC<ContestLayoutProps> = (props) => {
             id={initialState?.userMeta?.id}
             isAdmin={initialState?.userMeta?.isAdmin}
           />
+
           <div
             className={style.root}
             style={{
-              maxWidth: "1560px",
-              // props.maxWidth ? props.maxWidth : "",
+              maxWidth: props.maxRootWidth ?? "1560px",
             }}
           >
             <div className={style.secondRoot}>
@@ -283,10 +304,19 @@ const ContestLayout: React.FC<ContestLayoutProps> = (props) => {
                 {!props.disableHeader && (
                   <div className={style.contestHeader}>
                     <ContestHeader
-                      startTime={contestConfig.startTime}
-                      endTime={contestConfig.endTime}
-                      frozenTime={contestConfig.frozenTime}
-                      contestName={contestConfig.contestName}
+                      contestName={contestMeta.contestName}
+                      startTime={Date.parse(contestMeta.startTime) / 1000}
+                      endTime={Date.parse(contestMeta.endTime) / 1000}
+                      frozenStartTime={
+                        contestMeta.frozenStartTime
+                          ? Date.parse(contestMeta.frozenStartTime) / 1000
+                          : null
+                      }
+                      frozenEndTime={
+                        contestMeta.frozenEndTime
+                          ? Date.parse(contestMeta.frozenEndTime) / 1000
+                          : null
+                      }
                     />
                     <Divider />
                   </div>
@@ -294,7 +324,12 @@ const ContestLayout: React.FC<ContestLayoutProps> = (props) => {
 
                 {contestStatus >= 0 && (
                   <>
-                    <div className={style.root} style={{ maxWidth: "1200px" }}>
+                    <div
+                      className={style.root}
+                      style={{
+                        maxWidth: props.maxBodyWidth ?? "1200px",
+                      }}
+                    >
                       {props.children}
                     </div>
                   </>
