@@ -15,7 +15,6 @@ import formatFileSize from "@/utils/formatFileSize";
 import FormatTableDate from "@/components/FormatTableDate";
 
 import styles from "./SubmissionsTable.module.less";
-import StatusTextStyle from "@/less/StatusText.module.less";
 import AntTableHeadStyles from "@/less/AntTableHead.module.less";
 
 import api from "@/api";
@@ -33,7 +32,7 @@ interface AnswerItem {
   codeLength: number;
 }
 
-interface ProblemItem {
+export interface ProblemItem {
   id: number;
   title: string;
 }
@@ -47,17 +46,6 @@ interface SubmissionItem {
   time: number;
   memory: number;
   answer: AnswerItem;
-}
-
-interface SubmissionsQuery {
-  problemId?: number;
-  problemDisplayId?: number;
-  submitter?: string;
-  codeLanguage?: CodeLanguage;
-  status?: SubmissionStatus;
-  minId?: number;
-  maxId?: number;
-  takeCount?: number;
 }
 
 enum SubmissionTableHeadTitle {
@@ -86,6 +74,33 @@ function submissionTimeRender(time: number) {
   return `${time} ms`;
 }
 
+export interface QuerySubmissionRequestMinimalDto {
+  problemId?: number;
+  problemDisplayId?: number;
+  submitter?: string;
+  contestId?: number;
+  codeLanguage?: string;
+  status?:
+    | "Pending"
+    | "ConfigurationError"
+    | "SystemError"
+    | "Canceled"
+    | "CompilationError"
+    | "FileError"
+    | "RuntimeError"
+    | "TimeLimitExceeded"
+    | "MemoryLimitExceeded"
+    | "OutputLimitExceeded"
+    | "PartiallyCorrect"
+    | "WrongAnswer"
+    | "Accepted"
+    | "JudgementFailed";
+  minId?: number;
+  maxId?: number;
+  takeCount?: number;
+  locale?: string;
+}
+
 export enum SubmissionProgressType {
   Preparing = "Preparing",
   Compiling = "Compiling",
@@ -94,8 +109,9 @@ export enum SubmissionProgressType {
 }
 
 interface SubmissionsTableProps {
-  query?: SubmissionsQuery;
+  query?: QuerySubmissionRequestMinimalDto;
   pagination?: false | TablePaginationConfig;
+  problemRender?: (problem: ProblemItem) => JSX.Element;
 }
 
 const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
@@ -103,9 +119,12 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
   const [tableData, setTableData] = useState([] as SubmissionItem[]);
 
   let timeOut = null;
+  const rotationTime = 1000; // ms
 
-  function normalizeQuery(query: Record<string, string>): SubmissionsQuery {
-    const result: SubmissionsQuery = {
+  function normalizeQuery(
+    query: Record<string, string>,
+  ): QuerySubmissionRequestMinimalDto {
+    const result: QuerySubmissionRequestMinimalDto = {
       problemId: Number(query.problemId) ? Number(query.problemId) : null,
       problemDisplayId:
         Number(query.problemDisplayId) && !Number(query.problemId)
@@ -130,10 +149,10 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
     };
     return Object.fromEntries(
       Object.entries(result).filter(([key, value]) => value != null),
-    ) as SubmissionsQuery;
+    ) as QuerySubmissionRequestMinimalDto;
   }
 
-  async function fetchData(query: SubmissionsQuery) {
+  async function fetchData(query: QuerySubmissionRequestMinimalDto) {
     let takeCount = 1000000;
     if (query?.takeCount) takeCount = query.takeCount;
     const { requestError, response } = await api.submission.querySubmission({
@@ -194,17 +213,21 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
         if (timeOut != null) clearTimeout(timeOut);
         timeOut = setTimeout(() => {
           fetchData(props.query);
-        }, 200);
+        }, rotationTime);
       }
       setFetchDataLoading(false);
     }
   }
 
   useEffect(() => {
+    fetchData(props.query);
+  }, []);
+
+  useEffect(() => {
     if (timeOut != null) clearTimeout(timeOut);
     timeOut = setTimeout(() => {
       fetchData(props.query);
-    }, 200);
+    }, rotationTime);
   }, [props.query]);
 
   const columns: ColumnsType<SubmissionItem> = [
@@ -223,7 +246,7 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
       width: "120px",
       align: "left",
       // ...useTableSearch("problem", SubmissionTableHeadTitle.problem),
-      render: problemRender,
+      render: props.problemRender ?? problemRender,
     },
     {
       title: SubmissionTableHeadTitle.status,

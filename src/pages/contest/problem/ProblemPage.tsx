@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "umi";
 import { Row, Col, Affix, message, Breadcrumb, Menu } from "antd";
-import ContestLayout from "../layouts/ContestLayout";
 import SiderMenu from "@/components/SiderMenu";
 import Divider from "@/components/Divider";
 import { useScreenWidthWithin } from "@/utils/hooks";
@@ -9,39 +8,24 @@ import Loading from "@/components/Loading";
 import { ContestContext } from "@/pages/contest/layouts/ContestLayout";
 import style from "./ProblemPage.module.less";
 import ProblemViewStyle from "@/pages/problem/view/ProblemViewPage.module.less";
-import { mappingOrderIdToAlphaId } from "@/pages/contest/utils";
+import {
+  mappingOrderIdToAlphaId,
+  getProblemByAlphaId,
+} from "@/pages/contest/utils";
+import SubmissionsInContestTable from "@/pages/contest/components/SubmissionsInContestTable";
 
 import {
   ProblemViewHeader,
   StatementTab,
-  SubmitTab,
-  SubmissionsTab,
-  StatisticsTab,
 } from "@/pages/problem/view/components";
+
+import { SubmitTab } from "./components/SubmitTab";
 
 import { menuItem } from "@/interface/Menu.interface";
 
 import { useUrlQuery } from "@/utils/hooks";
 
 import api from "@/api";
-
-function getProblemByOrderId(
-  contest: ApiTypes.GetContestResponseDto,
-  orderId: number,
-): ApiTypes.ProblemInContestMetaDto {
-  return contest.problemMetas.filter(
-    (problem) => problem.orderId === orderId,
-  )[0];
-}
-
-function getProblemByAlphaId(
-  contest: ApiTypes.GetContestResponseDto,
-  alphaId: string,
-): ApiTypes.ProblemInContestMetaDto {
-  return contest.problemMetas.filter(
-    (problem) => mappingOrderIdToAlphaId(problem.orderId) === alphaId,
-  )[0];
-}
 
 interface ProblemViewPageParams {
   id: string;
@@ -127,8 +111,8 @@ const ProblemPage: React.FC<{}> = (props) => {
       setLastSubmissionContent(response.lastSubmission.lastSubmissionContent);
       setBreadCrumbMenuList(
         <Menu>
-          {contest.problemMetas.map((problem) => (
-            <Menu.Item>
+          {contest.problemMetas.map((problem, index) => (
+            <Menu.Item key={index}>
               <a
                 rel="noopener noreferrer"
                 href={`/contest/${params.id}/problem/${mappingOrderIdToAlphaId(
@@ -202,12 +186,20 @@ const ProblemPage: React.FC<{}> = (props) => {
                   )}
                   {urlQuery.tab === "submit" && (
                     <SubmitTab
-                      problemId={parseInt(params.id)}
+                      contestId={parseInt(params.id)}
+                      problemId={
+                        getProblemByAlphaId(contest, params.pid).problemId
+                      }
                       lastSubmissionContent={lastSubmissionContent}
                     />
                   )}
                   {urlQuery.tab === "submissions" && (
-                    <SubmissionsTab id={parseInt(params.pid)} />
+                    <SubmissionsInContestTable
+                      contestId={parseInt(params.id)}
+                      problemId={
+                        getProblemByAlphaId(contest, params.pid).problemId
+                      }
+                    />
                   )}
                   {/* {tab === "statistics" && <StatisticsTab />} */}
                 </>

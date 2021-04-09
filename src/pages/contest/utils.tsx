@@ -1,5 +1,7 @@
 import { parse } from "querystring";
 import request from "@/utils/request";
+import { ProblemItem } from "@/pages/submission/components/SubmissionsTable";
+import { Tooltip } from "antd";
 
 /* eslint no-useless-escape:0 import/prefer-default-export:0 */
 const reg = /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
@@ -220,10 +222,55 @@ export function getQueryParams(
   return query;
 }
 
+export function getProblemByOrderId(
+  contest: ApiTypes.GetContestResponseDto,
+  orderId: number,
+): ApiTypes.ProblemInContestMetaDto {
+  return contest.problemMetas.filter(
+    (problem) => problem.orderId === orderId,
+  )[0];
+}
+
+export function getProblemByAlphaId(
+  contest: ApiTypes.GetContestResponseDto,
+  alphaId: string,
+): ApiTypes.ProblemInContestMetaDto {
+  return contest.problemMetas.filter(
+    (problem) => mappingOrderIdToAlphaId(problem.orderId) === alphaId,
+  )[0];
+}
+
+export function getProblemByProblemId(
+  contest: ApiTypes.GetContestResponseDto,
+  problemId: number,
+): ApiTypes.ProblemInContestMetaDto {
+  return contest.problemMetas.filter(
+    (problem) => problem.problemId === problemId,
+  )[0];
+}
+
 export function mappingOrderIdToAlphaId(orderId: number) {
   return String.fromCharCode("A".charCodeAt(0) + orderId - 1);
 }
 
 export function mappingAlphaIdToOrderId(alpha: string) {
   return alpha.charCodeAt(0) - "A".charCodeAt(0) + 1;
+}
+
+export function getProblemRenderFunc(contest: ApiTypes.GetContestResponseDto) {
+  return function problemRender(problem: ProblemItem): JSX.Element {
+    const _problem = getProblemByProblemId(contest, problem.id);
+    const alphaId = mappingOrderIdToAlphaId(_problem.orderId);
+    const title = `${alphaId}. ${_problem.title}`;
+    return (
+      <a
+        href={`/contest/${contest.contestMeta.id}/problem/${alphaId}`}
+        target={"_blank"}
+      >
+        <Tooltip title={title} placement={"top"}>
+          <div className={"h-ellipsis"}>{title}</div>
+        </Tooltip>
+      </a>
+    );
+  };
 }

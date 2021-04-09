@@ -806,11 +806,12 @@ declare namespace ApiTypes {
   }
   export interface QuerySubmissionRequestDto {
     locale: "en_US";
-    problemId: number;
-    problemDisplayId: number;
-    submitter: string;
-    codeLanguage: string;
-    status:
+    problemId?: number;
+    problemDisplayId?: number;
+    submitter?: string;
+    contestId?: number;
+    codeLanguage?: string;
+    status?:
       | "Pending"
       | "ConfigurationError"
       | "SystemError"
@@ -825,12 +826,12 @@ declare namespace ApiTypes {
       | "WrongAnswer"
       | "Accepted"
       | "JudgementFailed";
-    minId: number;
-    maxId: number;
+    minId?: number;
+    maxId?: number;
     takeCount: number;
   }
   export interface QuerySubmissionResponseDto {
-    error?: "NO_SUCH_PROBLEM" | "NO_SUCH_USER";
+    error?: "NO_SUCH_PROBLEM" | "NO_SUCH_USER" | "NO_SUCH_CONTEST";
     submissions?: ApiTypes.SubmissionMetaDto[];
     hasSmallerId?: boolean;
     hasLargerId?: boolean;
@@ -1100,6 +1101,7 @@ declare namespace ApiTypes {
     error?:
       | "PERMISSION_DENIED"
       | "NO_SUCH_PROBLEM"
+      | "NO_SUCH_CONTEST"
       | "FILE_TOO_LARGE"
       | "FILE_UUID_EXISTS"
       | "FILE_NOT_UPLOADED";

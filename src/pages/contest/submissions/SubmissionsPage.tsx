@@ -1,27 +1,22 @@
 import React from "react";
-import { useModel } from "umi";
+import { useParams } from "umi";
 import styles from "./SubmissionsPage.module.less";
-import SubmissionsTable from "@/pages/submission/components/SubmissionsTable";
-import { useUrlQuery } from "@/utils/hooks";
 import ContestLayout from "../layouts/ContestLayout";
+import SubmissionsInContestTable from "@/pages/contest/components/SubmissionsInContestTable";
 
-interface SubmissionsProps {
-  username: string;
+interface SubmissionsParams {
+  id: string;
 }
 
-const SubmissionsPage: React.FC<SubmissionsProps> = (props) => {
-  const { initialState, loading } = useModel("@@initialState");
-  const [urlQuery, setUrlQuery] = useUrlQuery({
-    username: "",
-  });
+const SubmissionsPage: React.FC<{}> = (props) => {
+  const params: SubmissionsParams = useParams();
 
   return (
     <ContestLayout current={"submissions"}>
       <div className={styles.root}>
-        <SubmissionsTable
-          query={{
-            submitter: urlQuery.username,
-          }}
+        <SubmissionsInContestTable
+          username={null}
+          contestId={parseInt(params.id)}
         />
       </div>
     </ContestLayout>

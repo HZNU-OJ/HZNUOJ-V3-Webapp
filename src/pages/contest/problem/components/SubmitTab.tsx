@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Spin, message } from "antd";
+import React, { useContext, useEffect, useState } from "react";
+import { message } from "antd";
 import { useModel, history } from "umi";
 import { useAuthToken } from "@/utils/hooks";
 import style from "./SubmitTab.module.less";
@@ -8,6 +8,8 @@ import { useScreenWidthWithin } from "@/utils/hooks";
 import { useRecaptcha } from "@/utils/hooks";
 import api from "@/api";
 import SubmissionsTable from "@/pages/submission/components/SubmissionsTable";
+import { ContestContext } from "@/pages/contest/layouts/ContestLayout";
+import { getProblemRenderFunc } from "@/pages/contest/utils";
 
 const languageCompileOptions = {
   c: {
@@ -48,6 +50,8 @@ interface SubmitTabProps {
 
 const SubmitTab: React.FC<SubmitTabProps> = (props) => {
   const { initialState, loading } = useModel("@@initialState");
+
+  const contest = useContext(ContestContext);
 
   const { getToken } = useAuthToken();
 
@@ -105,6 +109,7 @@ const SubmitTab: React.FC<SubmitTabProps> = (props) => {
           pagination={{
             defaultPageSize: 2,
           }}
+          problemRender={getProblemRenderFunc(contest)}
         />
       </div>
       <LazyCodeBoxEditor

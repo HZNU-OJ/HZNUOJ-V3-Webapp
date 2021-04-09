@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from "react";
+import { useModel } from "umi";
 import ContestLayout, { ContestContext } from "../layouts/ContestLayout";
 
 import { menuItem } from "@/interface/Menu.interface";
@@ -8,6 +9,7 @@ import { Row, Col, Affix } from "antd";
 import SiderMenu from "@/components/SiderMenu";
 
 import ProblemsTab from "./components/ProblemsTab";
+import MySubmissionsTab from "./components/MySubmissionsTab";
 import AnnouncementTab from "./components/AnnouncementTab";
 
 import style from "./DashboardPage.module.less";
@@ -18,6 +20,8 @@ interface DashboardPageParams {
 }
 
 const DashboardPage: React.FC<{}> = (props) => {
+  const { initialState, loading } = useModel("@@initialState");
+
   const params: DashboardPageParams = useParams();
   const location = useLocation();
   const pathname = location.pathname;
@@ -32,6 +36,11 @@ const DashboardPage: React.FC<{}> = (props) => {
       id: "problems",
       name: "Problems",
       link: `${pathname}?tab=problems`,
+    },
+    {
+      id: "my-submissions",
+      name: "My Submissions",
+      link: `${pathname}?tab=my-submissions`,
     },
     // {
     //   id: "announcement",
@@ -56,6 +65,12 @@ const DashboardPage: React.FC<{}> = (props) => {
                 <div style={{ marginBottom: 30 }}>
                   <ProblemsTab />
                 </div>
+              )}
+              {urlQuery.tab === "my-submissions" && (
+                <MySubmissionsTab
+                  username={initialState.userMeta.username}
+                  contestId={parseInt(params.id)}
+                />
               )}
               {/* {urlQuery.tab === "announcement" && <AnnouncementTab />} */}
             </>

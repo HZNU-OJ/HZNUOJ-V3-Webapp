@@ -3,7 +3,8 @@ import style from "./SubmitTab.module.less";
 import SubmissionsTable from "@/pages/submission/components/SubmissionsTable";
 
 interface SubmissionsTabProps {
-  id: number;
+  problemId: number;
+  contestId: number;
 }
 
 const SubmissionsTab: React.FC<SubmissionsTabProps> = (props) => {
@@ -12,7 +13,8 @@ const SubmissionsTab: React.FC<SubmissionsTabProps> = (props) => {
       <div className={style.root}>
         <SubmissionsTable
           query={{
-            problemId: props.id,
+            problemId: props.problemId,
+            contestId: props.contestId,
           }}
         />
       </div>
