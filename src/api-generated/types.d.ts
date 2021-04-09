@@ -349,6 +349,7 @@ declare namespace ApiTypes {
   export interface GetProblemRequestDto {
     id?: number;
     displayId?: number;
+    contestId?: number;
     owner?: boolean;
     localizedContentsOfLocale?: "en_US";
     localizedContentsTitleOnly?: boolean;

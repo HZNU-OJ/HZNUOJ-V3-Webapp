@@ -5,8 +5,7 @@ import { ColumnsType } from "antd/es/table";
 import style from "./ProblemsTab.module.less";
 import AntTableHeadStyles from "@/less/AntTableHead.module.less";
 import { ContestContext } from "@/pages/contest/layouts/ContestLayout";
-
-import api from "@/api";
+import { mappingOrderIdToAlphaId } from "@/pages/contest/utils";
 
 interface ProblemTitleItem {
   orderId: string;
@@ -38,14 +37,6 @@ function getAcceptance(
   }
 }
 
-export function mappingOrderIdToAlpha(orderId: number) {
-  return String.fromCharCode("A".charCodeAt(0) + orderId - 1);
-}
-
-export function mappingAlphaToOrderId(alpha: string) {
-  return alpha.charCodeAt(0) - "A".charCodeAt(0) + 1;
-}
-
 interface ProblemsTabParams {
   id: string;
 }
@@ -63,7 +54,7 @@ const ProblemsTab: React.FC<{}> = (props) => {
       width: "60px",
       align: "left",
       sorter: (a, b) => a.id - b.id,
-      render: mappingOrderIdToAlpha,
+      render: mappingOrderIdToAlphaId,
     },
     {
       title: ProblemTableHeadTitle.problemTitle,
@@ -75,7 +66,7 @@ const ProblemsTab: React.FC<{}> = (props) => {
         return (
           <Tooltip placement="top" title={problem.title}>
             <a
-              href={`/contest/${params.id}problem/${problem.orderId}`}
+              href={`/contest/${params.id}/problem/${problem.orderId}`}
               className={["h-ellipsis"].join(" ")}
             >
               {problem.title}
@@ -107,7 +98,7 @@ const ProblemsTab: React.FC<{}> = (props) => {
       contest.problemMetas.map((problem) => ({
         id: problem.orderId,
         problem: {
-          orderId: mappingOrderIdToAlpha(problem.orderId),
+          orderId: mappingOrderIdToAlphaId(problem.orderId),
           title: problem.title,
         } as ProblemTitleItem,
         submissions: problem.submissionCount,

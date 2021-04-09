@@ -238,7 +238,6 @@ const ContestLayout: React.FC<ContestLayoutProps> = (props) => {
             : null,
         ),
       );
-      console.log(response);
       setFetchDataLoading(false);
     }
   }
@@ -310,16 +309,16 @@ const ContestLayout: React.FC<ContestLayoutProps> = (props) => {
                 )}
 
                 {contestStatus >= 0 && (
-                  <div
-                    className={style.root}
-                    style={{
-                      maxWidth: props.maxBodyWidth ?? "1200px",
-                    }}
-                  >
-                    <ContestContext.Provider value={contest}>
+                  <ContestContext.Provider value={contest}>
+                    <div
+                      className={style.root}
+                      style={{
+                        maxWidth: props.maxBodyWidth ?? "1200px",
+                      }}
+                    >
                       {props.children}
-                    </ContestContext.Provider>
-                  </div>
+                    </div>
+                  </ContestContext.Provider>
                 )}
               </div>
               <Footer />

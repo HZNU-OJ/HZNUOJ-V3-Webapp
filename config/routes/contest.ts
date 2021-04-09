@@ -11,7 +11,7 @@ export default [
   },
   {
     path: "/contest/:id/problem/:pid",
-    component: "@/pages/contest/problem/ProblemPage",
+    component: "@/pages/contest/problem/ProblemPageWrapper",
     exact: true,
   },
   {

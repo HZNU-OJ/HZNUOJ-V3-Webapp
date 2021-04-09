@@ -3,6 +3,7 @@ import { Row, Col, Statistic } from "antd";
 import style from "./ProblemViewHeader.module.less";
 
 interface ProblemViewHeaderProps {
+  isNotNumericId?: boolean;
   id: string;
   title: string;
   type: string;
@@ -18,9 +19,9 @@ const ProblemViewHeader: React.FC<ProblemViewHeaderProps> = (props) => {
       <Row gutter={16} align="top">
         <Col xs={24} sm={24} md={16} lg={16} xl={16}>
           <div className={style.left}>
-            <div
-              className={style.problemTitle}
-            >{`#${props.id}. ${props.title}`}</div>
+            <div className={style.problemTitle}>{`${
+              props.isNotNumericId ? "" : "#"
+            }${props.id}. ${props.title}`}</div>
             <div className={`${style.tag} ${style.type}`}>{props.type}</div>
             <div className={[style.tag, style.time].join(" ")}>
               {props.timeLimit} ms

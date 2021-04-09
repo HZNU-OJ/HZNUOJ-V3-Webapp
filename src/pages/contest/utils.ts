@@ -219,3 +219,11 @@ export function getQueryParams(
   query[queryName] = queryValue;
   return query;
 }
+
+export function mappingOrderIdToAlphaId(orderId: number) {
+  return String.fromCharCode("A".charCodeAt(0) + orderId - 1);
+}
+
+export function mappingAlphaIdToOrderId(alpha: string) {
+  return alpha.charCodeAt(0) - "A".charCodeAt(0) + 1;
+}
