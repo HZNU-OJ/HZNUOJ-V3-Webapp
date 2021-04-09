@@ -1,5 +1,5 @@
 import { useModel, useParams } from "umi";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createContext } from "react";
 import { Statistic, message } from "antd";
 const { Countdown } = Statistic;
 import Footer from "@/components/Footer";
@@ -204,32 +204,28 @@ interface ContestLayoutParams {
   id: string;
 }
 
+export const ContestContext = createContext(
+  null as ApiTypes.GetContestResponseDto,
+);
+
 const ContestLayout: React.FC<ContestLayoutProps> = (props) => {
   const { initialState, loading } = useModel("@@initialState");
   const params: ContestLayoutParams = useParams();
 
-  interface ContestConfig {
-    startTime: number;
-    endTime: number;
-    frozenTime: number;
-    contestName: string;
-  }
-
-  const [contestMeta, setContestMeta] = useState(
-    null as ApiTypes.ContestMetaDto,
+  const [contest, setContest] = useState(
+    null as ApiTypes.GetContestResponseDto,
   );
-  const [contestConfig, setContestConfig] = useState(null);
   const [contestStatus, setContestStatus] = useState(0);
   const [fetchDataLoading, setFetchDataLoading] = useState(true);
   async function fetchData() {
-    const { requestError, response } = await api.contest.getContestMeta({
+    const { requestError, response } = await api.contest.getContest({
       id: parseInt(params.id),
     });
 
     if (requestError) message.error(requestError);
     else if (response.error) message.error(response.error);
     else {
-      setContestMeta(response.contestMeta);
+      setContest(response);
       setContestStatus(
         getStatus(
           Date.parse(response.contestMeta.startTime) / 1000,
@@ -242,21 +238,9 @@ const ContestLayout: React.FC<ContestLayoutProps> = (props) => {
             : null,
         ),
       );
-      // console.log(response);
-      // console.log(Date.parse(response.contestMeta.startTime) / 1000);
+      console.log(response);
       setFetchDataLoading(false);
     }
-    // if (requestError) message.error(requestError);
-    // else {
-    // let _contestConfig = {
-    //   startTime: 1617165000,
-    //   endTime: 1617183000,
-    //   frozenTime: 3600,
-    //   contestName: "The Hangzhou Normal U Qualification Trials for ZJPSC 2021",
-    // } as ContestConfig;
-    // setContestConfig(_contestConfig);
-
-    // }
   }
 
   useEffect(() => {
@@ -304,17 +288,20 @@ const ContestLayout: React.FC<ContestLayoutProps> = (props) => {
                 {!props.disableHeader && (
                   <div className={style.contestHeader}>
                     <ContestHeader
-                      contestName={contestMeta.contestName}
-                      startTime={Date.parse(contestMeta.startTime) / 1000}
-                      endTime={Date.parse(contestMeta.endTime) / 1000}
+                      contestName={contest.contestMeta.contestName}
+                      startTime={
+                        Date.parse(contest.contestMeta.startTime) / 1000
+                      }
+                      endTime={Date.parse(contest.contestMeta.endTime) / 1000}
                       frozenStartTime={
-                        contestMeta.frozenStartTime
-                          ? Date.parse(contestMeta.frozenStartTime) / 1000
+                        contest.contestMeta.frozenStartTime
+                          ? Date.parse(contest.contestMeta.frozenStartTime) /
+                            1000
                           : null
                       }
                       frozenEndTime={
-                        contestMeta.frozenEndTime
-                          ? Date.parse(contestMeta.frozenEndTime) / 1000
+                        contest.contestMeta.frozenEndTime
+                          ? Date.parse(contest.contestMeta.frozenEndTime) / 1000
                           : null
                       }
                     />
@@ -323,16 +310,16 @@ const ContestLayout: React.FC<ContestLayoutProps> = (props) => {
                 )}
 
                 {contestStatus >= 0 && (
-                  <>
-                    <div
-                      className={style.root}
-                      style={{
-                        maxWidth: props.maxBodyWidth ?? "1200px",
-                      }}
-                    >
+                  <div
+                    className={style.root}
+                    style={{
+                      maxWidth: props.maxBodyWidth ?? "1200px",
+                    }}
+                  >
+                    <ContestContext.Provider value={contest}>
                       {props.children}
-                    </div>
-                  </>
+                    </ContestContext.Provider>
+                  </div>
                 )}
               </div>
               <Footer />

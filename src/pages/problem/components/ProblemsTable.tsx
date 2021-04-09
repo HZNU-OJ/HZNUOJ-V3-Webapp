@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table, Tooltip, message } from "antd";
 import { ColumnsType } from "antd/es/table";
-import BasicLayout from "@/layouts/BasicLayout";
 import style from "./ProblemsTable.module.less";
 import AntTableHeadStyles from "@/less/AntTableHead.module.less";
 

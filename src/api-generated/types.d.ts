@@ -25,6 +25,13 @@ declare namespace ApiTypes {
       | "FILE_NOT_UPLOADED";
     signedUploadRequest?: ApiTypes.SignedFileUploadRequestDto;
   }
+  export interface AddProblemRequestDto {
+    problemId: number;
+    contestId: number;
+  }
+  export interface AddProblemResponseDto {
+    error?: "PERMISSION_DENIED" | "NO_SUCH_PROBLEM" | "NO_SUCH_CONTEST";
+  }
   export interface CancelSubmissionRequestDto {
     submissionId: number;
   }
@@ -118,9 +125,14 @@ declare namespace ApiTypes {
   }
   export interface DeleteProblemRequestDto {
     problemId: number;
+    contestId: number;
   }
   export interface DeleteProblemResponseDto {
-    error?: "PERMISSION_DENIED" | "NO_SUCH_PROBLEM";
+    error?:
+      | "PERMISSION_DENIED"
+      | "NO_SUCH_PROBLEM"
+      | "NO_SUCH_CONTEST"
+      | "PROBLEM_NOT_IN_CONTEST";
   }
   export interface DeleteProblemTagRequestDto {
     id: number;
@@ -252,12 +264,13 @@ declare namespace ApiTypes {
     contestMetas?: ApiTypes.ContestMetaDto[];
     count?: number;
   }
-  export interface GetContestMetaRequestDto {
+  export interface GetContestRequestDto {
     id: number;
   }
-  export interface GetContestMetaResponseDto {
+  export interface GetContestResponseDto {
     error?: "PERMISSION_DENIED" | "NO_SUCH_CONTEST";
     contestMeta?: ApiTypes.ContestMetaDto;
+    problemMetas?: ApiTypes.ProblemInContestMetaDto[];
   }
   export interface GetDiscussionAndRepliesRequestDto {
     locale: "en_US";
@@ -325,6 +338,13 @@ declare namespace ApiTypes {
     error?: "PERMISSION_DENIED" | "NO_SUCH_DISCUSSION";
     permissions?: ApiTypes.DiscussionPermissionsDto;
     haveManagePermissionsPermission?: boolean;
+  }
+  export interface GetProblemMetaListRequestDto {
+    contestId: number;
+  }
+  export interface GetProblemMetaListResponseDto {
+    error?: "PERMISSION_DENIED" | "NO_SUCH_CONTEST";
+    problemMetas?: ApiTypes.ProblemInContestMetaDto[];
   }
   export interface GetProblemRequestDto {
     id?: number;
@@ -599,6 +619,13 @@ declare namespace ApiTypes {
     filename: string;
     size?: number;
   }
+  export interface ProblemInContestMetaDto {
+    orderId: number;
+    problemId: number;
+    submissionCount?: number;
+    acceptedSubmissionCount?: number;
+    title: string;
+  }
   export interface ProblemLastSubmissionDto {
     lastSubmission?: ApiTypes.SubmissionBasicMetaDto;
     lastSubmissionContent?: {};
@@ -859,7 +886,7 @@ declare namespace ApiTypes {
   export interface RenameProblemFileResponseDto {
     error?: "NO_SUCH_PROBLEM" | "PERMISSION_DENIED" | "NO_SUCH_FILE";
   }
-  export type RequestBody = ApiTypes.ImportContestUsersRequestDto;
+  export type RequestBody = ApiTypes.ResetJudgeClientKeyRequestDto;
   export interface ResetJudgeClientKeyRequestDto {
     id: number;
   }
@@ -881,7 +908,7 @@ declare namespace ApiTypes {
   }
   namespace Responses {
     export type $200 = ApiTypes.GetSubmissionStaticsResponseDto;
-    export type $201 = ApiTypes.ImportContestUsersResponseDto;
+    export type $201 = ApiTypes.ResetJudgeClientKeyResponseDto;
   }
   export interface RevokeUserSessionRequestDto {
     userId: number;
@@ -1064,7 +1091,7 @@ declare namespace ApiTypes {
   }
   export interface SubmitRequestDto {
     problemId: number;
-    contestId: number;
+    contestId?: number;
     content: {};
     uploadInfo?: ApiTypes.FileUploadInfoDto;
   }
