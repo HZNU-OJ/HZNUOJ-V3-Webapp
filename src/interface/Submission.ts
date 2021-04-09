@@ -10,6 +10,7 @@ export enum SubmissionStatusType {
   canceled = "Canceled",
   pending = "Pending",
   running = "Running",
+  frozen = "Frozen",
 }
 
 export const SubmissionStatusTypeTitle = [
@@ -24,6 +25,7 @@ export const SubmissionStatusTypeTitle = [
   "Canceled",
   "Pending",
   "Running",
+  "Frozen",
 ];
 
 export enum SubmissionLangType {

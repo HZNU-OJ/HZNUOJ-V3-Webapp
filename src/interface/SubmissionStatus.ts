@@ -14,6 +14,7 @@ export enum SubmissionStatus {
   SystemError = "SystemError",
   Canceled = "Canceled",
   Pending = "Pending",
+  Frozen = "Frozen",
 }
 
 export enum SubmissionStatusAll {
@@ -42,6 +43,7 @@ export enum SubmissionStatusAll {
   Compiling = "Compiling",
   Running = "Running",
   Skipped = "Skipped",
+  Frozen = "Frozen",
 }
 
 export const SubmissionStatusList = [
@@ -64,4 +66,5 @@ export const SubmissionStatusList = [
   "Compiling",
   "Running",
   "Skipped",
+  "Frozen",
 ];

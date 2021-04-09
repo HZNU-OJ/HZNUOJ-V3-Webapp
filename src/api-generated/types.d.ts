@@ -825,7 +825,8 @@ declare namespace ApiTypes {
       | "PartiallyCorrect"
       | "WrongAnswer"
       | "Accepted"
-      | "JudgementFailed";
+      | "JudgementFailed"
+      | "Frozen";
     minId?: number;
     maxId?: number;
     takeCount: number;
@@ -1057,7 +1058,8 @@ declare namespace ApiTypes {
       | "PartiallyCorrect"
       | "WrongAnswer"
       | "Accepted"
-      | "JudgementFailed";
+      | "JudgementFailed"
+      | "Frozen";
     submitTime: string; // date-time
     timeUsed: number;
     memoryUsed: number;
@@ -1082,7 +1084,8 @@ declare namespace ApiTypes {
       | "PartiallyCorrect"
       | "WrongAnswer"
       | "Accepted"
-      | "JudgementFailed";
+      | "JudgementFailed"
+      | "Frozen";
     submitTime: string; // date-time
     timeUsed: number;
     memoryUsed: number;

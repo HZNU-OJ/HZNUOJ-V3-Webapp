@@ -94,7 +94,8 @@ export interface QuerySubmissionRequestMinimalDto {
     | "PartiallyCorrect"
     | "WrongAnswer"
     | "Accepted"
-    | "JudgementFailed";
+    | "JudgementFailed"
+    | "Frozen";
   minId?: number;
   maxId?: number;
   takeCount?: number;
