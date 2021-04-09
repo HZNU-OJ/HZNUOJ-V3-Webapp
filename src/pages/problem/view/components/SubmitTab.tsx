@@ -41,8 +41,9 @@ const languageCompileOptions = {
 };
 
 interface SubmitTabProps {
-  id: number;
-  lastSubmissionContent: any;
+  problemId: number;
+  contestId?: number;
+  lastSubmissionContent?: any;
 }
 
 const SubmitTab: React.FC<SubmitTabProps> = (props) => {
@@ -73,7 +74,8 @@ const SubmitTab: React.FC<SubmitTabProps> = (props) => {
 
     const { requestError, response } = await api.submission.submit(
       {
-        problemId: props.id,
+        problemId: props.problemId,
+        contestId: props.contestId,
         content: {
           code: codeValue,
           ...languageCompileOptions[language],
@@ -97,7 +99,7 @@ const SubmitTab: React.FC<SubmitTabProps> = (props) => {
         <SubmissionsTable
           query={{
             submitter: initialState.userMeta.username,
-            problemId: props.id,
+            problemId: props.problemId,
           }}
           pagination={{
             defaultPageSize: 2,
@@ -105,7 +107,7 @@ const SubmitTab: React.FC<SubmitTabProps> = (props) => {
         />
       </div>
       <LazyCodeBoxEditor
-        height={isMobile ? "220" : "500"}
+        height={isMobile ? "220" : "480"}
         value={codeValue}
         language={language}
         setLanguage={setLanguage}

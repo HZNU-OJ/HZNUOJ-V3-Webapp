@@ -202,7 +202,7 @@ const ProblemPage: React.FC<{}> = (props) => {
                   )}
                   {urlQuery.tab === "submit" && (
                     <SubmitTab
-                      id={parseInt(params.id)}
+                      problemId={parseInt(params.id)}
                       lastSubmissionContent={lastSubmissionContent}
                     />
                   )}
