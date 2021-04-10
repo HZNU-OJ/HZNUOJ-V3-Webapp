@@ -1,16 +1,13 @@
 import React, { useState } from "react";
-import { Modal } from "antd";
-
+import { Modal, message } from "antd";
 import LazyMarkDownEditor from "@/components/Editor/LazyMarkDownEditor";
 
 import api from "@/api";
 
 interface ReplyModel {
   visible: boolean;
-  confirmLoading?: any;
-  title?: string;
-  user?: string;
-  onOk?: any;
+  username?: string;
+  onOk?: (replyContent: string) => never;
   onCancel?: any;
 }
 
@@ -18,17 +15,12 @@ const ReplyModel: React.FC<ReplyModel> = (props) => {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [replyContent, setReplyContent] = useState("");
 
-  async function onReply() {
+  async function onOk() {
     setConfirmLoading(true);
 
-    // if (response?.error) {
-    //   message.error(response.error);
-    // } else {
-    //   message.success{`Reply to ${props.user} Sucessfully!`);
-    //   if (props.onCancel) {
-    //     props.onCancel();
-    //   }
-    // }
+    if (props.onOk) props.onOk(replyContent);
+    message.success(`Reply to ${props.username} Sucessfully!`);
+    if (props.onCancel) props.onCancel();
 
     setConfirmLoading(false);
   }
@@ -36,19 +28,16 @@ const ReplyModel: React.FC<ReplyModel> = (props) => {
   return (
     <>
       <Modal
-        title={`Reply to ${props.user ?? ""}`}
+        title={`Reply to ${props.username ?? ""}`}
         okText={"Reply"}
         cancelText={"Cancel"}
         getContainer={false}
         maskClosable={true}
         destroyOnClose={true}
         visible={props.visible}
-        confirmLoading={props.confirmLoading || confirmLoading}
+        confirmLoading={confirmLoading}
         onCancel={props.onCancel ?? (() => {})}
-        onOk={() => {
-          onReply();
-          props.onOk && props.onOk();
-        }}
+        onOk={onOk}
         bodyStyle={{
           padding: "10px 10px",
         }}
@@ -57,7 +46,6 @@ const ReplyModel: React.FC<ReplyModel> = (props) => {
         <div style={{ marginBottom: -12 }}>
           <LazyMarkDownEditor
             height={"220"}
-            // height={isMobile ? "220" : "220"}
             language={"markdown"}
             value={replyContent}
             onChange={(value) => setReplyContent(value)}

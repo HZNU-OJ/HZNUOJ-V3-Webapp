@@ -28,7 +28,7 @@ const DiscussionBox: React.FC<DiscussionBoxProps> = (props) => {
         alignItems: "center",
         justifyContent: "center",
         marginTop: isMobile ? 2 : -2,
-        width: isMobile ? "100%" : 120,
+        width: isMobile ? "100%" : 80,
       }}
       onClick={() => setReplyModelVisible(true)}
     >
@@ -73,6 +73,8 @@ const DiscussionBox: React.FC<DiscussionBoxProps> = (props) => {
         onCancel={() => {
           setReplyModelVisible(false);
         }}
+        onOk={props.onReply}
+        username={props.username}
       />
     </>
   );

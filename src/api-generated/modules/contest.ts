@@ -32,14 +32,26 @@ export const getProblemMetaList = createPostApi<
   ApiTypes.GetProblemMetaListRequestDto,
   ApiTypes.GetProblemMetaListResponseDto
 >("contest/getProblemMetaList", false);
-export const getClarificationList = createPostApi<
-  ApiTypes.GetClarificationsRequestDto,
-  ApiTypes.GetClarificationsResponseDto
->("contest/getClarificationList", false);
+export const registerContestUser = createPostApi<
+  ApiTypes.RegisterContestUserRequestDto,
+  ApiTypes.RegisterContestUserResponseDto
+>("contest/registerContestUser", false);
 export const importContestUsers = createPostApi<
   ApiTypes.ImportContestUsersRequestDto,
   ApiTypes.ImportContestUsersResponseDto
 >("contest/importContestUsers", false);
+export const getContestUserList = createPostApi<
+  ApiTypes.GetContestUserListRequestDto,
+  ApiTypes.GetContestUserListResponseDto
+>("contest/getContestUserList", false);
+export const createClarification = createPostApi<
+  ApiTypes.CreateClarificationRequestDto,
+  ApiTypes.CreateClarificationResponseDto
+>("contest/createClarification", false);
+export const getClarifications = createPostApi<
+  ApiTypes.GetClarificationsRequestDto,
+  ApiTypes.GetClarificationsResponseDto
+>("contest/getClarifications", false);
 export const getConfig = createGetApi<void, ApiTypes.GetContentDto>(
   "contest/config",
 );

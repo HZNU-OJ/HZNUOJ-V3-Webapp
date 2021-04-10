@@ -49,6 +49,15 @@ declare namespace ApiTypes {
     usernameAvailable?: boolean;
     emailAvailable?: boolean;
   }
+  export interface ClarificationMetaDto {
+    id: number;
+    publishTime: string; // date-time
+    content: string;
+    publisherId: number;
+    username: string;
+    nickname: string;
+    replyId?: number;
+  }
   export interface ContestMetaDto {
     id: number;
     contestName: string;
@@ -57,6 +66,27 @@ declare namespace ApiTypes {
     frozenStartTime?: string; // date-time
     frozenEndTime?: string; // date-time
     isPublic: boolean;
+  }
+  export interface ContestUser {
+    username: string;
+    nickname: string;
+    password: string;
+  }
+  export interface ContestUserMetaDto {
+    id: number;
+    username: string;
+    email: string;
+    nickname: string;
+    organization: string;
+    registrationTime: string; // date-time
+  }
+  export interface CreateClarificationRequestDto {
+    contestId: number;
+    content: string;
+    replyId?: number;
+  }
+  export interface CreateClarificationResponseDto {
+    error?: "PERMISSION_DENIED" | "NO_SUCH_CONTEST";
   }
   export interface CreateContestRequestDto {
     contestName: string;
@@ -125,14 +155,9 @@ declare namespace ApiTypes {
   }
   export interface DeleteProblemRequestDto {
     problemId: number;
-    contestId: number;
   }
   export interface DeleteProblemResponseDto {
-    error?:
-      | "PERMISSION_DENIED"
-      | "NO_SUCH_PROBLEM"
-      | "NO_SUCH_CONTEST"
-      | "PROBLEM_NOT_IN_CONTEST";
+    error?: "PERMISSION_DENIED" | "NO_SUCH_PROBLEM";
   }
   export interface DeleteProblemTagRequestDto {
     id: number;
@@ -246,10 +271,10 @@ declare namespace ApiTypes {
   }
   export interface GetClarificationsRequestDto {
     contestId: number;
-    all?: boolean;
   }
   export interface GetClarificationsResponseDto {
-    error?: "PERMISSION_DENIED" | "NO_SUCH_PROBLEM_TAG" | "FAILED";
+    error?: "PERMISSION_DENIED" | "NO_SUCH_CONTEST";
+    clarifications?: ApiTypes.ClarificationMetaDto[];
   }
   export interface GetContentDto {
     content: string;
@@ -271,6 +296,13 @@ declare namespace ApiTypes {
     error?: "PERMISSION_DENIED" | "NO_SUCH_CONTEST";
     contestMeta?: ApiTypes.ContestMetaDto;
     problemMetas?: ApiTypes.ProblemInContestMetaDto[];
+  }
+  export interface GetContestUserListRequestDto {
+    contestId: number;
+  }
+  export interface GetContestUserListResponseDto {
+    error?: "PERMISSION_DENIED" | "NO_SUCH_CONTEST";
+    contestUserList?: ApiTypes.ContestUserMetaDto[];
   }
   export interface GetDiscussionAndRepliesRequestDto {
     locale: "en_US";
@@ -496,12 +528,11 @@ declare namespace ApiTypes {
     version: string;
   }
   export interface ImportContestUsersRequestDto {
-    username: string;
-    nickname: string;
-    password: string;
+    contestId: number;
+    contestUserList: ApiTypes.ContestUser[];
   }
   export interface ImportContestUsersResponseDto {
-    error?: "PERMISSION_DENIED" | "NO_SUCH_PROBLEM_TAG" | "FAILED";
+    error?: "PERMISSION_DENIED" | "NO_SUCH_CONTEST";
   }
   export interface JudgeClientInfoDto {
     id: number;
@@ -852,6 +883,12 @@ declare namespace ApiTypes {
     submissions?: ApiTypes.SubmissionMetaDto[];
     count?: number;
     scores?: number[];
+  }
+  export interface RegisterContestUserRequestDto {
+    contestId: number;
+  }
+  export interface RegisterContestUserResponseDto {
+    error?: "PERMISSION_DENIED" | "NO_SUCH_CONTEST";
   }
   export interface RegisterRequestDto {
     username: string;
