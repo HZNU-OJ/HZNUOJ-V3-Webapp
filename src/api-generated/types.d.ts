@@ -626,6 +626,7 @@ declare namespace ApiTypes {
     submissionCount?: number;
     acceptedSubmissionCount?: number;
     title: string;
+    submission?: ApiTypes.SubmissionBasicMetaDto;
   }
   export interface ProblemLastSubmissionDto {
     lastSubmission?: ApiTypes.SubmissionBasicMetaDto;
@@ -889,7 +890,7 @@ declare namespace ApiTypes {
   export interface RenameProblemFileResponseDto {
     error?: "NO_SUCH_PROBLEM" | "PERMISSION_DENIED" | "NO_SUCH_FILE";
   }
-  export type RequestBody = ApiTypes.ResetJudgeClientKeyRequestDto;
+  export type RequestBody = ApiTypes.SetDiscussionPermissionsRequestDto;
   export interface ResetJudgeClientKeyRequestDto {
     id: number;
   }
@@ -911,7 +912,7 @@ declare namespace ApiTypes {
   }
   namespace Responses {
     export type $200 = ApiTypes.GetSubmissionStaticsResponseDto;
-    export type $201 = ApiTypes.ResetJudgeClientKeyResponseDto;
+    export type $201 = ApiTypes.SetDiscussionPermissionsResponseDto;
   }
   export interface RevokeUserSessionRequestDto {
     userId: number;

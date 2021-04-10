@@ -3,6 +3,11 @@ import { Table, Tooltip, message } from "antd";
 import { ColumnsType } from "antd/es/table";
 import style from "./ProblemsTable.module.less";
 import AntTableHeadStyles from "@/less/AntTableHead.module.less";
+import {
+  ProblemSolvedStatus,
+  getStatus,
+  ProblemStatusRender,
+} from "@/components/ProblemSolvedStatus";
 
 import api from "@/api";
 
@@ -12,6 +17,7 @@ interface ProblemTitleItem {
 }
 
 interface ProblemItem {
+  status: ProblemSolvedStatus;
   id: number;
   problem: ProblemTitleItem;
   submissions: number;
@@ -20,6 +26,7 @@ interface ProblemItem {
 }
 
 enum ProblemTableHeadTitle {
+  status = "Status",
   id = "#",
   problemTitle = "Problem Title",
   submissions = "Submissions",
@@ -43,6 +50,14 @@ function getAcceptance(
 
 const ProblemsTable: React.FC<{}> = (props) => {
   const columns: ColumnsType<ProblemItem> = [
+    {
+      title: ProblemTableHeadTitle.status,
+      dataIndex: "status",
+      key: "status",
+      width: "60px",
+      align: "left",
+      render: ProblemStatusRender,
+    },
     {
       title: ProblemTableHeadTitle.id,
       dataIndex: "id",
@@ -117,6 +132,7 @@ const ProblemsTable: React.FC<{}> = (props) => {
       let _tableData: ProblemItem[] = [];
       response.result.forEach((item) => {
         _tableData.push({
+          status: getStatus(item),
           id: item.meta.id,
           problem: {
             id: item.meta.id,

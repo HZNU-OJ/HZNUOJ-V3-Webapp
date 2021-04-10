@@ -4,7 +4,7 @@ import SubmissionsTable from "@/pages/submission/components/SubmissionsTable";
 
 interface SubmissionsTabProps {
   problemId: number;
-  contestId: number;
+  contestId?: number;
 }
 
 const SubmissionsTab: React.FC<SubmissionsTabProps> = (props) => {

@@ -1,6 +1,11 @@
 import React from "react";
 import { Row, Col, Statistic } from "antd";
 import style from "./ProblemViewHeader.module.less";
+import {
+  ProblemStatusSolved,
+  ProblemStatusUnSolved,
+  ProblemSolvedStatus,
+} from "@/components/ProblemSolvedStatus";
 
 interface ProblemViewHeaderProps {
   isNotNumericId?: boolean;
@@ -11,6 +16,7 @@ interface ProblemViewHeaderProps {
   acceptedSubmissionCount: number;
   timeLimit: number;
   memoryLimit: number;
+  problemSolvedStatus: ProblemSolvedStatus;
 }
 
 const ProblemViewHeader: React.FC<ProblemViewHeaderProps> = (props) => {
@@ -19,9 +25,25 @@ const ProblemViewHeader: React.FC<ProblemViewHeaderProps> = (props) => {
       <Row gutter={16} align="top">
         <Col xs={24} sm={24} md={16} lg={16} xl={16}>
           <div className={style.left}>
-            <div className={style.problemTitle}>{`${
-              props.isNotNumericId ? "" : "#"
-            }${props.id}. ${props.title}`}</div>
+            <div className={style.problemTitle}>
+              <>
+                {props.problemSolvedStatus === ProblemSolvedStatus.solved && (
+                  <>
+                    <ProblemStatusSolved />
+                    &nbsp;
+                  </>
+                )}
+                {props.problemSolvedStatus === ProblemSolvedStatus.unSolved && (
+                  <>
+                    <ProblemStatusUnSolved />
+                    &nbsp;
+                  </>
+                )}
+                {`${props.isNotNumericId ? "" : "#"}${props.id}. ${
+                  props.title
+                }`}
+              </>
+            </div>
             <div className={`${style.tag} ${style.type}`}>{props.type}</div>
             <div className={[style.tag, style.time].join(" ")}>
               {props.timeLimit} ms

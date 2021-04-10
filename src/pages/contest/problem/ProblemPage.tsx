@@ -26,6 +26,7 @@ import { menuItem } from "@/interface/Menu.interface";
 import { useUrlQuery } from "@/utils/hooks";
 
 import api from "@/api";
+import { ProblemSolvedStatus } from "@/components/ProblemSolvedStatus";
 
 interface ProblemViewPageParams {
   id: string;
@@ -68,6 +69,9 @@ const ProblemPage: React.FC<{}> = (props) => {
     null as JSX.Element,
   );
 
+  const [problemSolvedStatus, setProblemSolvedStatus] = useState(
+    ProblemSolvedStatus.unSubmit,
+  );
   const [title, setTitle] = useState("");
   const [type, setType] = useState("");
   const [submissionCount, setSubmissionCount] = useState(0);
@@ -96,6 +100,14 @@ const ProblemPage: React.FC<{}> = (props) => {
     if (requestError) message.error(requestError);
     else if (response.error) message.error(response.error);
     else {
+      const problemMeta = getProblemByAlphaId(contest, params.pid);
+      setProblemSolvedStatus(
+        problemMeta.submission
+          ? problemMeta.submission.status === "Accepted"
+            ? ProblemSolvedStatus.solved
+            : ProblemSolvedStatus.unSolved
+          : ProblemSolvedStatus.unSubmit,
+      );
       setTitle(response.localizedContentsOfLocale.title);
       setType(response.meta.type);
       setSubmissionCount(
@@ -167,6 +179,7 @@ const ProblemPage: React.FC<{}> = (props) => {
               acceptedSubmissionCount={acceptedSubmissionCount}
               timeLimit={timeLimit}
               memoryLimit={memoryLimit}
+              problemSolvedStatus={problemSolvedStatus}
             />
             <Divider />
             <Row gutter={16} align="top">

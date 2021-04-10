@@ -6,6 +6,11 @@ import style from "./ProblemsTab.module.less";
 import AntTableHeadStyles from "@/less/AntTableHead.module.less";
 import { ContestContext } from "@/pages/contest/layouts/ContestLayout";
 import { mappingOrderIdToAlphaId } from "@/pages/contest/utils";
+import {
+  ProblemSolvedStatus,
+  getStatus,
+  ProblemStatusRender,
+} from "@/components/ProblemSolvedStatus";
 
 interface ProblemTitleItem {
   orderId: string;
@@ -13,6 +18,7 @@ interface ProblemTitleItem {
 }
 
 interface ProblemItem {
+  status: ProblemSolvedStatus;
   id: number;
   problem: ProblemTitleItem;
   submissions: number;
@@ -21,6 +27,7 @@ interface ProblemItem {
 }
 
 enum ProblemTableHeadTitle {
+  status = "Status",
   id = "#",
   problemTitle = "Problem Title",
   submissions = "Submissions",
@@ -52,6 +59,14 @@ const ProblemsTab: React.FC<{}> = (props) => {
   const contest = useContext(ContestContext);
 
   const columns: ColumnsType<ProblemItem> = [
+    {
+      title: ProblemTableHeadTitle.status,
+      dataIndex: "status",
+      key: "status",
+      width: "60px",
+      align: "left",
+      render: ProblemStatusRender,
+    },
     {
       title: ProblemTableHeadTitle.id,
       dataIndex: "id",
@@ -111,6 +126,11 @@ const ProblemsTab: React.FC<{}> = (props) => {
   async function fetchData() {
     setTableData(
       contest.problemMetas.map((problem) => ({
+        status: problem.submission
+          ? problem.submission.status === "Accepted"
+            ? ProblemSolvedStatus.solved
+            : ProblemSolvedStatus.unSolved
+          : ProblemSolvedStatus.unSubmit,
         id: problem.orderId,
         problem: {
           orderId: mappingOrderIdToAlphaId(problem.orderId),

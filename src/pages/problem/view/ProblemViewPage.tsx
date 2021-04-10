@@ -8,6 +8,10 @@ import SiderMenu from "@/components/SiderMenu";
 import Divider from "@/components/Divider";
 import { useScreenWidthWithin } from "@/utils/hooks";
 import Loading from "@/components/Loading";
+import {
+  ProblemSolvedStatus,
+  ProblemStatusSolved,
+} from "@/components/ProblemSolvedStatus";
 
 import {
   ProblemViewHeader,
@@ -61,6 +65,9 @@ const ProblemViewPage: React.FC<{}> = (props) => {
     // },
   ];
 
+  const [problemSolvedStatus, setProblemSolvedStatus] = useState(
+    ProblemSolvedStatus.unSubmit,
+  );
   const [title, setTitle] = useState("");
   const [type, setType] = useState("");
   const [submissionCount, setSubmissionCount] = useState(0);
@@ -88,6 +95,13 @@ const ProblemViewPage: React.FC<{}> = (props) => {
     if (requestError) message.error(requestError);
     else if (response.error) message.error(response.error);
     else {
+      setProblemSolvedStatus(
+        response.lastSubmission?.lastAcceptedSubmission?.status === "Accepted"
+          ? ProblemSolvedStatus.solved
+          : response.lastSubmission?.lastSubmission != null
+          ? ProblemSolvedStatus.unSolved
+          : ProblemSolvedStatus.unSubmit,
+      );
       setTitle(response.localizedContentsOfLocale.title);
       setType(response.meta.type);
       setSubmissionCount(response.meta.submissionCount);
@@ -118,6 +132,7 @@ const ProblemViewPage: React.FC<{}> = (props) => {
           {fetchDataLoaded && (
             <>
               <ProblemViewHeader
+                problemSolvedStatus={problemSolvedStatus}
                 id={params.id}
                 title={title}
                 type={type}
@@ -149,7 +164,7 @@ const ProblemViewPage: React.FC<{}> = (props) => {
                       />
                     )}
                     {urlQuery.tab === "submissions" && (
-                      <SubmissionsTab id={parseInt(params.id)} />
+                      <SubmissionsTab problemId={parseInt(params.id)} />
                     )}
                     {/* {tab === "statistics" && <StatisticsTab />} */}
                   </>
