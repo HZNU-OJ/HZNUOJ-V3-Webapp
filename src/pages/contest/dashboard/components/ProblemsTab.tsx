@@ -16,7 +16,8 @@ interface ProblemItem {
   id: number;
   problem: ProblemTitleItem;
   submissions: number;
-  acceptance: string;
+  acceptance: number;
+  ratio: number;
 }
 
 enum ProblemTableHeadTitle {
@@ -24,16 +25,20 @@ enum ProblemTableHeadTitle {
   problemTitle = "Problem Title",
   submissions = "Submissions",
   acceptance = "Acceptance",
+  ratio = "Ratio",
 }
 
 function getAcceptance(
   acceptedSubmissionCount: number,
   submissionCount: number,
-) {
+): number {
+  const eps = 0;
   if (submissionCount === 0) {
-    return (0.0 * 100).toFixed(2);
+    return parseInt((0.0 * 100).toFixed(eps));
   } else {
-    return ((acceptedSubmissionCount * 100.0) / submissionCount).toFixed(2);
+    return parseInt(
+      ((acceptedSubmissionCount * 100.0) / submissionCount).toFixed(eps),
+    );
   }
 }
 
@@ -76,19 +81,29 @@ const ProblemsTab: React.FC<{}> = (props) => {
       },
     },
     {
-      title: ProblemTableHeadTitle.submissions,
-      dataIndex: "submissions",
-      key: "submissions",
-      width: "120px",
-      align: "right",
-    },
-    {
       title: ProblemTableHeadTitle.acceptance,
       dataIndex: "acceptance",
       key: "acceptance",
+      width: "80px",
+      align: "right",
+      sorter: (a, b) => a.acceptance - b.acceptance,
+    },
+    {
+      title: ProblemTableHeadTitle.submissions,
+      dataIndex: "submissions",
+      key: "submissions",
       width: "100px",
       align: "right",
-      render: (acceptNum: number) => <span>{acceptNum}%</span>,
+      sorter: (a, b) => a.submissions - b.submissions,
+    },
+    {
+      title: ProblemTableHeadTitle.ratio,
+      dataIndex: "ratio",
+      key: "ratio",
+      width: "60px",
+      align: "right",
+      sorter: (a, b) => a.ratio - b.ratio,
+      render: (ratio: number) => <span>{ratio}%</span>,
     },
   ];
 
@@ -101,8 +116,9 @@ const ProblemsTab: React.FC<{}> = (props) => {
           orderId: mappingOrderIdToAlphaId(problem.orderId),
           title: problem.title,
         } as ProblemTitleItem,
+        acceptance: problem.acceptedSubmissionCount,
         submissions: problem.submissionCount,
-        acceptance: getAcceptance(
+        ratio: getAcceptance(
           problem.acceptedSubmissionCount,
           problem.submissionCount,
         ),
