@@ -122,7 +122,7 @@ export function getProblemChart(contest_config: any, team: any, run: any) {
     });
     const series = [
       {
-        name: "队伍数",
+        name: "Teams",
         showInLegend: false,
         data: data,
       },
@@ -132,9 +132,9 @@ export function getProblemChart(contest_config: any, team: any, run: any) {
   })();
 
   return getChartObj(
-    "题目通过数统计",
-    "题目编号",
-    "通过数",
+    "Problem Acceptance Chart",
+    "Problem No.",
+    "Acceptance",
     cat,
     series,
     colors,
@@ -187,7 +187,7 @@ export function getTeamChart(contest_config: any, team: any, run: any) {
     });
     const series = [
       {
-        name: "队伍数",
+        name: "Teams",
         showInLegend: false,
         data: data,
       },
@@ -196,7 +196,14 @@ export function getTeamChart(contest_config: any, team: any, run: any) {
     return { cat, series, colors };
   })();
 
-  return getChartObj("队伍过题数统计", "过题数", "队伍数", cat, series, colors);
+  return getChartObj(
+    "Team Acceptance Chart",
+    "Acceptance",
+    "Teams",
+    cat,
+    series,
+    colors,
+  );
 }
 
 export function getSubmitChart(contest_config: any, team: any, run: any) {
@@ -244,5 +251,12 @@ export function getSubmitChart(contest_config: any, team: any, run: any) {
     const colors = ["#E1FFB5", "#FFD0D0", "#C8D6FA"];
     return { cat, series, colors };
   })();
-  return getChartObj("提交分类统计", "题目编号", "提交数", cat, series, colors);
+  return getChartObj(
+    "Submission Category Chart",
+    "Problem No.",
+    "Submissions.",
+    cat,
+    series,
+    colors,
+  );
 }

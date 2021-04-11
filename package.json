@@ -1,6 +1,6 @@
 {
   "name": "hznuoj-v3-webapp",
-  "version": "0.0.69",
+  "version": "0.0.70",
   "description": "The WebApp of HZNUOJ V3",
   "repository": "https://github.com/HZNU-OJ/HZNUOJ-V3-WebApp",
   "author": "Dup4",
@@ -30,6 +30,9 @@
   "dependencies": {
     "@ahooksjs/use-url-state": "^2.5.6",
     "@ant-design/pro-layout": "^6.5.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@fortawesome/react-fontawesome": "^0.1.14",
     "@hackmd/markdown-it-task-lists": "^2.1.1",
     "@types/array-move": "^2.0.0",
     "@types/react-dnd": "^3.0.2",

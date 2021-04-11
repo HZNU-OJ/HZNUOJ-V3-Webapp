@@ -276,9 +276,6 @@ declare namespace ApiTypes {
     error?: "PERMISSION_DENIED" | "NO_SUCH_CONTEST";
     clarifications?: ApiTypes.ClarificationMetaDto[];
   }
-  export interface GetContentDto {
-    content: string;
-  }
   export interface GetContestListRequestDto {
     hasPrivate: boolean;
     skipCount: number;
@@ -296,6 +293,19 @@ declare namespace ApiTypes {
     error?: "PERMISSION_DENIED" | "NO_SUCH_CONTEST";
     contestMeta?: ApiTypes.ContestMetaDto;
     problemMetas?: ApiTypes.ProblemInContestMetaDto[];
+  }
+  export interface GetContestSubmissionsRequestDto {
+    contestId: number;
+    submitter?: string;
+    problemId?: number;
+  }
+  export interface GetContestSubmissionsResponseDto {
+    error?:
+      | "PERMISSION_DENIED"
+      | "NO_SUCH_CONTEST"
+      | "NO_SUCH_USER"
+      | "NO_SUCH_PROBLEM";
+    submissions?: ApiTypes.SubmissionMetaDto[];
   }
   export interface GetContestUserListRequestDto {
     contestId: number;
@@ -443,6 +453,14 @@ declare namespace ApiTypes {
       | "SkipRecaptcha"
     )[];
     serverPreference: ApiTypes.PreferenceConfig;
+  }
+  export interface GetStandingsDataRequestDto {
+    contestId: number;
+  }
+  export interface GetStandingsDataResponseDto {
+    error?: "PERMISSION_DENIED" | "NO_SUCH_CONTEST";
+    contestUserList?: ApiTypes.ContestUserMetaDto[];
+    submissions?: ApiTypes.SubmissionMetaDto[];
   }
   export interface GetSubmissionDetailRequestDto {
     submissionId: string;

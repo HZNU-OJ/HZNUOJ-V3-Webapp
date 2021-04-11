@@ -10,6 +10,8 @@ import {
 } from "./model";
 import style from "./Statistics.less";
 
+import { Space } from "antd";
+
 class Statistics extends React.Component {
   timer: any = null;
 
@@ -80,20 +82,31 @@ class Statistics extends React.Component {
         )}
 
         {this.state.loaded === true && (
-          <>
-            <HighchartsReact
-              highcharts={Highcharts}
-              options={this.state.submitChartOptions}
-            />
-            <HighchartsReact
-              highcharts={Highcharts}
-              options={this.state.problemChartOptions}
-            />
-            <HighchartsReact
-              highcharts={Highcharts}
-              options={this.state.teamChartOptions}
-            />
-          </>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Space size={"middle"} direction={"vertical"}>
+              <div style={{ width: "1280px" }}>
+                <HighchartsReact
+                  highcharts={Highcharts}
+                  options={this.state.submitChartOptions}
+                />
+                <HighchartsReact
+                  highcharts={Highcharts}
+                  options={this.state.problemChartOptions}
+                />
+                <HighchartsReact
+                  highcharts={Highcharts}
+                  options={this.state.teamChartOptions}
+                />
+              </div>
+            </Space>
+          </div>
         )}
       </>
     );

@@ -1,4 +1,4 @@
-import { useModel, useParams } from "umi";
+import { useModel, useParams, Helmet } from "umi";
 import React, { useEffect, useState, createContext } from "react";
 import { Statistic, message } from "antd";
 const { Countdown } = Statistic;
@@ -252,6 +252,9 @@ const ContestLayout: React.FC<ContestLayoutProps> = (props) => {
 
   return (
     <>
+      <Helmet>
+        <title>{`${contest?.contestMeta?.contestName} - HZNU Online Judge`}</title>
+      </Helmet>
       {loading ||
         (fetchDataLoading && (
           <div

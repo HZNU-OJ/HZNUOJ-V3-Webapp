@@ -52,10 +52,11 @@ export const getClarifications = createPostApi<
   ApiTypes.GetClarificationsRequestDto,
   ApiTypes.GetClarificationsResponseDto
 >("contest/getClarifications", false);
-export const getConfig = createGetApi<void, ApiTypes.GetContentDto>(
-  "contest/config",
-);
-export const getTeam = createGetApi<void, ApiTypes.GetContentDto>(
-  "contest/team",
-);
-export const getRun = createGetApi<void, ApiTypes.GetContentDto>("contest/run");
+export const getStandingsData = createPostApi<
+  ApiTypes.GetStandingsDataRequestDto,
+  ApiTypes.GetStandingsDataResponseDto
+>("contest/getStandingsData", false);
+export const getContestSubmissions = createPostApi<
+  ApiTypes.GetContestSubmissionsRequestDto,
+  ApiTypes.GetContestSubmissionsResponseDto
+>("contest/getContestSubmissions", false);

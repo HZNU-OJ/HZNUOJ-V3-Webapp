@@ -3,7 +3,8 @@ import { Select, Button, Input } from "antd";
 import style from "./Export.less";
 const { Option } = Select;
 const { TextArea } = Input;
-import { deepCopy, getDisplayTime } from "@/utils";
+import { deepCopy, getDisplayTime } from "@/pages/contest/utils";
+import { Space } from "antd";
 
 interface RankTeam {
   members?: string;
@@ -165,72 +166,67 @@ class Export extends React.Component {
   render() {
     return (
       <>
-        <Select
-          showSearch
-          style={{ width: 680, marginTop: 30 }}
-          placeholder="Select a type"
-          optionFilterProp="children"
-          onChange={this.onChange.bind(this)}
-          filterOption={(input, option) =>
-            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-          }
-        >
-          <Option value="dat-file">Codeforces Gym Ghosts DAT File</Option>
-          <Option value="rank-json">Rank JSON</Option>
-        </Select>
+        <Space size={"middle"} direction={"vertical"}>
+          <Select
+            showSearch
+            style={{ width: 680, marginTop: 30 }}
+            placeholder="Select a type"
+            optionFilterProp="children"
+            onChange={this.onChange.bind(this)}
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+          >
+            <Option value="dat-file">Codeforces Gym Ghosts DAT File</Option>
+            <Option value="rank-json">Rank JSON</Option>
+          </Select>
 
-        <br />
-        <br />
+          {this.state.type === "dat-file" && (
+            <>
+              <div style={{ width: 680 }}>
+                <TextArea
+                  allowClear={true}
+                  rows={15}
+                  defaultValue={this.state.datFileValue}
+                  key={this.state.datFileValue}
+                  disabled={this.state.datFileGenerateLoading}
+                />
+              </div>
+              <Button
+                loading={this.state.datFileGenerateLoading}
+                className={style.btn}
+                type="primary"
+                size="middle"
+                onClick={this.getDatFile.bind(this)}
+              >
+                Generate
+              </Button>
+            </>
+          )}
 
-        {this.state.type === "dat-file" && (
-          <>
-            <div style={{ width: 680 }}>
-              <TextArea
-                allowClear={true}
-                rows={15}
-                defaultValue={this.state.datFileValue}
-                key={this.state.datFileValue}
-                disabled={this.state.datFileGenerateLoading}
-              />
-            </div>
-            <br />
-            <br />
-            <Button
-              loading={this.state.datFileGenerateLoading}
-              className={style.btn}
-              type="primary"
-              size="small"
-              onClick={this.getDatFile.bind(this)}
-            >
-              Generate
-            </Button>
-          </>
-        )}
-
-        {this.state.type === "rank-json" && (
-          <>
-            <div style={{ width: 680 }}>
-              <TextArea
-                allowClear={true}
-                rows={15}
-                defaultValue={this.state.rankJsonValue}
-                key={this.state.rankJsonValue}
-                disabled={this.state.rankJsonGenerateLoading}
-              />
-            </div>
-            <br />
-            <br />
-            <Button
-              loading={this.state.rankJsonGenerateLoading}
-              className={style.btn}
-              type="primary"
-              size="small"
-              onClick={this.getRankJson.bind(this)}
-            >
-              Generate
-            </Button>
-          </>
-        )}
+          {this.state.type === "rank-json" && (
+            <>
+              <div style={{ width: 680 }}>
+                <TextArea
+                  allowClear={true}
+                  rows={15}
+                  defaultValue={this.state.rankJsonValue}
+                  key={this.state.rankJsonValue}
+                  disabled={this.state.rankJsonGenerateLoading}
+                />
+              </div>
+              <Button
+                loading={this.state.rankJsonGenerateLoading}
+                className={style.btn}
+                type="primary"
+                size="middle"
+                onClick={this.getRankJson.bind(this)}
+              >
+                Generate
+              </Button>
+            </>
+          )}
+        </Space>
       </>
     );
   }

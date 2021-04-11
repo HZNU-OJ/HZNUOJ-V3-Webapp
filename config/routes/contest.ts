@@ -21,7 +21,7 @@ export default [
   },
   {
     path: "/contest/:id/standings",
-    component: "@/pages/contest/standings/StandingsPage",
+    component: "@/pages/contest/standings/StandingsPageWrapper",
     exact: true,
   },
   {

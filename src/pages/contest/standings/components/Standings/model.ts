@@ -1,4 +1,4 @@
-import { deepCopy, getDisplayTime } from "@/utils";
+import { deepCopy, getDisplayTime } from "@/pages/contest/utils";
 export const timerInterval = 500;
 
 export function getAnalyzeTeamId(team_id: number, Filter: number) {

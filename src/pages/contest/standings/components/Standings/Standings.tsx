@@ -3,7 +3,11 @@ import style from "./Standings.less";
 import starStyle from "./Star.less";
 import { Placecharts } from "./components";
 import { Loading } from "@/components/Loading";
-import { deepCopy, getStarKey, removeDuplicateItems } from "@/utils/utils";
+import {
+  deepCopy,
+  getStarKey,
+  removeDuplicateItems,
+} from "@/pages/contest/utils";
 import {
   INF,
   timerInterval,
@@ -17,6 +21,8 @@ import {
 } from "./model";
 import { GirlIcon, LikeIcon, StarIcon } from "@/icons";
 import { debounce } from "lodash";
+
+import api from "@/api";
 
 function getInfo(coach: string | undefined, members: string[] | undefined) {
   let splitch = "、";
@@ -419,7 +425,7 @@ class Standings extends React.Component {
 
   componentDidMount() {}
 
-  //props中的值发生改变时执行
+  // props中的值发生改变时执行
   componentWillReceiveProps(nextProps: any) {
     if (this.props?.currentGroup !== nextProps?.currentGroup) {
       this.setState({ loaded: false });
@@ -488,23 +494,27 @@ class Standings extends React.Component {
                 <th className={style.title} style={{ width: "3em" }}>
                   Time
                 </th>
-                {this.state.problem_list.map((item: any, index: number) => {
-                  return (
-                    <th
-                      className={style.success}
-                      style={{
-                        width: "4em",
-                        backgroundColor:
-                          item.balloon_color?.background_color || "",
-                        color: item.balloon_color?.color || "",
-                      }}
-                    >
-                      {[this.state.contest_config.problem_id[item.problem_id]]}
-                      <br />
-                      <s>{item.solved}</s>
-                    </th>
-                  );
-                })}
+                <>
+                  {this.state.problem_list.map((item: any, index: number) => {
+                    return (
+                      <th
+                        className={style.success}
+                        style={{
+                          width: "4em",
+                          backgroundColor:
+                            item.balloon_color?.background_color || "",
+                          color: item.balloon_color?.color || "",
+                        }}
+                      >
+                        {[
+                          this.state.contest_config.problem_id[item.problem_id],
+                        ]}
+                        <br />
+                        <s>{item.solved}</s>
+                      </th>
+                    );
+                  })}
+                </>
 
                 <th className={style.title} style={{ width: "3em" }}>
                   Dirt
@@ -512,104 +522,109 @@ class Standings extends React.Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.filter === false &&
-                this.state.team_list_filter.map(getTeamRowFilter.bind(this))}
+              {this.state.filter === false && (
+                <>
+                  {this.state.team_list_filter.map(getTeamRowFilter.bind(this))}
+                </>
+              )}
 
-              {this.state.team_list.map(getTeamRowAll.bind(this))}
+              <>{this.state.team_list.map(getTeamRowAll.bind(this))}</>
 
-              {[
-                {
-                  title: "Attempted",
-                  calc: (item: any, index: number) => {
-                    return (
-                      <td className={style.stnd}>
-                        <b>{item.total}</b>
-                      </td>
-                    );
+              <>
+                {[
+                  {
+                    title: "Attempted",
+                    calc: (item: any, index: number) => {
+                      return (
+                        <td className={style.stnd}>
+                          <b>{item.total}</b>
+                        </td>
+                      );
+                    },
                   },
-                },
-                {
-                  title: "Accepted",
-                  calc: (item: any, index: number) => {
-                    return (
-                      <td className={style.stnd}>
-                        <b>{item.solved}</b>
-                        <br />
-                        <b>
-                          ({Math.round((item.solved / item.total) * 100)}
-                          {item.total === 0 ? "" : "%"})
-                        </b>
-                      </td>
-                    );
+                  {
+                    title: "Accepted",
+                    calc: (item: any, index: number) => {
+                      return (
+                        <td className={style.stnd}>
+                          <b>{item.solved}</b>
+                          <br />
+                          <b>
+                            ({Math.round((item.solved / item.total) * 100)}
+                            {item.total === 0 ? "" : "%"})
+                          </b>
+                        </td>
+                      );
+                    },
                   },
-                },
-                {
-                  title: "Dirt",
-                  calc: (item: any, index: number) => {
-                    return (
-                      <td className={style.stnd}>
-                        <b>{item.attempted - item.solved}</b>
-                        <br />
-                        <b>
-                          (
-                          {item.attempted === 0
-                            ? "0%"
-                            : [
-                                Math.round(
-                                  ((item.attempted - item.solved) /
-                                    item.attempted) *
-                                    100,
-                                ),
-                                "%",
-                              ].join("")}
-                          )
-                        </b>
-                      </td>
-                    );
+                  {
+                    title: "Dirt",
+                    calc: (item: any, index: number) => {
+                      return (
+                        <td className={style.stnd}>
+                          <b>{item.attempted - item.solved}</b>
+                          <br />
+                          <b>
+                            (
+                            {item.attempted === 0
+                              ? "0%"
+                              : [
+                                  Math.round(
+                                    ((item.attempted - item.solved) /
+                                      item.attempted) *
+                                      100,
+                                  ),
+                                  "%",
+                                ].join("")}
+                            )
+                          </b>
+                        </td>
+                      );
+                    },
                   },
-                },
-                {
-                  title: "First Solved",
-                  calc: (item: any, index: number) => {
-                    return (
-                      <td className={style.stnd}>
-                        <b>
-                          {item.first_solve_time === INF
-                            ? "N/A"
-                            : item.first_solve_time}
-                        </b>
-                      </td>
-                    );
+                  {
+                    title: "First Solved",
+                    calc: (item: any, index: number) => {
+                      return (
+                        <td className={style.stnd}>
+                          <b>
+                            {item.first_solve_time === INF
+                              ? "N/A"
+                              : item.first_solve_time}
+                          </b>
+                        </td>
+                      );
+                    },
                   },
-                },
-                {
-                  title: "Last Solved",
-                  calc: (item: any, index: number) => {
-                    return (
-                      <td className={style.stnd}>
-                        <b>
-                          {item.last_solve_time === 0
-                            ? "N/A"
-                            : item.last_solve_time}
-                        </b>
-                      </td>
-                    );
+                  {
+                    title: "Last Solved",
+                    calc: (item: any, index: number) => {
+                      return (
+                        <td className={style.stnd}>
+                          <b>
+                            {item.last_solve_time === 0
+                              ? "N/A"
+                              : item.last_solve_time}
+                          </b>
+                        </td>
+                      );
+                    },
                   },
-                },
-              ].map((item: any, index: number) => {
-                return (
-                  <tr className={style[["statistics", index % 2].join("-")]}>
-                    <td
-                      className={style.empty}
-                      colSpan={this.getInfoCol() - 1}
-                    ></td>
-                    <td className={style.stnd}>
-                      <b>{item.title}</b>
-                    </td>
-                    {this.state.problem_list.map(item.calc)}
-                  </tr>
-                );
-              })}
+                ].map((item: any, index: number) => {
+                  return (
+                    <tr className={style[["statistics", index % 2].join("-")]}>
+                      <td
+                        className={style.empty}
+                        colSpan={this.getInfoCol() - 1}
+                      ></td>
+                      <td className={style.stnd}>
+                        <b>{item.title}</b>
+                      </td>
+                      <>{this.state.problem_list.map(item.calc)}</>
+                    </tr>
+                  );
+                })}
+              </>
             </tbody>
           </table>
         )}

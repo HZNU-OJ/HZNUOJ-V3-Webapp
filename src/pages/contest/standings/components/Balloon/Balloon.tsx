@@ -23,6 +23,7 @@ import {
   faUndoAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { debounce, throttle } from "lodash";
+import AntTableHeadStyle from "@/less/AntTableHead.module.less";
 
 interface ActionItem {
   status: boolean;
@@ -77,11 +78,11 @@ class Balloon extends React.Component {
           align: "center",
           filters: [
             {
-              text: "已派送",
+              text: "Send",
               value: true,
             },
             {
-              text: "未派送",
+              text: "Pending",
               value: false,
             },
           ],
@@ -469,24 +470,27 @@ class Balloon extends React.Component {
           <>
             <br />
             <br />
-            <h2>该场比赛未分配气球颜色，不能使用该功能。</h2>
+            <h2>
+              There is no balloon color assigned to this contest, and this
+              function cannot be used.
+            </h2>
           </>
         )}
 
         {this.state.loaded === true && this.state.on === true && (
           <>
             <Table
-              style={{ marginTop: 20 }}
+              style={{ marginTop: 20, width: "100%", maxWidth: "1280px" }}
               size="small"
               columns={this.state.columns}
               dataSource={this.state.tableData}
-              className={style.BalloonTable}
+              className={AntTableHeadStyle.table}
               pagination={{
                 hideOnSinglePage: true,
                 showQuickJumper: true,
                 showSizeChanger: true,
-                defaultPageSize: 15,
-                pageSizeOptions: ["10", "15", "30", "50", "100"],
+                defaultPageSize: 8,
+                pageSizeOptions: ["8", "16", "32", "64", "128"],
               }}
             />
           </>

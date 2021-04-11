@@ -16,3 +16,4 @@ const Loading: React.FC<{}> = (props) => {
 };
 
 export default Loading;
+export { Loading };

@@ -107,13 +107,13 @@ export function getHichartsOptions(
       type: "spline",
     },
     title: {
-      text: "排名变化趋势图",
+      text: "Place Change Trend Chart",
     },
     series: [
       {
         showInLegend: false,
         allowPointSelect: false,
-        name: "排名",
+        name: "Place",
         type: "spline",
         data: getTeamPlace(contest_config, cur_team, team, run),
       },
@@ -122,7 +122,7 @@ export function getHichartsOptions(
       {
         allowDecimals: false,
         title: {
-          text: "时间",
+          text: "Time",
         },
       },
     ],
@@ -131,7 +131,7 @@ export function getHichartsOptions(
         allowDecimals: false,
         reversed: true,
         title: {
-          text: "排名",
+          text: "Place",
         },
         gridLineWidth: 1,
       },

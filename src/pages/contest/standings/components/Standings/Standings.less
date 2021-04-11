@@ -1,14 +1,19 @@
 table.standings {
   /* width: 100%; */
   max-width: 1560px;
-  margin: 0pt;
+  margin: 1px !important;
+  // margin: 0pt;
   padding: 0pt;
+  padding: 1px !important;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
   text-align: center;
-  /* border-collapse: collapse; */
-  border: none;
+  border: none !important;
+  // border-collapse: collapse;
+  border-collapse: separate !important;
+  -webkit-border-horizontal-spacing: 2px !important;
+  -webkit-border-vertical-spacing: 2px !important;
 }
 
 .loading {
@@ -22,13 +27,14 @@ img {
   border: 0 !important;
 }
 
-table {
-  border-collapse: separate !important;
-}
-
 td {
   box-sizing: content-box !important;
+  height: 38px !important;
+  margin: 1px !important;
   padding: 1px !important;
+  font-weight: bold;
+  font-size: 12px !important;
+  line-height: 1.5715 !important;
 }
 
 tr.head {
@@ -36,7 +42,7 @@ tr.head {
 }
 
 tr.team {
-  height: 2.5em;
+  height: 2.5em !important;
   cursor: pointer;
 }
 
@@ -46,7 +52,7 @@ tr.team:hover {
 }
 
 td.stnd {
-  margin: 1px;
+  margin: 1px !important;
   font-weight: bold;
   font-size: 12px;
   border-color: #000000;
@@ -54,7 +60,7 @@ td.stnd {
 }
 
 td.stndact {
-  margin: 1px;
+  margin: 1px !important;
   color: #0000ff;
   font-size: 12px;
   border-color: #000000;
@@ -62,7 +68,7 @@ td.stndact {
 }
 
 td.frost {
-  margin: 1px;
+  margin: 1px !important;
   font-size: 12px;
   background-color: #ffeeaa;
   border-color: #000000;
@@ -70,7 +76,7 @@ td.frost {
 }
 
 td.gold {
-  margin: 1px;
+  margin: 1px !important;
   font-weight: bold;
   font-size: 12px;
   background-color: #fff566;
@@ -79,7 +85,7 @@ td.gold {
 }
 
 td.goldact {
-  margin: 1px;
+  margin: 1px !important;
   color: #0000ff;
   font-size: 12px;
   background-color: #ffeeaa;
@@ -88,7 +94,7 @@ td.goldact {
 }
 
 td.silver {
-  margin: 1px;
+  margin: 1px !important;
   font-weight: bold;
   font-size: 12px;
   background-color: #ffadd2;
@@ -97,7 +103,7 @@ td.silver {
 }
 
 td.silveract {
-  margin: 1px;
+  margin: 1px !important;
   color: #0000ff;
   font-size: 12px;
   background-color: #aaaaaa;
@@ -106,7 +112,7 @@ td.silveract {
 }
 
 td.bronze {
-  margin: 1px;
+  margin: 1px !important;
   font-weight: bold;
   font-size: 12px;
   background-color: #f0c0a0;
@@ -115,7 +121,7 @@ td.bronze {
 }
 
 td.bronzeact {
-  margin: 1px;
+  margin: 1px !important;
   color: #0000ff;
   font-size: 12px;
   background-color: #f0c0a0;
@@ -124,7 +130,7 @@ td.bronzeact {
 }
 
 td.unofficial {
-  margin: 1px;
+  margin: 1px !important;
   font-size: 12px;
   background-color: #fff;
   border-color: #000000;
@@ -132,7 +138,7 @@ td.unofficial {
 }
 
 td.honorable {
-  margin: 1px;
+  margin: 1px !important;
   font-weight: bold;
   font-size: 12px;
   background-color: #e6f7ff;
@@ -141,7 +147,7 @@ td.honorable {
 }
 
 td.firstsolve {
-  margin: 1px;
+  margin: 1px !important;
   font-size: 12px;
   background-color: #3db03d;
   border-color: #000000;
@@ -149,7 +155,7 @@ td.firstsolve {
 }
 
 td.incorrect {
-  margin: 1px;
+  margin: 1px !important;
   font-size: 12px;
   background-color: #ffd0d0;
   border-color: #000000;
@@ -157,7 +163,7 @@ td.incorrect {
 }
 
 td.correct {
-  margin: 1px;
+  margin: 1px !important;
   font-size: 12px;
   background-color: #e1ffb5;
   border-color: #000000;
@@ -165,7 +171,7 @@ td.correct {
 }
 
 td.unattempted {
-  margin: 1px;
+  margin: 1px !important;
   font-size: 12px;
   background-color: #fff;
   border-color: #000000;
@@ -173,7 +179,7 @@ td.unattempted {
 }
 
 th.success {
-  margin: 1px;
+  margin: 1px !important;
   font-size: 12px;
   background-color: #a0f0a0;
   border-color: #000000;
@@ -181,7 +187,7 @@ th.success {
 }
 
 th.title {
-  margin: 1px;
+  margin: 1px !important;
   font-size: 12px;
   // background-color: #fff;
   background-color: #f5f5d5;
@@ -190,7 +196,7 @@ th.title {
 }
 
 th.tried {
-  margin: 1px;
+  margin: 1px !important;
   font-size: 12px;
   background-color: #ffa0a0;
   border-color: #000000;
@@ -198,7 +204,7 @@ th.tried {
 }
 
 td.pending {
-  margin: 1px;
+  margin: 1px !important;
   font-size: 12px;
   background-color: #c8d6fa;
   border-color: #000000;
@@ -206,7 +212,7 @@ td.pending {
 }
 
 td.upsolved {
-  margin: 1px;
+  margin: 1px !important;
   color: #ff0000;
   font-size: 12px;
   border-color: #000000;
@@ -214,7 +220,7 @@ td.upsolved {
 }
 
 td.virtual {
-  margin: 1px;
+  margin: 1px !important;
   color: #0000ff;
   font-size: 12px;
   border-color: #000000;
@@ -222,7 +228,7 @@ td.virtual {
 }
 
 td.alive {
-  margin: 1px;
+  margin: 1px !important;
   color: #ff0000;
   font-size: 12px;
   border-color: #000000;
@@ -230,7 +236,7 @@ td.alive {
 }
 
 td.empty {
-  margin: 1px;
+  margin: 1px !important;
   font-size: 12px;
   background-color: #fff;
   border-color: #000000;
@@ -238,7 +244,7 @@ td.empty {
 }
 
 th.stnd {
-  margin: 1px;
+  margin: 1px !important;
   font-size: 12px;
   border-color: #000000;
   border-width: 0px;
