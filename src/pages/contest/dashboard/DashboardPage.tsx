@@ -37,11 +37,15 @@ const DashboardPage: React.FC<{}> = (props) => {
       name: "Problems",
       link: `${pathname}?tab=problems`,
     },
-    {
-      id: "my-submissions",
-      name: "My Submissions",
-      link: `${pathname}?tab=my-submissions`,
-    },
+    ...(initialState?.userMeta?.username
+      ? [
+          {
+            id: "my-submissions",
+            name: "My Submissions",
+            link: `${pathname}?tab=my-submissions`,
+          },
+        ]
+      : []),
     // {
     //   id: "announcement",
     //   name: "Announcement",
@@ -66,12 +70,15 @@ const DashboardPage: React.FC<{}> = (props) => {
                   <ProblemsTab />
                 </div>
               )}
-              {urlQuery.tab === "my-submissions" && (
-                <MySubmissionsTab
-                  username={initialState.userMeta.username}
-                  contestId={parseInt(params.id)}
-                />
-              )}
+
+              {initialState?.userMeta?.username &&
+                urlQuery.tab === "my-submissions" && (
+                  <MySubmissionsTab
+                    username={initialState?.userMeta?.username}
+                    contestId={parseInt(params.id)}
+                  />
+                )}
+
               {/* {urlQuery.tab === "announcement" && <AnnouncementTab />} */}
             </>
           </Col>
