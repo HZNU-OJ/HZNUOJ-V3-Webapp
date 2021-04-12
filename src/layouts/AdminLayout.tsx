@@ -8,7 +8,7 @@ import style from "./AdminLayout.module.less";
 
 import { menuItem } from "@/interface/menu.interface";
 
-import { useAuthToken } from "@/utils/hooks";
+import { useAuthToken, useRedirectLogin } from "@/utils/hooks";
 
 function topBarItemRender(current: string, itemList: menuItem[]): string {
   let html = "";
@@ -105,14 +105,16 @@ interface AdminLayoutProps {
 
 const AdminLayout: React.FC<AdminLayoutProps> = (props) => {
   const { initialState, loading } = useModel("@@initialState");
-
   const { getToken } = useAuthToken();
+  const redirectLogin = useRedirectLogin();
 
   useEffect(() => {
-    if (getToken() === "") {
-      history.push("/login");
+    if (loading === false) {
+      if (getToken() === "") {
+        redirectLogin();
+      }
     }
-  }, []);
+  }, [loading]);
 
   useEffect(() => {
     window.$(".am-dropdown").dropdown();

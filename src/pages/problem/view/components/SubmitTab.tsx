@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Spin, message } from "antd";
 import { useModel, history } from "umi";
-import { useAuthToken } from "@/utils/hooks";
+import { useAuthToken, useRedirectLogin } from "@/utils/hooks";
 import style from "./SubmitTab.module.less";
 import LazyCodeBoxEditor from "@/components/Editor/LazyCodeBoxEditor";
 import { useScreenWidthWithin } from "@/utils/hooks";
@@ -48,14 +48,16 @@ interface SubmitTabProps {
 
 const SubmitTab: React.FC<SubmitTabProps> = (props) => {
   const { initialState, loading } = useModel("@@initialState");
-
   const { getToken } = useAuthToken();
+  const redirectLogin = useRedirectLogin();
 
   useEffect(() => {
-    if (getToken() === "") {
-      history.push("/login");
+    if (loading === false) {
+      if (getToken() === "") {
+        redirectLogin();
+      }
     }
-  }, []);
+  }, [loading]);
 
   const [codeValue, setCodeValue] = useState(
     props.lastSubmissionContent?.code ?? "",
@@ -98,7 +100,7 @@ const SubmitTab: React.FC<SubmitTabProps> = (props) => {
       <div style={{ marginBottom: 10 }}>
         <SubmissionsTable
           query={{
-            submitter: initialState.userMeta.username,
+            submitter: initialState?.userMeta?.username,
             problemId: props.problemId,
             contestId: props.contestId,
           }}

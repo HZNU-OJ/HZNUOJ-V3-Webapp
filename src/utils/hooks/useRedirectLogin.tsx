@@ -1,4 +1,5 @@
 import { history, useLocation } from "umi";
+import { message } from "antd";
 
 export function useRedirectLogin() {
   const location = useLocation();
@@ -10,5 +11,6 @@ export function useRedirectLogin() {
         redirect: redirectPath,
       },
     });
+    message.info("Please login first!");
   };
 }

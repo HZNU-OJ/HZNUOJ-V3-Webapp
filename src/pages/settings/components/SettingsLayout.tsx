@@ -5,7 +5,7 @@ import SiderMenu from "@/components/SiderMenu";
 import BasicLayout from "@/layouts/BasicLayout";
 import style from "./SettingsLayout.module.less";
 import { menuItem } from "@/interface/Menu.interface";
-import { useRedirectLogin } from "@/utils/hooks";
+import { useRedirectLogin, useAuthToken } from "@/utils/hooks";
 
 interface SettingsLayoutProps {
   current: string;
@@ -26,11 +26,12 @@ const siderItemList: menuItem[] = [
 
 const SettingsLayout: React.FC<SettingsLayoutProps> = (props) => {
   const { initialState, loading } = useModel("@@initialState");
+  const { getToken } = useAuthToken();
   const redirectLogin = useRedirectLogin();
 
   useEffect(() => {
     if (loading === false) {
-      if (!initialState?.userMeta) {
+      if (getToken() === "") {
         redirectLogin();
       }
     }

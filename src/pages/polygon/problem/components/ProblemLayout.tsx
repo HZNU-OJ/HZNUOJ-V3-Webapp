@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import { useParams } from "umi";
+import { useParams, useModel } from "umi";
 import { Row, Col, Affix } from "antd";
 import SiderMenu from "@/components/SiderMenu";
 import PolygonLayout from "@/layouts/PolygonLayout";
 import { menuItem } from "@/interface/Menu.interface";
-import { useRedirectLogin } from "@/utils/hooks";
+import { useRedirectLogin, useAuthToken } from "@/utils/hooks";
 import style from "./ProblemLayout.module.less";
 import { useScreenWidthWithin } from "@/utils/hooks";
 
@@ -72,19 +72,19 @@ const ProblemLayout: React.FC<ProblemLayoutProps> = (props) => {
   }
 
   const params: ProblemParams = useParams();
-
   const isMobile = useScreenWidthWithin(0, 768);
 
-  // const { initialState, loading } = useModel("@@initialState");
-  // const redirectLogin = useRedirectLogin();
+  const { initialState, loading } = useModel("@@initialState");
+  const { getToken } = useAuthToken();
+  const redirectLogin = useRedirectLogin();
 
-  // useEffect(() => {
-  //   if (loading === false) {
-  //     if (!initialState?.userMeta) {
-  //       redirectLogin();
-  //     }
-  //   }
-  // }, [loading]);
+  useEffect(() => {
+    if (loading === false) {
+      if (getToken() === "") {
+        redirectLogin();
+      }
+    }
+  }, [loading]);
 
   return (
     <>
