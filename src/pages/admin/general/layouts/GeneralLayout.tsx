@@ -15,6 +15,11 @@ const SiderMenuItemList: menuItem[] = [
     name: "Judge Machine",
     link: `/admin/judge-machine`,
   },
+  {
+    id: "announcement",
+    name: "Announcement",
+    link: `/admin/announcement`,
+  },
 ];
 
 const GeneralLayout: React.FC<GeneralLayoutProps> = (props) => {
