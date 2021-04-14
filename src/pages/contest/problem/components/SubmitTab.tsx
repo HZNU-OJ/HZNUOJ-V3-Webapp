@@ -102,7 +102,7 @@ const SubmitTab: React.FC<SubmitTabProps> = (props) => {
       <div style={{ marginBottom: 10 }}>
         <SubmissionsTable
           query={{
-            submitter: initialState.userMeta.username,
+            submitter: initialState?.userMeta?.username,
             problemId: props.problemId,
             contestId: props.contestId,
           }}
