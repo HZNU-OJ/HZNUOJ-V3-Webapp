@@ -50,13 +50,12 @@ class Board extends React.Component<BoardProps> {
       contestId: this.props.contestId,
     });
 
-    if (requestError) message.error(requestError);
-    else if (response.error) message.error(response.error);
-    else {
-      let { contest_config, team, run } = await getData(
-        this.props.contest,
-        response,
-      );
+    if (requestError) {
+      // message.error(requestError);
+    } else if (response.error) {
+      // message.error(response.error);
+    } else {
+      let { contest_config, team, run } = getData(this.props.contest, response);
       if (contest_config !== null && team !== null && run !== null) {
         this.contest_config = contest_config;
         this.team = team;
