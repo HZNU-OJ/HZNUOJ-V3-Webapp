@@ -253,7 +253,7 @@ declare namespace ApiTypes {
     isPublic?: boolean;
   }
   export interface EditContestResponseDto {
-    error?: "PERMISSION_DENIED" | "NO_SUCH_PROBLEM_TAG" | "FAILED";
+    error?: "PERMISSION_DENIED" | "NO_SUCH_CONTEST" | "FAILED";
   }
   export interface FileUploadInfoDto {
     uuid?: string;
@@ -295,9 +295,31 @@ declare namespace ApiTypes {
     problemMetas?: ApiTypes.ProblemInContestMetaDto[];
   }
   export interface GetContestSubmissionsRequestDto {
-    contestId: number;
-    submitter?: string;
+    locale: "en_US";
     problemId?: number;
+    problemDisplayId?: number;
+    submitter?: string;
+    contestId?: number;
+    codeLanguage?: string;
+    status?:
+      | "Pending"
+      | "ConfigurationError"
+      | "SystemError"
+      | "Canceled"
+      | "CompilationError"
+      | "FileError"
+      | "RuntimeError"
+      | "TimeLimitExceeded"
+      | "MemoryLimitExceeded"
+      | "OutputLimitExceeded"
+      | "PartiallyCorrect"
+      | "WrongAnswer"
+      | "Accepted"
+      | "JudgementFailed"
+      | "Frozen";
+    minId?: number;
+    maxId?: number;
+    takeCount: number;
   }
   export interface GetContestSubmissionsResponseDto {
     error?:

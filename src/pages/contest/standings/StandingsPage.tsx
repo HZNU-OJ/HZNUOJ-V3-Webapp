@@ -51,8 +51,10 @@ class Board extends React.Component<BoardProps> {
     });
 
     if (requestError) {
+      console.error(requestError);
       // message.error(requestError);
     } else if (response.error) {
+      console.error(response.error);
       // message.error(response.error);
     } else {
       let { contest_config, team, run } = getData(this.props.contest, response);

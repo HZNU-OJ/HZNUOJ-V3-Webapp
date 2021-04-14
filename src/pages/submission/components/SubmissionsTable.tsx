@@ -113,6 +113,7 @@ interface SubmissionsTableProps {
   query?: QuerySubmissionRequestMinimalDto;
   pagination?: false | TablePaginationConfig;
   problemRender?: (problem: ProblemItem) => JSX.Element;
+  isContestSubmission?: boolean;
 }
 
 const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
@@ -156,11 +157,21 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
   async function fetchData(query: QuerySubmissionRequestMinimalDto) {
     let takeCount = 1000000;
     if (query?.takeCount) takeCount = query.takeCount;
-    const { requestError, response } = await api.submission.querySubmission({
-      ...query,
-      locale: "en_US",
-      takeCount: takeCount,
-    });
+    const { requestError, response } = await (async () => {
+      if (props.isContestSubmission) {
+        return await api.contest.getContestSubmissions({
+          ...query,
+          locale: "en_US",
+          takeCount: takeCount,
+        });
+      } else {
+        return await api.submission.querySubmission({
+          ...query,
+          locale: "en_US",
+          takeCount: takeCount,
+        });
+      }
+    })();
 
     if (requestError) message.error(requestError);
     else if (response.error) message.error(response.error);

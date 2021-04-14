@@ -20,6 +20,7 @@ const SubmissionsInContestTable: React.FC<SubmissionsProps> = (props) => {
         problemId: props.problemId,
       }}
       problemRender={getProblemRenderFunc(contest)}
+      isContestSubmission={true}
     />
   );
 };
