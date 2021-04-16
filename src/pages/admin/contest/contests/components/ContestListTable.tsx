@@ -199,7 +199,7 @@ const ContestListTable: React.FC<{}> = (props) => {
         160,
       ),
       render: (Public: boolean) => {
-        return Public ? "True" : "False";
+        return Public ? "Public" : "Private";
       },
     },
     // {
