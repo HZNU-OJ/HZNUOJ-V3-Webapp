@@ -83,6 +83,7 @@ declare namespace ApiTypes {
     nickname: string;
     organization: string;
     registrationTime: string; // date-time
+    notificationEmail: string;
   }
   export interface CreateClarificationRequestDto {
     contestId: number;
