@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { message, Table, Tooltip } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { ContestStatus } from "@/interface/Contest";
-import { StatusBadge } from "../components";
+import { StatusBadge } from "@/pages/contest/components";
 
 import { useTableSearch, useTableFilter } from "@/utils/hooks";
 import { changeTimeStampToDate } from "@/utils/formatDateTime";
@@ -47,6 +47,7 @@ interface ContestItem {
   status?: string;
   register?: string;
   mode?: string;
+  public?: boolean;
 }
 
 enum ContestTableHeadTitle {
@@ -57,6 +58,7 @@ enum ContestTableHeadTitle {
   status = "Status",
   register = "Register",
   mode = "Mode",
+  public = "Public",
 }
 
 const ContestListTable: React.FC<{}> = (props) => {
@@ -91,6 +93,7 @@ const ContestListTable: React.FC<{}> = (props) => {
             changeTimeStampToDate(contest.frozenStartTime),
             changeTimeStampToDate(contest.frozenEndTime),
           ),
+          public: contest.isPublic,
         })),
       );
       setFetchDataLoading(false);
@@ -121,7 +124,7 @@ const ContestListTable: React.FC<{}> = (props) => {
         return (
           <Tooltip placement="top" title={contestName.name}>
             <a
-              href={`/contest/${contestName.id}`}
+              href={`/admin/contest/${contestName.id}`}
               className={["h-ellipsis"].join(" ")}
             >
               {contestName.name}
@@ -177,6 +180,27 @@ const ContestListTable: React.FC<{}> = (props) => {
         160,
       ),
       render: StatusBadge,
+    },
+    {
+      title: ContestTableHeadTitle.public,
+      dataIndex: "public",
+      key: "public",
+      width: "60px",
+      align: "left",
+      ...useTableFilter(
+        "public",
+        "public",
+        ["True", "False"].map((item: string) => {
+          return {
+            title: item,
+            value: item,
+          };
+        }),
+        160,
+      ),
+      render: (Public: boolean) => {
+        return Public ? "True" : "False";
+      },
     },
     // {
     //   title: "Register",

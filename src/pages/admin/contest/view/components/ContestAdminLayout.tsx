@@ -2,19 +2,15 @@ import React, { useEffect } from "react";
 import { useParams, useModel } from "umi";
 import { Row, Col, Affix } from "antd";
 import SiderMenu from "@/components/SiderMenu";
-import PolygonLayout from "@/layouts/PolygonLayout";
+import AdminLayout from "@/layouts/AdminLayout";
 import { menuItem } from "@/interface/Menu.interface";
 import { useRedirectLogin, useAuthToken } from "@/utils/hooks";
-import style from "./ProblemLayout.module.less";
+import style from "./ContestAdminLayout.module.less";
 import { useScreenWidthWithin } from "@/utils/hooks";
-
-interface ProblemLayoutProps {
-  current: string;
-}
 
 function getSiderItemList(id: number) {
   const getLink = (component: string) => {
-    return `/polygon/problem/${component}/${id}`;
+    return `/admin/contest/${component}/${id}`;
   };
   const siderItemList: menuItem[] = [
     {
@@ -23,55 +19,34 @@ function getSiderItemList(id: number) {
       link: getLink("dashboard"),
     },
     {
-      id: "judge-info",
-      name: "Judge Info",
-      link: getLink("judge-info"),
+      id: "problem",
+      name: "Problem",
+      link: getLink("problem"),
     },
     {
-      id: "statement",
-      name: "Statement",
-      link: getLink("statement"),
+      id: "user",
+      name: "User",
+      link: getLink("user"),
     },
     {
-      id: "files",
-      name: "Files",
-      link: getLink("files"),
+      id: "email",
+      name: "Email",
+      link: getLink("email"),
     },
-    // {
-    //   id: "checker",
-    //   name: "Checker",
-    //   link: getLink("checker"),
-    // },
-    // {
-    //   id: "validator",
-    //   name: "Validator",
-    //   link: getLink("validator"),
-    // },
-    // {
-    //   id: "tests",
-    //   name: "Tests",
-    //   link: getLink("tests"),
-    // },
-    // {
-    //   id: "solutions",
-    //   name: "Solutions",
-    //   link: getLink("solutions"),
-    // },
-    // {
-    //   id: "manageaccess",
-    //   name: "Manage Access",
-    //   link: getLink("manage-access"),
-    // },
   ];
   return siderItemList;
 }
 
-const ProblemLayout: React.FC<ProblemLayoutProps> = (props) => {
-  interface ProblemParams {
+interface ContestAdminLayoutProps {
+  current: "dashboard" | "problem" | "user" | "email";
+}
+
+const ContestAdminLayout: React.FC<ContestAdminLayoutProps> = (props) => {
+  interface ContestAdminParams {
     id: string;
   }
 
-  const params: ProblemParams = useParams();
+  const params: ContestAdminParams = useParams();
   const isMobile = useScreenWidthWithin(0, 768);
 
   const { initialState, loading } = useModel("@@initialState");
@@ -88,10 +63,10 @@ const ProblemLayout: React.FC<ProblemLayoutProps> = (props) => {
 
   return (
     <>
-      <PolygonLayout current="problem">
+      <AdminLayout current="contests">
         <div className={style.root}>
           <Row gutter={16} align="top">
-            <Col xs={24} sm={24} md={4} lg={3} xl={3}>
+            <Col xs={24} sm={24} md={4} lg={4} xl={4}>
               {isMobile && (
                 <SiderMenu
                   current={props.current}
@@ -111,14 +86,14 @@ const ProblemLayout: React.FC<ProblemLayoutProps> = (props) => {
               )}
             </Col>
 
-            <Col xs={24} sm={24} md={20} lg={21} xl={21}>
+            <Col xs={24} sm={24} md={20} lg={20} xl={20}>
               {props.children}
             </Col>
           </Row>
         </div>
-      </PolygonLayout>
+      </AdminLayout>
     </>
   );
 };
 
-export default ProblemLayout;
+export default ContestAdminLayout;

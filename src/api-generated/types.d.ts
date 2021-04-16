@@ -30,7 +30,11 @@ declare namespace ApiTypes {
     contestId: number;
   }
   export interface AddProblemResponseDto {
-    error?: "PERMISSION_DENIED" | "NO_SUCH_PROBLEM" | "NO_SUCH_CONTEST";
+    error?:
+      | "PERMISSION_DENIED"
+      | "NO_SUCH_PROBLEM"
+      | "NO_SUCH_CONTEST"
+      | "PROBLEM_ALREADY_EXISTS";
   }
   export interface CancelSubmissionRequestDto {
     submissionId: number;
@@ -881,7 +885,6 @@ declare namespace ApiTypes {
     problemId?: number;
     problemDisplayId?: number;
     submitter?: string;
-    contestId?: number;
     codeLanguage?: string;
     status?:
       | "Pending"

@@ -9,6 +9,7 @@ import AntTableHeadStyles from "@/less/AntTableHead.module.less";
 import { useTableSearch } from "@/utils/hooks";
 
 import api from "@/api";
+import { Helmet } from "umi";
 
 interface UserItem {
   rank: number;
@@ -122,29 +123,31 @@ const UsersPage: React.FC<{}> = (props) => {
   ];
 
   return (
-    <BasicLayout current={"users"}>
-      <div className={style.root}>
-        <div className={style.tableRoot}>
-          <Table<UserItem>
-            loading={fetchDataLoading}
-            size="small"
-            scroll={{ x: 1100 }}
-            sticky
-            columns={columns}
-            dataSource={tableData}
-            className={AntTableHeadStyles.table}
-            rowKey={(record) => record.rank}
-            pagination={{
-              hideOnSinglePage: true,
-              showQuickJumper: true,
-              showSizeChanger: true,
-              defaultPageSize: 16,
-              pageSizeOptions: ["8", "16", "32", "64", "128", "256"],
-            }}
-          />
+    <>
+      <BasicLayout current={"users"}>
+        <div className={style.root}>
+          <div className={style.tableRoot}>
+            <Table<UserItem>
+              loading={fetchDataLoading}
+              size="small"
+              scroll={{ x: 1100 }}
+              sticky
+              columns={columns}
+              dataSource={tableData}
+              className={AntTableHeadStyles.table}
+              rowKey={(record) => record.rank}
+              pagination={{
+                hideOnSinglePage: true,
+                showQuickJumper: true,
+                showSizeChanger: true,
+                defaultPageSize: 16,
+                pageSizeOptions: ["8", "16", "32", "64", "128", "256"],
+              }}
+            />
+          </div>
         </div>
-      </div>
-    </BasicLayout>
+      </BasicLayout>
+    </>
   );
 };
 
