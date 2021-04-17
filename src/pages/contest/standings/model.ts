@@ -81,16 +81,20 @@ export function getData(
   contest_config["contest_name"] = contest.contestMeta.contestName;
   contest_config["start_time"] = date2TimeStamp(contest.contestMeta.startTime);
   contest_config["end_time"] = date2TimeStamp(contest.contestMeta.endTime);
-  contest_config["frozen_time"] =
-    date2TimeStamp(contest.contestMeta.frozenEndTime) -
-    date2TimeStamp(contest.contestMeta.frozenStartTime);
+  if (contest.contestMeta?.frozenStartTime) {
+    contest_config["frozen_time"] =
+      date2TimeStamp(contest.contestMeta.frozenEndTime) -
+      date2TimeStamp(contest.contestMeta.frozenStartTime);
+  } else {
+    contest_config["frozen_time"] = 0;
+  }
   contest_config["penalty"] = 1200;
   contest_config["status_time_display"] = {
     correct: 1,
     incorrect: 1,
     pending: 1,
   };
-  const problemNum = contest.problemMetas.length;
+  const problemNum = contest?.problemMetas?.length ?? 0;
   contest_config["problem_id"] = problemId.filter(
     (_, index) => index < problemNum,
   );
@@ -99,7 +103,7 @@ export function getData(
   );
 
   const map = new Map();
-  contest.problemMetas.forEach((problem) => {
+  contest?.problemMetas?.forEach((problem) => {
     map.set(problem.problemId, problem.orderId);
   });
 

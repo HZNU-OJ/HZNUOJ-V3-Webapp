@@ -622,6 +622,9 @@ declare namespace ApiTypes {
       | "USER_NOT_MIGRATED";
     token?: string;
     username?: string;
+    isContestUser?: boolean;
+    contestId?: number;
+    notificationEmail?: string;
   }
   namespace Parameters {
     export type Email = string;

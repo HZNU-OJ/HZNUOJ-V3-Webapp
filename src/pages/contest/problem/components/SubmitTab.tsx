@@ -7,9 +7,9 @@ import LazyCodeBoxEditor from "@/components/Editor/LazyCodeBoxEditor";
 import { useScreenWidthWithin } from "@/utils/hooks";
 import { useRecaptcha } from "@/utils/hooks";
 import api from "@/api";
-import SubmissionsTable from "@/pages/submission/components/SubmissionsTable";
 import { ContestContext } from "@/pages/contest/layouts/ContestLayout";
 import { getProblemRenderFunc } from "@/pages/contest/utils";
+import SubmissionsTable from "@/pages/submission/components/SubmissionsTable";
 
 const languageCompileOptions = {
   c: {
@@ -110,6 +110,7 @@ const SubmitTab: React.FC<SubmitTabProps> = (props) => {
             defaultPageSize: 2,
           }}
           problemRender={getProblemRenderFunc(contest)}
+          isContestSubmission={true}
         />
       </div>
       <LazyCodeBoxEditor

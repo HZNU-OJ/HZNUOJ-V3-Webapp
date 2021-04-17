@@ -125,7 +125,7 @@ const ProblemsTab: React.FC<{}> = (props) => {
   const [tableData, setTableData] = useState([] as ProblemItem[]);
   async function fetchData() {
     setTableData(
-      contest.problemMetas.map((problem) => ({
+      contest?.problemMetas?.map((problem) => ({
         status: problem.submission
           ? problem.submission.status === "Accepted"
             ? ProblemSolvedStatus.solved

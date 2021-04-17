@@ -28,7 +28,7 @@ const LoginPage: React.FC<{}> = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const { refresh } = useModel("@@initialState");
+  const { initialState, refresh } = useModel("@@initialState");
 
   useEffect(() => {
     if (getToken() != "") {
@@ -51,10 +51,14 @@ const LoginPage: React.FC<{}> = () => {
       message.error(response.error);
     } else if (response.token && response.username) {
       signIn(response.token);
-      refresh();
+      await refresh();
       message.success(`Welcome back, ${response.username}!`);
-      const redirectPath = urlQuery.redirect;
-      history.replace(redirectPath);
+      if (response.isContestUser === true) {
+        history.replace(`/contest/${response.contestId}`);
+      } else {
+        const redirectPath = urlQuery.redirect;
+        history.replace(redirectPath);
+      }
     }
   }
 

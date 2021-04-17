@@ -230,10 +230,10 @@ const ContestLayout: React.FC<ContestLayoutProps> = (props) => {
         getStatus(
           Date.parse(response.contestMeta.startTime) / 1000,
           Date.parse(response.contestMeta.endTime) / 1000,
-          response.contestMeta.frozenStartTime
+          response.contestMeta?.frozenStartTime
             ? Date.parse(response.contestMeta.frozenStartTime) / 1000
             : null,
-          response.contestMeta.frozenEndTime
+          response.contestMeta?.frozenEndTime
             ? Date.parse(response.contestMeta.frozenEndTime) / 1000
             : null,
         ),
@@ -311,7 +311,7 @@ const ContestLayout: React.FC<ContestLayoutProps> = (props) => {
                   </div>
                 )}
 
-                {contestStatus >= 0 && (
+                {(contestStatus > 0 || !!initialState?.userMeta?.isAdmin) && (
                   <ContestContext.Provider value={contest}>
                     <div
                       className={style.root}
