@@ -18,6 +18,8 @@ export default {
     },
   ],
   apiEndpoint: "/",
+  api_proxy_target: "https://v3.hznuoj.com",
+  // api_proxy_target: "http://127.0.0.1:3000",
   monacoEditorSupportedLanguages: [
     "abap",
     "apex",
