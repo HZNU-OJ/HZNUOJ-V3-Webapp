@@ -5,6 +5,7 @@ import { ColumnsType } from "antd/es/table";
 import { useTableFilter, useTableSearch } from "@/utils/hooks";
 import { isValidUsername } from "@/utils/validators";
 import { CodeLanguage } from "@/interface/CodeLanguage";
+import { useUrlQuery } from "@/utils/hooks";
 
 import { SubmissionStatusRender } from "./SubmissionStatusRender";
 
@@ -37,10 +38,15 @@ export interface ProblemItem {
   title: string;
 }
 
+interface WhoItem {
+  username: string;
+  nickname: string;
+}
+
 interface SubmissionItem {
   id: number;
   status: string;
-  who: string;
+  who: WhoItem;
   when: string;
   problem: ProblemItem;
   time: number;
@@ -120,6 +126,10 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
   const [fetchDataLoading, setFetchDataLoading] = useState(true);
   const [tableData, setTableData] = useState([] as SubmissionItem[]);
 
+  const [urlQuery, setUrlQuery] = useUrlQuery({
+    contestId: null,
+  });
+
   let timeOut = null;
   const rotationTime = 1000; // ms
 
@@ -158,7 +168,10 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
     let takeCount = 1000000;
     if (query?.takeCount) takeCount = query.takeCount;
     const { requestError, response } = await (async () => {
-      if (props.isContestSubmission) {
+      if (props.isContestSubmission || urlQuery.contestId != null) {
+        if (urlQuery.contestId != null) {
+          query.contestId = urlQuery.contestId;
+        }
         return await api.contest.getContestSubmissions({
           ...query,
           locale: "en_US",
@@ -199,7 +212,10 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
         _tableData.push({
           id: submission.id,
           status: status,
-          who: submission.submitter.username,
+          who: {
+            username: submission.submitter.username,
+            nickname: submission.submitter.nickname,
+          },
           when: submission.submitTime,
           problem: {
             id: submission.problem.id,
@@ -304,7 +320,14 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
       align: "center",
       render: (answer: AnswerItem) => (
         <>
-          <a href={`/submission/${answer.id}`} target={"_blank"}>
+          <a
+            href={
+              props.isContestSubmission
+                ? `/submission/${answer.id}?contestId=${props.query.contestId}`
+                : `/submission/${answer.id}`
+            }
+            target={"_blank"}
+          >
             {LanguageTableMapping[answer.lang]}
           </a>
           /{formatFileSize(answer.codeLength)}
@@ -315,12 +338,14 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
       title: SubmissionTableHeadTitle.who,
       dataIndex: "who",
       key: "who",
-      width: "60px",
+      width: "80px",
       align: "center",
       ...useTableSearch("who", SubmissionTableHeadTitle.who),
-      render: (who: string) => (
-        <a href={`/user/${who}`} target={"_blank"}>
-          {who}
+      render: (who: WhoItem) => (
+        <a href={`/user/${who.username}`} target={"_blank"}>
+          <Tooltip title={who.username} placement={"top"}>
+            <div className={"h-ellipsis"}>{who.nickname}</div>
+          </Tooltip>
         </a>
       ),
     },

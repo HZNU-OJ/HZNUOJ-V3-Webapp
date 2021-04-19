@@ -13,7 +13,6 @@ import formatFileSize from "@/utils/formatFileSize";
 import { useScreenWidthWithin } from "@/utils/hooks";
 import { CodeBox } from "@/components/CodeBox";
 import { ExampleDiffBox } from "@/components/ExampleBox";
-
 import SubmissionsTable from "../components/SubmissionsTable";
 
 import { RightOutlined, DownOutlined } from "@ant-design/icons";
