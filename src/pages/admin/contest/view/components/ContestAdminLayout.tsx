@@ -28,11 +28,11 @@ function getSiderItemList(id: number) {
       name: "User",
       link: getLink("user"),
     },
-    {
-      id: "email",
-      name: "Email",
-      link: getLink("email"),
-    },
+    // {
+    //   id: "email",
+    //   name: "Email",
+    //   link: getLink("email"),
+    // },
   ];
   return siderItemList;
 }
@@ -66,7 +66,7 @@ const ContestAdminLayout: React.FC<ContestAdminLayoutProps> = (props) => {
       <AdminLayout current="contests">
         <div className={style.root}>
           <Row gutter={16} align="top">
-            <Col xs={24} sm={24} md={4} lg={4} xl={4}>
+            <Col xs={24} sm={24} md={4} lg={3} xl={3}>
               {isMobile && (
                 <SiderMenu
                   current={props.current}
@@ -86,7 +86,7 @@ const ContestAdminLayout: React.FC<ContestAdminLayoutProps> = (props) => {
               )}
             </Col>
 
-            <Col xs={24} sm={24} md={20} lg={20} xl={20}>
+            <Col xs={24} sm={24} md={20} lg={21} xl={21}>
               {props.children}
             </Col>
           </Row>

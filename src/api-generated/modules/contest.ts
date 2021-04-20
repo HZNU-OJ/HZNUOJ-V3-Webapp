@@ -12,6 +12,10 @@ export const editContest = createPostApi<
   ApiTypes.EditContestRequestDto,
   ApiTypes.EditContestResponseDto
 >("contest/editContest", false);
+export const deleteContest = createPostApi<
+  ApiTypes.DeleteContestRequestDto,
+  ApiTypes.DeleteContestResponseDto
+>("contest/deleteContest", false);
 export const getContest = createPostApi<
   ApiTypes.GetContestRequestDto,
   ApiTypes.GetContestResponseDto
@@ -60,3 +64,7 @@ export const getContestSubmissions = createPostApi<
   ApiTypes.GetContestSubmissionsRequestDto,
   ApiTypes.GetContestSubmissionsResponseDto
 >("contest/getContestSubmissions", false);
+export const sendContestNotification = createPostApi<
+  ApiTypes.SendContestNotificationRequestDto,
+  ApiTypes.SendContestNotificationResponseDto
+>("contest/sendContestNotification", false);

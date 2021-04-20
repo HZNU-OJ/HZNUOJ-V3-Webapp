@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ContestAdminLayout from "./components/ContestAdminLayout";
-import { message, Table } from "antd";
+import { message, Table, Button } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { useTableSearch, useTableFilter } from "@/utils/hooks";
 import AntTableHeadStyles from "@/less/AntTableHead.module.less";
@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { useParams } from "umi";
 import FormatTableDate from "@/components/FormatTableDate";
 import style from "./UserPage.module.less";
+import { PlusOutlined } from "@ant-design/icons";
 import api from "@/api";
 
 interface UserPageParams {
@@ -112,6 +113,18 @@ const UserPage: React.FC<{}> = (props) => {
 
   return (
     <ContestAdminLayout current="user">
+      <div className={style.addBtn}>
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          size={"middle"}
+          onClick={() => {
+            // setAddProblemModelVisible(true);
+          }}
+        >
+          Add User
+        </Button>
+      </div>
       <div className={style.table}>
         <Table<UserItem>
           size="small"

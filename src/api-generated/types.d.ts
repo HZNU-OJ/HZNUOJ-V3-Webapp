@@ -75,6 +75,7 @@ declare namespace ApiTypes {
     username: string;
     nickname: string;
     password: string;
+    notificationEmail?: string;
   }
   export interface ContestUserMetaDto {
     id: number;
@@ -84,6 +85,7 @@ declare namespace ApiTypes {
     organization: string;
     registrationTime: string; // date-time
     notificationEmail: string;
+    contestUserPassword?: string;
   }
   export interface CreateClarificationRequestDto {
     contestId: number;
@@ -139,6 +141,12 @@ declare namespace ApiTypes {
   export interface CreateProblemTagResponseDto {
     error?: "PERMISSION_DENIED";
     id?: number;
+  }
+  export interface DeleteContestRequestDto {
+    contestId: number;
+  }
+  export interface DeleteContestResponseDto {
+    error?: "PERMISSION_DENIED" | "NO_SUCH_CONTEST";
   }
   export interface DeleteDiscussionReplyRequestDto {
     discussionReplyId: number;
@@ -1010,6 +1018,12 @@ declare namespace ApiTypes {
   }
   export interface SearchUserResponseDto {
     userMetas: ApiTypes.UserMetaDto[];
+  }
+  export interface SendContestNotificationRequestDto {
+    contestId: number;
+  }
+  export interface SendContestNotificationResponseDto {
+    error?: "NO_SUCH_CONTEST";
   }
   export interface SendEmailVerificationCodeRequestDto {
     email: string;
