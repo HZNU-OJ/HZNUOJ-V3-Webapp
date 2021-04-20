@@ -44,6 +44,10 @@ export const importContestUsers = createPostApi<
   ApiTypes.ImportContestUsersRequestDto,
   ApiTypes.ImportContestUsersResponseDto
 >("contest/importContestUsers", false);
+export const deleteContestUser = createPostApi<
+  ApiTypes.DeleteContestUserRequestDto,
+  ApiTypes.DeleteContestUserResponseDto
+>("contest/deleteContestUser", false);
 export const getContestUserList = createPostApi<
   ApiTypes.GetContestUserListRequestDto,
   ApiTypes.GetContestUserListResponseDto

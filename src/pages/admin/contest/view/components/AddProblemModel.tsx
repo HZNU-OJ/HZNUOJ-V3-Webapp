@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Form, Input, message, DatePicker } from "antd";
-const { RangePicker } = DatePicker;
+import { Modal, Form, Input, message } from "antd";
 import api from "@/api";
 
 interface AddProblemModelProps {
@@ -39,12 +38,6 @@ const AddProblemModel: React.FC<AddProblemModelProps> = (props) => {
     }
     setConfirmLoading(false);
   }
-
-  const RangePickerConfig = [
-    {
-      type: "obj" as const,
-    },
-  ];
 
   return (
     <>

@@ -148,6 +148,17 @@ declare namespace ApiTypes {
   export interface DeleteContestResponseDto {
     error?: "PERMISSION_DENIED" | "NO_SUCH_CONTEST";
   }
+  export interface DeleteContestUserRequestDto {
+    contestId: number;
+    userId: number;
+  }
+  export interface DeleteContestUserResponseDto {
+    error?:
+      | "PERMISSION_DENIED"
+      | "NO_SUCH_USER"
+      | "NO_SUCH_CONTEST"
+      | "USER_NOT_REGISTERED_CONTEST";
+  }
   export interface DeleteDiscussionReplyRequestDto {
     discussionReplyId: number;
   }

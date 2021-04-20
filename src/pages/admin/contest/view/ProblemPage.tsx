@@ -22,7 +22,7 @@ interface ProblemTitleItem {
   title: string;
 }
 
-interface actionItem {
+interface ActionItem {
   problemId: number;
 }
 
@@ -32,7 +32,7 @@ interface ProblemItem {
   submissions: number;
   acceptance: number;
   ratio: number;
-  action: actionItem;
+  action: ActionItem;
 }
 
 enum ProblemTableHeadTitle {
@@ -140,9 +140,9 @@ const ProblemPage: React.FC<{}> = (props) => {
       title: ProblemTableHeadTitle.action,
       dataIndex: "action",
       key: "action",
-      width: "60px",
+      width: "100px",
       align: "left",
-      render: (action: actionItem) => {
+      render: (action: ActionItem) => {
         return (
           <Space size={"middle"}>
             <Popconfirm
