@@ -101,7 +101,7 @@ const DashboardPage: React.FC<{}> = (props) => {
         paragraph={{ rows: 4 }}
       >
         <Row gutter={16}>
-          <Col xs={24} sm={24} md={24} lg={17} xl={17}>
+          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
             <Form
               form={form}
               layout="vertical"
@@ -197,7 +197,7 @@ const DashboardPage: React.FC<{}> = (props) => {
             </Form>
           </Col>
 
-          <Col xs={24} sm={24} md={24} lg={7} xl={7}></Col>
+          {/* <Col xs={24} sm={24} md={24} lg={7} xl={7}></Col> */}
         </Row>
       </Skeleton>
     </ContestAdminLayout>
