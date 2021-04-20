@@ -93,7 +93,7 @@ export function renderMarkdown(
 
   // renderer.use(MarkdownItMergeCells);
   renderer.use(MarkdownItMentions, {
-    parseURL: (username: string) => `/user/profile/${username}`,
+    parseURL: (username: string) => `/user/${username}`,
   });
 
   renderer.use(MarkdownItContainer, "spoiler", {

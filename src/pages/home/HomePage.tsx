@@ -21,7 +21,7 @@ const HomePage: React.FC<{}> = (props) => {
 
           <Col xs={24} sm={24} md={24} lg={7} xl={6}>
             <PayAttention />
-            <TopUsers />
+            {/* <TopUsers /> */}
           </Col>
         </Row>
       </div>

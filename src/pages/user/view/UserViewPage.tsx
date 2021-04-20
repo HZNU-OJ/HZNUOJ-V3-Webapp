@@ -82,9 +82,9 @@ const UserViewPage: React.FC<{}> = (props) => {
                     submissionCountPerDay={userDetail.submissionCountPerDay}
                   />
                 </div>
-                <div style={{ marginTop: 10 }}>
+                {/* <div style={{ marginTop: 10 }}>
                   <RatingGraph />
-                </div>
+                </div> */}
               </Col>
             </Row>
           </div>
