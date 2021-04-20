@@ -61,7 +61,11 @@ enum ContestTableHeadTitle {
   public = "Public",
 }
 
-const ContestListTable: React.FC<{}> = (props) => {
+interface ContestListTableProps {
+  fetchHook?: number;
+}
+
+const ContestListTable: React.FC<ContestListTableProps> = (props) => {
   const [tableData, setTableData] = useState([] as ContestItem[]);
   const [fetchDataLoading, setFetchDataLoading] = useState(true);
   async function fetchData() {
@@ -102,7 +106,7 @@ const ContestListTable: React.FC<{}> = (props) => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [props.fetchHook]);
 
   const columns: ColumnsType<ContestItem> = [
     {
