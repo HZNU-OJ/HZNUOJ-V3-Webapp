@@ -34,8 +34,8 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = (props) => {
               xs={{ span: 24, order: 2 }}
               sm={{ span: 24, order: 2 }}
               md={{ span: 24, order: 2 }}
-              lg={{ span: 20, order: 1 }}
-              xl={{ span: 20, order: 1 }}
+              lg={{ span: 21, order: 1 }}
+              xl={{ span: 21, order: 1 }}
             >
               {props.children}
             </Col>
@@ -44,8 +44,8 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = (props) => {
               xs={{ span: 24, order: 1 }}
               sm={{ span: 24, order: 1 }}
               md={{ span: 24, order: 1 }}
-              lg={{ span: 4, order: 2 }}
-              xl={{ span: 4, order: 2 }}
+              lg={{ span: 3, order: 2 }}
+              xl={{ span: 3, order: 2 }}
             >
               {isMobile && (
                 <SiderMenu
