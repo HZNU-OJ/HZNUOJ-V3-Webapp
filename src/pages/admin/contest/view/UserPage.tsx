@@ -172,20 +172,56 @@ const UserPage: React.FC<{}> = (props) => {
     },
   ];
 
+  const [notificationUserLoading, setNotificationUserLoading] = useState(false);
+  async function onNotificationUser() {
+    const {
+      requestError,
+      response,
+    } = await api.contest.sendContestNotification({
+      contestId: parseInt(params.id),
+    });
+
+    if (requestError) {
+      message.error(requestError);
+    } else if (response.error) {
+      message.error(response.error);
+    } else {
+      message.success("The Notification Task Sended Sucessfully!");
+    }
+  }
+
   return (
     <>
       <ContestAdminLayout current="user">
         <div className={style.addBtn}>
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            size={"middle"}
-            onClick={() => {
-              setAdduserModelVisible(true);
-            }}
-          >
-            Add User
-          </Button>
+          <Space size="middle">
+            <Popconfirm
+              title={`Are you sure to notification all user?`}
+              onConfirm={() => {
+                onNotificationUser();
+              }}
+              okText="Yes"
+              cancelText="No"
+              placement="top"
+              okButtonProps={{
+                loading: notificationUserLoading,
+              }}
+            >
+              <Button type="primary" size={"middle"} onClick={() => {}}>
+                Notification
+              </Button>
+            </Popconfirm>
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              size={"middle"}
+              onClick={() => {
+                setAdduserModelVisible(true);
+              }}
+            >
+              Add User
+            </Button>
+          </Space>
         </div>
         <div className={style.table}>
           <Table<UserItem>
