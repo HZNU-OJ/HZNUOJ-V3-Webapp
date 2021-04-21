@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  useRef,
+  useCallback,
+} from "react";
 import ContestAdminLayout from "./components/ContestAdminLayout";
 import { useParams } from "umi";
 import { Table, Tooltip, message, Button, Space, Popconfirm } from "antd";
@@ -12,6 +18,11 @@ import { PlusOutlined } from "@ant-design/icons";
 import AddProblemModel from "./components/AddProblemModel";
 import api from "@/api";
 import { DeleteOutlined } from "@ant-design/icons";
+import { DndProvider, useDrag, useDrop } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import update from "immutability-helper";
+import { swapTwoProblemOrder } from "@/api-generated/modules/contest";
+const type = "DragableBodyRow";
 
 const DeleteIcon = () => (
   <DeleteOutlined style={{ cursor: "pointer", color: "#3e90cc" }} />
@@ -28,6 +39,7 @@ interface ActionItem {
 
 interface ProblemItem {
   id: number;
+  problemId: number;
   problem: ProblemTitleItem;
   submissions: number;
   acceptance: number;
@@ -189,6 +201,7 @@ const ProblemPage: React.FC<{}> = (props) => {
               : ProblemSolvedStatus.unSolved
             : ProblemSolvedStatus.unSubmit,
           id: problem.orderId,
+          problemId: problem.problemId,
           problem: {
             orderId: mappingOrderIdToAlphaId(problem.orderId),
             title: problem.title,
@@ -212,6 +225,103 @@ const ProblemPage: React.FC<{}> = (props) => {
     fetchData();
   }, [contest, addProblemModelVisible, deleteProblemLoading]);
 
+  const DragableBodyRow = ({
+    index,
+    moveRow,
+    className,
+    style,
+    ...restProps
+  }) => {
+    const ref = useRef();
+    const [{ isOver, dropClassName }, drop] = useDrop(
+      () => ({
+        accept: type,
+        collect: (monitor) => {
+          const { index: dragIndex } = monitor.getItem() || {};
+          if (dragIndex === index) {
+            return {};
+          }
+          return {
+            isOver: monitor.isOver(),
+            dropClassName:
+              dragIndex < index ? " drop-over-downward" : " drop-over-upward",
+          };
+        },
+        drop: (item) => {
+          moveRow(item.index, index);
+        },
+      }),
+      [index],
+    );
+    const [, drag] = useDrag(
+      () => ({
+        type,
+        item: { index },
+        collect: (monitor) => ({
+          isDragging: monitor.isDragging(),
+        }),
+      }),
+      [index],
+    );
+    drop(drag(ref));
+
+    return (
+      <tr
+        ref={ref}
+        className={`${className}${isOver ? dropClassName : ""}`}
+        style={{ cursor: "move", ...style }}
+        {...restProps}
+      />
+    );
+  };
+
+  const components = {
+    body: {
+      row: DragableBodyRow,
+    },
+  };
+
+  const [swapLoading, setSwapLoading] = useState(false);
+  const moveRow = useCallback(
+    async (dragIndex, hoverIndex) => {
+      const dragRow = tableData[dragIndex];
+      const _data = update(tableData, {
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, dragRow],
+        ],
+      });
+      const tmp = tableData[dragIndex].id;
+      tableData[dragIndex].id = tableData[hoverIndex].id;
+      tableData[hoverIndex].id = tmp;
+      setTableData(_data);
+      setSwapLoading(true);
+
+      const contestId = parseInt(params.id);
+      const orginId = tableData[dragIndex].problemId;
+      const newId = tableData[hoverIndex].problemId;
+
+      const { requestError, response } = await api.contest.swapTwoProblemOrder({
+        contestId,
+        problemOriginId: orginId,
+        problemNewId: newId,
+      });
+
+      if (requestError) {
+        message.error(requestError);
+      } else if (response.error) {
+        message.error(response.error);
+      } else {
+        message.success(
+          `Swap Problem ${orginId} and Problem ${newId} Successfully.`,
+        );
+      }
+
+      setSwapLoading(false);
+    },
+    [tableData],
+  );
+
   return (
     <>
       <ContestAdminLayout current="problem">
@@ -227,26 +337,35 @@ const ProblemPage: React.FC<{}> = (props) => {
             Add Problem
           </Button>
         </div>
-        <div className={style.tableRoot}>
-          <Table<ProblemItem>
-            size="small"
-            scroll={{ x: 800 }}
-            sticky
-            columns={columns}
-            loading={fetchDataLoading}
-            dataSource={tableData}
-            className={AntTableHeadStyles.table}
-            rowKey={(record) => record.id}
-            pagination={{
-              hideOnSinglePage: true,
-              showQuickJumper: true,
-              showSizeChanger: true,
-              defaultPageSize: 32,
-              pageSizeOptions: ["8", "16", "32", "64", "128", "256"],
-            }}
-          />
-        </div>
+
+        <DndProvider backend={HTML5Backend}>
+          <div className={style.tableRoot}>
+            <Table<ProblemItem>
+              size="small"
+              scroll={{ x: 900 }}
+              sticky
+              columns={columns}
+              loading={fetchDataLoading || swapLoading}
+              dataSource={tableData}
+              className={AntTableHeadStyles.table}
+              rowKey={(record) => record.id}
+              components={components}
+              onRow={(record, index) => ({
+                index,
+                moveRow,
+              })}
+              pagination={{
+                hideOnSinglePage: true,
+                showQuickJumper: true,
+                showSizeChanger: true,
+                defaultPageSize: 32,
+                pageSizeOptions: ["8", "16", "32", "64", "128", "256"],
+              }}
+            />
+          </div>
+        </DndProvider>
       </ContestAdminLayout>
+
       <AddProblemModel
         contestId={parseInt(params.id)}
         visible={addProblemModelVisible}

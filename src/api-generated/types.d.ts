@@ -1256,6 +1256,18 @@ declare namespace ApiTypes {
       | "INVALID_ANNOUNCEMENT_ORGIN_ID"
       | "INVALID_ANNOUNCEMENT_NEW_ID";
   }
+  export interface SwapTwoProblemOrderRequestDto {
+    contestId: number;
+    problemOriginId: number;
+    problemNewId: number;
+  }
+  export interface SwapTwoProblemOrderResponseDto {
+    error?:
+      | "PERMISSION_DENIED"
+      | "INVALID_PROBLEM_ORGIN_ID"
+      | "INVALID_PROBLEM_NEW_ID"
+      | "NO_SUCH_CONTEST";
+  }
   export interface ToggleReactionRequestDto {
     type: "Discussion" | "DiscussionReply";
     id: number;

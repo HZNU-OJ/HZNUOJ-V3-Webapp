@@ -32,6 +32,10 @@ export const deleteProblem = createPostApi<
   ApiTypes.DeleteProblemRequestDto,
   ApiTypes.DeleteProblemResponseDto
 >("contest/deleteProblem", false);
+export const swapTwoProblemOrder = createPostApi<
+  ApiTypes.SwapTwoProblemOrderRequestDto,
+  ApiTypes.SwapTwoProblemOrderResponseDto
+>("contest/swapTwoProblemOrder", false);
 export const getProblemMetaList = createPostApi<
   ApiTypes.GetProblemMetaListRequestDto,
   ApiTypes.GetProblemMetaListResponseDto
