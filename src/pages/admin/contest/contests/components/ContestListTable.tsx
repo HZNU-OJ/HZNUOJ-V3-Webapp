@@ -123,7 +123,7 @@ const ContestListTable: React.FC<ContestListTableProps> = (props) => {
       key: "contestName",
       width: "480px",
       align: "left",
-      ...useTableSearch("contestName", ContestTableHeadTitle.contestName),
+      // ...useTableSearch("contestName", ContestTableHeadTitle.contestName),
       render: (contestName: ContestNameItem) => {
         return (
           <Tooltip placement="top" title={contestName.name}>

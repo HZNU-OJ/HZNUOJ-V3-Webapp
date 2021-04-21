@@ -10,6 +10,11 @@ export default [
     exact: true,
   },
   {
+    path: "/admin/announcement",
+    component: "@/pages/admin/general/AnnouncementPage",
+    exact: true,
+  },
+  {
     path: "/admin/contests",
     component: "@/pages/admin/contest/contests/ContestsPage",
     exact: true,

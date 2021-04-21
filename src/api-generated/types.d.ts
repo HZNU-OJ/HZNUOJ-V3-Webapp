@@ -49,6 +49,7 @@ declare namespace ApiTypes {
     id: number;
     title: string;
     lastUpdateTime: string; // date-time
+    orderId: number;
   }
   export interface CancelSubmissionRequestDto {
     submissionId: number;
