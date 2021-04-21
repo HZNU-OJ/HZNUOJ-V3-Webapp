@@ -1,6 +1,15 @@
 // This file is generated automatically, do NOT modify it.
 
 declare namespace ApiTypes {
+  export interface AddAnnouncementRequestDto {
+    discussionId: number;
+  }
+  export interface AddAnnouncementResponseDto {
+    error?:
+      | "PERMISSION_DENIED"
+      | "ANNOUNCEMENT_ALREADY_EXISTS"
+      | "INVALID_DISCUSSION_ID";
+  }
   export interface AddJudgeClientRequestDto {
     name: string;
     allowedHosts: string[];
@@ -35,6 +44,11 @@ declare namespace ApiTypes {
       | "NO_SUCH_PROBLEM"
       | "NO_SUCH_CONTEST"
       | "PROBLEM_ALREADY_EXISTS";
+  }
+  export interface AnnouncementMetaDto {
+    id: number;
+    title: string;
+    lastUpdateTime: string; // date-time
   }
   export interface CancelSubmissionRequestDto {
     submissionId: number;
@@ -141,6 +155,12 @@ declare namespace ApiTypes {
   export interface CreateProblemTagResponseDto {
     error?: "PERMISSION_DENIED";
     id?: number;
+  }
+  export interface DeleteAnnouncementRequestDto {
+    announcementId: number;
+  }
+  export interface DeleteAnnouncementResponseDto {
+    error?: "PERMISSION_DENIED" | "INVALID_ANNOUNCEMENT_ID";
   }
   export interface DeleteContestRequestDto {
     contestId: number;
@@ -292,6 +312,9 @@ declare namespace ApiTypes {
   }
   export interface GetAllProblemTagsResponseDto {
     tags: ApiTypes.LocalizedProblemTagDto[];
+  }
+  export interface GetAnnouncementsResponseDto {
+    announcementMetas: ApiTypes.AnnouncementMetaDto[];
   }
   export interface GetClarificationsRequestDto {
     contestId: number;
@@ -993,7 +1016,7 @@ declare namespace ApiTypes {
   export interface RenameProblemFileResponseDto {
     error?: "NO_SUCH_PROBLEM" | "PERMISSION_DENIED" | "NO_SUCH_FILE";
   }
-  export type RequestBody = ApiTypes.SetDiscussionPermissionsRequestDto;
+  export type RequestBody = ApiTypes.DeleteAnnouncementRequestDto;
   export interface ResetJudgeClientKeyRequestDto {
     id: number;
   }
@@ -1014,8 +1037,8 @@ declare namespace ApiTypes {
     token?: string;
   }
   namespace Responses {
-    export type $200 = ApiTypes.GetSubmissionStaticsResponseDto;
-    export type $201 = ApiTypes.SetDiscussionPermissionsResponseDto;
+    export type $200 = ApiTypes.GetAnnouncementsResponseDto;
+    export type $201 = ApiTypes.DeleteAnnouncementResponseDto;
   }
   export interface RevokeUserSessionRequestDto {
     userId: number;

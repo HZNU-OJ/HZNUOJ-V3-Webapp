@@ -46,32 +46,22 @@ const Announcement: React.FC<{}> = (props) => {
   const [tbody, setTbody] = useState(null);
 
   async function fetchData() {
-    const { requestError, response } = await api.discussion.queryDiscussions({
-      locale: "en_US",
-      publisherId: 0,
-      nonpublic: false,
-      titleOnly: false,
-      skipCount: 0,
-      takeCount: 1000000,
-    });
+    const { requestError, response } = await api.homepage.getAnnouncements();
 
     if (requestError) {
+      console.log(requestError);
     } else {
       let html = [];
-      response.discussions = response.discussions.filter((item) =>
-        [1, 3].includes(item.meta.id),
-      );
-      response.discussions = response.discussions.sort(
-        (a, b) => b.meta.id - a.meta.id,
-      );
-      response.discussions.forEach((item, index: number) => {
-        const date = item.meta.editTime ?? item.meta.publishTime;
+      response.announcementMetas.forEach((announcement, index: number) => {
+        const date = announcement.lastUpdateTime;
         html.push(
           <tr key={["announcemnet", index].join("-")}>
             <td style={{ textAlign: "left" }} className={"h-ellipsis"}>
-              <a href={`/discussion/${item.meta.id}`}>
-                <Tooltip placement="top" title={item.meta.title}>
-                  <span style={{ fontWeight: "bold" }}>{item.meta.title}</span>
+              <a href={`/discussion/${announcement.id}`}>
+                <Tooltip placement="top" title={announcement.title}>
+                  <span style={{ fontWeight: "bold" }}>
+                    {announcement.title}
+                  </span>
                 </Tooltip>
               </a>
             </td>
