@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import GeneralLayout from "./layouts/GeneralLayout";
 import { Button, message, Space, Popconfirm, Tooltip } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
@@ -9,6 +9,10 @@ import { ColumnsType } from "antd/es/table";
 import { useTableSearch } from "@/utils/hooks";
 import FormatTableDate from "@/components/FormatTableDate";
 import { AddAnnouncementModel } from "./components";
+import { DndProvider, useDrag, useDrop } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import update from "immutability-helper";
+const type = "DragableBodyRow";
 
 import api from "@/api";
 
@@ -60,7 +64,7 @@ const AnnouncementPage: React.FC<{}> = (props) => {
         response.announcementMetas.map((announcement) => ({
           id: announcement.id,
           title: {
-            id: announcement.id,
+            id: announcement.discussionId,
             title: announcement.title,
           },
           lastUpdateTime: announcement.lastUpdateTime,
@@ -169,6 +173,100 @@ const AnnouncementPage: React.FC<{}> = (props) => {
     },
   ];
 
+  const DragableBodyRow = ({
+    index,
+    moveRow,
+    className,
+    style,
+    ...restProps
+  }) => {
+    const ref = useRef();
+    const [{ isOver, dropClassName }, drop] = useDrop(
+      () => ({
+        accept: type,
+        collect: (monitor) => {
+          const { index: dragIndex } = monitor.getItem() || {};
+          if (dragIndex === index) {
+            return {};
+          }
+          return {
+            isOver: monitor.isOver(),
+            dropClassName:
+              dragIndex < index ? " drop-over-downward" : " drop-over-upward",
+          };
+        },
+        drop: (item) => {
+          moveRow(item.index, index);
+        },
+      }),
+      [index],
+    );
+    const [, drag] = useDrag(
+      () => ({
+        type,
+        item: { index },
+        collect: (monitor) => ({
+          isDragging: monitor.isDragging(),
+        }),
+      }),
+      [index],
+    );
+    drop(drag(ref));
+
+    return (
+      <tr
+        ref={ref}
+        className={`${className}${isOver ? dropClassName : ""}`}
+        style={{ cursor: "move", ...style }}
+        {...restProps}
+      />
+    );
+  };
+
+  const components = {
+    body: {
+      row: DragableBodyRow,
+    },
+  };
+
+  const [swapLoading, setSwapLoading] = useState(false);
+  const moveRow = useCallback(
+    async (dragIndex, hoverIndex) => {
+      const dragRow = tableData[dragIndex];
+      const _data = update(tableData, {
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, dragRow],
+        ],
+      });
+      setTableData(_data);
+      setSwapLoading(true);
+
+      const orginId = tableData[dragIndex].id;
+      const newId = tableData[hoverIndex].id;
+
+      const {
+        requestError,
+        response,
+      } = await api.homepage.swapTwoAnnouncementOrder({
+        announcementOrginId: orginId,
+        announcementNewId: newId,
+      });
+
+      if (requestError) {
+        message.error(requestError);
+      } else if (response.error) {
+        message.error(response.error);
+      } else {
+        message.success(
+          `Swap Announcement ${orginId} and Announcement ${newId} Successfully.`,
+        );
+      }
+      setSwapLoading(false);
+    },
+    [tableData],
+  );
+
   return (
     <>
       <GeneralLayout current={"announcement"}>
@@ -185,25 +283,32 @@ const AnnouncementPage: React.FC<{}> = (props) => {
           </Button>
         </div>
 
-        <div className={style.table}>
-          <Table<AnnouncementItem>
-            size="small"
-            scroll={{ x: 900 }}
-            sticky
-            loading={fetchDataLoading}
-            columns={columns}
-            dataSource={tableData}
-            className={AntTableHeadStyles.table}
-            rowKey={(record) => record.id}
-            pagination={{
-              hideOnSinglePage: true,
-              showQuickJumper: true,
-              showSizeChanger: true,
-              defaultPageSize: 32,
-              pageSizeOptions: ["8", "16", "32", "64", "128", "256"],
-            }}
-          />
-        </div>
+        <DndProvider backend={HTML5Backend}>
+          <div className={style.table}>
+            <Table<AnnouncementItem>
+              size="small"
+              scroll={{ x: 900 }}
+              sticky
+              loading={fetchDataLoading || swapLoading}
+              columns={columns}
+              dataSource={tableData}
+              className={AntTableHeadStyles.table}
+              rowKey={(record) => record.id}
+              components={components}
+              onRow={(record, index) => ({
+                index,
+                moveRow,
+              })}
+              pagination={{
+                hideOnSinglePage: true,
+                showQuickJumper: true,
+                showSizeChanger: true,
+                defaultPageSize: 32,
+                pageSizeOptions: ["8", "16", "32", "64", "128", "256"],
+              }}
+            />
+          </div>
+        </DndProvider>
       </GeneralLayout>
 
       <AddAnnouncementModel

@@ -47,6 +47,7 @@ declare namespace ApiTypes {
   }
   export interface AnnouncementMetaDto {
     id: number;
+    discussionId: number;
     title: string;
     lastUpdateTime: string; // date-time
     orderId: number;
@@ -1017,7 +1018,7 @@ declare namespace ApiTypes {
   export interface RenameProblemFileResponseDto {
     error?: "NO_SUCH_PROBLEM" | "PERMISSION_DENIED" | "NO_SUCH_FILE";
   }
-  export type RequestBody = ApiTypes.DeleteAnnouncementRequestDto;
+  export type RequestBody = ApiTypes.SwapTwoAnnouncementOrderRequestDto;
   export interface ResetJudgeClientKeyRequestDto {
     id: number;
   }
@@ -1039,7 +1040,7 @@ declare namespace ApiTypes {
   }
   namespace Responses {
     export type $200 = ApiTypes.GetAnnouncementsResponseDto;
-    export type $201 = ApiTypes.DeleteAnnouncementResponseDto;
+    export type $201 = ApiTypes.SwapTwoAnnouncementOrderResponseDto;
   }
   export interface RevokeUserSessionRequestDto {
     userId: number;
@@ -1244,6 +1245,16 @@ declare namespace ApiTypes {
       | "FILE_NOT_UPLOADED";
     submissionId?: number;
     signedUploadRequest?: ApiTypes.SignedFileUploadRequestDto;
+  }
+  export interface SwapTwoAnnouncementOrderRequestDto {
+    announcementOrginId: number;
+    announcementNewId: number;
+  }
+  export interface SwapTwoAnnouncementOrderResponseDto {
+    error?:
+      | "PERMISSION_DENIED"
+      | "INVALID_ANNOUNCEMENT_ORGIN_ID"
+      | "INVALID_ANNOUNCEMENT_NEW_ID";
   }
   export interface ToggleReactionRequestDto {
     type: "Discussion" | "DiscussionReply";

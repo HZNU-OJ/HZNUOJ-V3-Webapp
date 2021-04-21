@@ -16,6 +16,10 @@ export const deleteAnnouncement = createPostApi<
   ApiTypes.DeleteAnnouncementRequestDto,
   ApiTypes.DeleteAnnouncementResponseDto
 >("homepage/deleteAnnouncement", false);
+export const swapTwoAnnouncementOrder = createPostApi<
+  ApiTypes.SwapTwoAnnouncementOrderRequestDto,
+  ApiTypes.SwapTwoAnnouncementOrderResponseDto
+>("homepage/swapTwoAnnouncementOrder", false);
 export const getAnnouncements = createGetApi<
   void,
   ApiTypes.GetAnnouncementsResponseDto
