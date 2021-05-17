@@ -170,7 +170,7 @@ const ExampleDiffBox: React.FC<ExampleDiffBoxProps> = (props) => {
           </div>
           <pre>
             {props.testcaseResult?.userOutput?.data ??
-              props.testcaseResult?.output ??
+              props.testcaseResult?.userOutput ??
               ""}
           </pre>
         </div>
