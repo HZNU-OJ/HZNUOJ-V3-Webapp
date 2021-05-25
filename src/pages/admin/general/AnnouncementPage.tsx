@@ -62,7 +62,7 @@ const AnnouncementPage: React.FC<{}> = (props) => {
     } else {
       setTableData(
         response.announcementMetas.map((announcement) => ({
-          id: announcement.id,
+          id: announcement.discussionId,
           title: {
             id: announcement.discussionId,
             title: announcement.title,
