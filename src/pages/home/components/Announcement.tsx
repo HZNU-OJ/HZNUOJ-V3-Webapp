@@ -5,42 +5,6 @@ import { formatDateTime } from "@/utils/formatDateTime";
 
 import api from "@/api";
 
-function getData() {
-  const announcemnets = [
-    {
-      title:
-        "The Hangzhou Normal U Qualification Trials for Zhejiang Provincial Collegiate Programming Contest 2020 Editorial",
-      date: "2020-08-18",
-    },
-    {
-      title:
-        "The Hangzhou Normal U Qualification Trials for Zhejiang Provincial Collegiate Programming Contest 2020 Announcement",
-      date: "2020-09-06",
-    },
-    { title: "ACM/ICPC集训队入队条件", date: "2020-01-01" },
-    { title: "杭州师范大学ACM集训队近年情况统计", date: "2019-01-01" },
-    { title: "F.A.Q.", date: "2018-01-01" },
-  ];
-  let html = [];
-  announcemnets.forEach((announcemnet: any, index: number) => {
-    html.push(
-      <tr key={["announcemnet", index].join("-")}>
-        <td style={{ textAlign: "left" }} className={"h-ellipsis"}>
-          <a href="">
-            <Tooltip placement="top" title={announcemnet.title}>
-              <span>{announcemnet.title}</span>
-            </Tooltip>
-          </a>
-        </td>
-        <td style={{ textAlign: "right", fontFamily: "Georgia" }}>
-          {announcemnet.date}
-        </td>
-      </tr>,
-    );
-  });
-  return html;
-}
-
 const Announcement: React.FC<{}> = (props) => {
   const [fetchLoading, setFetchLoading] = useState(true);
   const [tbody, setTbody] = useState(null);
@@ -57,7 +21,7 @@ const Announcement: React.FC<{}> = (props) => {
         html.push(
           <tr key={["announcemnet", index].join("-")}>
             <td style={{ textAlign: "left" }} className={"h-ellipsis"}>
-              <a href={`/discussion/${announcement.id}`}>
+              <a href={`/discussion/${announcement.discussionId}`}>
                 <Tooltip placement="top" title={announcement.title}>
                   <span style={{ fontWeight: "bold" }}>
                     {announcement.title}
