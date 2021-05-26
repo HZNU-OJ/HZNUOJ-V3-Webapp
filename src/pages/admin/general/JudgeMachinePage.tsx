@@ -34,7 +34,7 @@ function renderStatusBadge(status: statusType) {
           _status ? style.online : style.offline
         }`}
       ></div>
-      {_status ? "Online" : "Offline"}
+      {_status ? "ON" : "OFF"}
     </>
   );
 }
