@@ -98,10 +98,10 @@ const Register: React.FC<{}> = () => {
       );
 
       if (requestError) {
-        message.error("Register failed, please try again!");
-      }
-
-      if (response) {
+        message.error(requestError);
+      } else if (response.error) {
+        message.error(response.error);
+      } else {
         message.success("Register successfully!");
         setSteps(1);
       }

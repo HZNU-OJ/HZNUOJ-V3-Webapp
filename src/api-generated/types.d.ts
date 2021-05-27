@@ -992,7 +992,8 @@ declare namespace ApiTypes {
       | "ALREADY_LOGGEDIN"
       | "DUPLICATE_USERNAME"
       | "DUPLICATE_EMAIL"
-      | "INVALID_EMAIL_VERIFICATION_CODE";
+      | "INVALID_EMAIL_VERIFICATION_CODE"
+      | "DISABLE_REGISTER";
     token?: string;
   }
   export interface RejudgeSubmissionRequestDto {
@@ -1059,7 +1060,7 @@ declare namespace ApiTypes {
     contestId: number;
   }
   export interface SendContestNotificationResponseDto {
-    error?: "NO_SUCH_CONTEST";
+    error?: "NO_SUCH_CONTEST" | "PERMISSION_DENIED";
   }
   export interface SendEmailVerificationCodeRequestDto {
     email: string;

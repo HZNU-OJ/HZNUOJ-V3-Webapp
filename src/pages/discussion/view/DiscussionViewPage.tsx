@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Breadcrumb, message, Skeleton } from "antd";
-import { useParams } from "umi";
+import { useParams, useModel } from "umi";
 
 import Divider from "@/components/Divider";
 import { DiscussionViewHeader, DiscussionBox } from "./components";
@@ -17,6 +17,7 @@ interface DiscussionViewPageParams {
 }
 
 const DiscussionViewPage: React.FC<{}> = (props) => {
+  const { initialState, loading } = useModel("@@initialState");
   const params = useParams() as DiscussionViewPageParams;
 
   const recaptcha = useRecaptcha();
@@ -140,7 +141,8 @@ const DiscussionViewPage: React.FC<{}> = (props) => {
                   </div>
                 ))}
               </>
-              <div className={style.markdownEditor}>
+              {/* {initialState.userMeta.} */}
+              {/* <div className={style.markdownEditor}>
                 <LazyMarkDownEditor
                   height={isMobile ? "220" : "380"}
                   language={"markdown"}
@@ -149,7 +151,7 @@ const DiscussionViewPage: React.FC<{}> = (props) => {
                   onSubmit={onReply}
                   onSubmitLoading={submitLoading}
                 />
-              </div>
+              </div> */}
             </div>
           </Skeleton>
         </div>
