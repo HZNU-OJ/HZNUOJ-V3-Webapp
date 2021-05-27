@@ -7,6 +7,14 @@ interface SubmissionsProps {
   username?: string;
   contestId?: number;
   problemId?: number;
+  isContestSubmission?: boolean;
+  excludeColumns?: string[];
+  scroll?: {
+    x?: string | number | true;
+    y?: string | number;
+  } & {
+    scrollToFirstRowOnChange?: boolean;
+  };
 }
 
 const SubmissionsInContestTable: React.FC<SubmissionsProps> = (props) => {
@@ -21,6 +29,8 @@ const SubmissionsInContestTable: React.FC<SubmissionsProps> = (props) => {
       }}
       problemRender={getProblemRenderFunc(contest)}
       isContestSubmission={true}
+      excludeColumns={props.excludeColumns}
+      scroll={props.scroll}
     />
   );
 };

@@ -108,9 +108,12 @@ const SubmitTab: React.FC<SubmitTabProps> = (props) => {
           }}
           pagination={{
             defaultPageSize: 2,
+            position: ["topRight"],
           }}
           problemRender={getProblemRenderFunc(contest)}
           isContestSubmission={true}
+          excludeColumns={["problem"]}
+          scroll={{ x: 780 }}
         />
       </div>
       <LazyCodeBoxEditor

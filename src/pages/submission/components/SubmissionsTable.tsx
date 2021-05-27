@@ -120,6 +120,13 @@ interface SubmissionsTableProps {
   pagination?: false | TablePaginationConfig;
   problemRender?: (problem: ProblemItem) => JSX.Element;
   isContestSubmission?: boolean;
+  excludeColumns?: string[];
+  scroll?: {
+    x?: string | number | true;
+    y?: string | number;
+  } & {
+    scrollToFirstRowOnChange?: boolean;
+  };
 }
 
 const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
@@ -340,7 +347,7 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
       key: "who",
       width: "80px",
       align: "center",
-      ...useTableSearch("who", SubmissionTableHeadTitle.who),
+      // ...useTableSearch("who", SubmissionTableHeadTitle.who),
       render: (who: WhoItem) => (
         <a href={`/user/${who.username}`} target={"_blank"}>
           <Tooltip title={who.username} placement={"top"}>
@@ -364,9 +371,15 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
       <Table<SubmissionItem>
         loading={fetchDataLoading}
         size="small"
-        scroll={{ x: 1100 }}
+        scroll={props.scroll ?? { x: 1100 }}
         sticky
-        columns={columns}
+        columns={columns.filter(
+          (column) =>
+            !(
+              props.excludeColumns &&
+              props.excludeColumns.includes(column.dataIndex)
+            ),
+        )}
         dataSource={tableData}
         className={AntTableHeadStyles.table}
         rowKey={(record) => record.id}

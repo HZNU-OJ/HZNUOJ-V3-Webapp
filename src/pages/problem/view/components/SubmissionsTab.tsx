@@ -16,6 +16,11 @@ const SubmissionsTab: React.FC<SubmissionsTabProps> = (props) => {
             problemId: props.problemId,
             contestId: props.contestId,
           }}
+          pagination={{
+            position: ["topRight", "bottomRight"],
+          }}
+          excludeColumns={["problem"]}
+          scroll={{ x: 780 }}
         />
       </div>
     </>

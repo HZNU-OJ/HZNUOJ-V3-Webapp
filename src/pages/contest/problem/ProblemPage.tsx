@@ -212,6 +212,8 @@ const ProblemPage: React.FC<{}> = (props) => {
                       problemId={
                         getProblemByAlphaId(contest, params.pid).problemId
                       }
+                      excludeColumns={["problem"]}
+                      scroll={{ x: 780 }}
                     />
                   )}
                   {/* {tab === "statistics" && <StatisticsTab />} */}

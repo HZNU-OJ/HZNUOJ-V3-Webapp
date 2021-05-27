@@ -11,6 +11,8 @@ const MySubmissionsTab: React.FC<MySubmissionsTabProps> = (props) => {
     <SubmissionInContestTable
       username={props.username}
       contestId={props.contestId}
+      excludeColumns={["who"]}
+      scroll={{ x: 780 }}
     />
   );
 };
