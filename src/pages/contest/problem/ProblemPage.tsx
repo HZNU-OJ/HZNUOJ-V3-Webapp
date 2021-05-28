@@ -129,7 +129,7 @@ const ProblemPage: React.FC<{}> = (props) => {
                 rel="noopener noreferrer"
                 href={`/contest/${params.id}/problem/${mappingOrderIdToAlphaId(
                   problem.orderId,
-                )}`}
+                )}${window.location.search}`}
               >
                 {`${mappingOrderIdToAlphaId(problem.orderId)}. ${
                   problem.title
