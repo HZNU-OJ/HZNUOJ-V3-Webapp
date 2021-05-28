@@ -43,6 +43,8 @@ class Export extends React.Component {
     datFileGenerateLoading: false,
     rankJsonValue: "",
     rankJsonGenerateLoading: false,
+    resolverJsonValue: "",
+    resolverJsonGenerateLoading: false,
   };
 
   constructor(props: any) {
@@ -163,6 +165,43 @@ class Export extends React.Component {
     });
   }
 
+  getResolverJson() {
+    console.log(this.contest_config);
+    console.log(this.team);
+    console.log(this.run);
+
+    var data = {};
+    data["contest_name"] = this.contest_config["contest_name"];
+    data["problem_count"] = this.contest_config["problem_id"].length;
+    data["frozen_seconds"] =
+      this.contest_config["end_time"] -
+      this.contest_config["frozen_time"] -
+      this.contest_config["start_time"];
+    data["solutions"] = {};
+    data["users"] = {};
+
+    for (var key in this.team) {
+      data["users"][key] = {
+        name: this.team[key]["name"],
+        college: this.team[key]["organization"],
+        is_exclude: this.team[key]["unofficial"] === 1,
+      };
+    }
+
+    this.run.forEach((run) => {
+      data["solutions"][run.team_id] = {
+        user_id: run.team_id,
+        problem_index: run.problem_id + 1,
+        verdict: run.status === "correct" ? "AC" : "WA",
+        submitted_seconds: run.timestamp,
+      };
+    });
+
+    this.setState({
+      resolverJsonValue: JSON.stringify(data),
+    });
+  }
+
   render() {
     return (
       <>
@@ -179,6 +218,7 @@ class Export extends React.Component {
           >
             <Option value="dat-file">Codeforces Gym Ghosts DAT File</Option>
             <Option value="rank-json">Rank JSON</Option>
+            <Option value="resolver-json">Resolver JSON</Option>
           </Select>
 
           {this.state.type === "dat-file" && (
@@ -221,6 +261,29 @@ class Export extends React.Component {
                 type="primary"
                 size="middle"
                 onClick={this.getRankJson.bind(this)}
+              >
+                Generate
+              </Button>
+            </>
+          )}
+
+          {this.state.type === "resolver-json" && (
+            <>
+              <div style={{ width: 680 }}>
+                <TextArea
+                  allowClear={true}
+                  rows={15}
+                  defaultValue={this.state.resolverJsonValue}
+                  key={this.state.resolverJsonValue}
+                  disabled={this.state.resolverJsonGenerateLoading}
+                />
+              </div>
+              <Button
+                loading={this.state.resolverJsonGenerateLoading}
+                className={style.btn}
+                type="primary"
+                size="middle"
+                onClick={this.getResolverJson.bind(this)}
               >
                 Generate
               </Button>

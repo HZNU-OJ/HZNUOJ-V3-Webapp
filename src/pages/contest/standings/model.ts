@@ -97,8 +97,10 @@ export function getData(
 
   if (contest.contestMeta?.frozenStartTime) {
     contest_config["frozen_time"] =
-      date2TimeStamp(contest.contestMeta.frozenEndTime) -
-      date2TimeStamp(contest.contestMeta.frozenStartTime);
+      Math.min(
+        date2TimeStamp(contest.contestMeta.frozenEndTime),
+        date2TimeStamp(contest.contestMeta.endTime),
+      ) - date2TimeStamp(contest.contestMeta.frozenStartTime);
   } else {
     contest_config["frozen_time"] = 0;
   }
