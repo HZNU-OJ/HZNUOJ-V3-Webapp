@@ -267,6 +267,7 @@ class Board extends React.Component<BoardProps> {
                   run={this.state.current_run}
                   currentGroup={this.state.menu_index.group}
                   filter={this.state.filter}
+                  history={this.props.history}
                 />
               )}
 

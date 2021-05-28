@@ -527,12 +527,24 @@ class Standings extends React.Component {
                   {this.state.problem_list.map((item: any, index: number) => {
                     return (
                       <th
-                        className={style.success}
+                        className={`${style.success} ${style.hover}`}
                         style={{
                           width: "4em",
                           backgroundColor:
                             item.balloon_color?.background_color || "",
                           color: item.balloon_color?.color || "",
+                        }}
+                        onClick={() => {
+                          window.open(
+                            `/contest/${
+                              this.props.contest_config.contest_id
+                            }/problem/${
+                              this.state.contest_config.problem_id[
+                                item.problem_id
+                              ]
+                            }`,
+                            "_blank",
+                          );
                         }}
                       >
                         {[
