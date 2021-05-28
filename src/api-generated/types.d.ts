@@ -86,12 +86,15 @@ declare namespace ApiTypes {
     frozenStartTime?: string; // date-time
     frozenEndTime?: string; // date-time
     isPublic: boolean;
+    organization?: string;
   }
   export interface ContestUser {
     username: string;
     nickname: string;
     password: string;
     notificationEmail?: string;
+    organization?: string;
+    location?: string;
   }
   export interface ContestUserMetaDto {
     id: number;
@@ -99,6 +102,7 @@ declare namespace ApiTypes {
     email: string;
     nickname: string;
     organization: string;
+    location: string;
     registrationTime: string; // date-time
     notificationEmail: string;
     contestUserPassword?: string;

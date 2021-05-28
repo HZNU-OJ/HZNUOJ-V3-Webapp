@@ -78,10 +78,23 @@ export function getData(
   standingsData: ApiTypes.GetStandingsDataResponseDto,
 ) {
   let contest_config = {};
+
+  if (contest.contestMeta.organization != null) {
+    contest_config["organization"] = contest.contestMeta.organization;
+  }
+
+  if ([11, 12, 13].includes(contest.contestMeta.id)) {
+    contest_config["group"] = {
+      official: "Official",
+      unofficial: "Unofficial",
+    };
+  }
+
   contest_config["contest_id"] = contest.contestMeta.id;
   contest_config["contest_name"] = contest.contestMeta.contestName;
   contest_config["start_time"] = date2TimeStamp(contest.contestMeta.startTime);
   contest_config["end_time"] = date2TimeStamp(contest.contestMeta.endTime);
+
   if (contest.contestMeta?.frozenStartTime) {
     contest_config["frozen_time"] =
       date2TimeStamp(contest.contestMeta.frozenEndTime) -
@@ -89,12 +102,14 @@ export function getData(
   } else {
     contest_config["frozen_time"] = 0;
   }
+
   contest_config["penalty"] = 1200;
   contest_config["status_time_display"] = {
     correct: 1,
     incorrect: 1,
     pending: 1,
   };
+
   const problemNum = contest?.problemMetas?.length ?? 0;
   contest_config["origin_problem_id"] = contest.problemMetas?.map(
     (p) => p.problemId,
@@ -117,7 +132,11 @@ export function getData(
     team[user.id] = {
       name: user.nickname,
       username: user.username,
+      organization: user.organization,
     };
+    if (user.location) {
+      user.location.split(",").forEach((i) => (team[user.id][i] = 1));
+    }
   });
 
   let run = [];

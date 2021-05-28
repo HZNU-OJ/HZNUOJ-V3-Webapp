@@ -173,11 +173,13 @@ const SubmissionViewPage: React.FC<{}> = (props) => {
               </div>
             )}
 
-            <div style={{ marginTop: 20 }}>
-              <ContentWrapper title={"Code"}>
-                <CodeBox language={meta.codeLanguage} code={code} />
-              </ContentWrapper>
-            </div>
+            {code && (
+              <div style={{ marginTop: 20 }}>
+                <ContentWrapper title={"Code"}>
+                  <CodeBox language={meta.codeLanguage} code={code} />
+                </ContentWrapper>
+              </div>
+            )}
 
             {testcaseResult.length > 0 && (
               <div style={{ marginTop: 20 }}>
