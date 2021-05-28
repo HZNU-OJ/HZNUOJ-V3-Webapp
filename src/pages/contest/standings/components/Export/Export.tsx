@@ -166,10 +166,6 @@ class Export extends React.Component {
   }
 
   getResolverJson() {
-    console.log(this.contest_config);
-    console.log(this.team);
-    console.log(this.run);
-
     var data = {};
     data["contest_name"] = this.contest_config["contest_name"];
     data["problem_count"] = this.contest_config["problem_id"].length;
