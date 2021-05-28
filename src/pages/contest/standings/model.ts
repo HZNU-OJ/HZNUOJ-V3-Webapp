@@ -78,6 +78,7 @@ export function getData(
   standingsData: ApiTypes.GetStandingsDataResponseDto,
 ) {
   let contest_config = {};
+  contest_config["contest_id"] = contest.contestMeta.id;
   contest_config["contest_name"] = contest.contestMeta.contestName;
   contest_config["start_time"] = date2TimeStamp(contest.contestMeta.startTime);
   contest_config["end_time"] = date2TimeStamp(contest.contestMeta.endTime);
@@ -95,6 +96,9 @@ export function getData(
     pending: 1,
   };
   const problemNum = contest?.problemMetas?.length ?? 0;
+  contest_config["origin_problem_id"] = contest.problemMetas?.map(
+    (p) => p.problemId,
+  );
   contest_config["problem_id"] = problemId.filter(
     (_, index) => index < problemNum,
   );
@@ -112,6 +116,7 @@ export function getData(
   standingsData.contestUserList.forEach((user) => {
     team[user.id] = {
       name: user.nickname,
+      username: user.username,
     };
   });
 

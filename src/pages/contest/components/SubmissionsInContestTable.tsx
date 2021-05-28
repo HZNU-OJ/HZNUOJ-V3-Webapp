@@ -15,6 +15,7 @@ interface SubmissionsProps {
   } & {
     scrollToFirstRowOnChange?: boolean;
   };
+  pagination?: any;
 }
 
 const SubmissionsInContestTable: React.FC<SubmissionsProps> = (props) => {
@@ -31,6 +32,7 @@ const SubmissionsInContestTable: React.FC<SubmissionsProps> = (props) => {
       isContestSubmission={true}
       excludeColumns={props.excludeColumns}
       scroll={props.scroll}
+      pagination={props.pagination}
     />
   );
 };

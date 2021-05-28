@@ -22,7 +22,8 @@ import {
 import { GirlIcon, LikeIcon, StarIcon } from "@/icons";
 import { debounce } from "lodash";
 
-import api from "@/api";
+import { Modal } from "antd";
+import SubmissionInContestTable from "@/pages/contest/components/SubmissionsInContestTable";
 
 function getInfo(coach: string | undefined, members: string[] | undefined) {
   let splitch = "、";
@@ -103,37 +104,20 @@ function onStarBtnClick(
 
 function getTeamRow(item: any, index: number, Filter: boolean, _this: any) {
   const analyzeTeamId = getAnalyzeTeamId(item.team_id, Filter ? 2 : 1);
+  const username = item.username;
   return (
     <>
       <tr
+        key={item.team_id}
         className={[
           Filter
             ? style.filter
             : style[["stand", item.stand_className_id].join("")],
           style.team,
         ].join(" ")}
-        onClick={() => {
-          let item = document.getElementById(analyzeTeamId);
-          switch (item?.style?.display) {
-            case "none":
-              _this.clearTeamDetailsDisplay();
-              item.style.display = "";
-              let vis: any = {};
-              vis[analyzeTeamId] = 1;
-              _this.setState({
-                vis: vis,
-              });
-              break;
-            case "":
-              item.style.display = "none";
-              _this.setState({
-                vis: {},
-              });
-              break;
-          }
-        }}
       >
         <td className={style[item.place_className]}>{item.place}</td>
+
         {_this.state.badge === 1 && (
           <td className={style.empty}>
             <img
@@ -144,6 +128,7 @@ function getTeamRow(item: any, index: number, Filter: boolean, _this: any) {
             />
           </td>
         )}
+
         {_this.state.organization === 1 && (
           <td className={style.stnd}>
             <div
@@ -175,7 +160,30 @@ function getTeamRow(item: any, index: number, Filter: boolean, _this: any) {
             </div>
           </td>
         )}
-        <td className={style.stnd}>
+
+        <td
+          className={`${style.stnd} ${style.hover}`}
+          onClick={() => {
+            let item = document.getElementById(analyzeTeamId);
+            switch (item?.style?.display) {
+              case "none":
+                _this.clearTeamDetailsDisplay();
+                item.style.display = "";
+                let vis: any = {};
+                vis[analyzeTeamId] = 1;
+                _this.setState({
+                  vis: vis,
+                });
+                break;
+              case "":
+                item.style.display = "none";
+                _this.setState({
+                  vis: {},
+                });
+                break;
+            }
+          }}
+        >
           {item.name}
           {item.unofficial === 1 && <StarIcon />}
           <span
@@ -209,11 +217,29 @@ function getTeamRow(item: any, index: number, Filter: boolean, _this: any) {
             }
           })();
           return (
-            <td className={style[item.status_className]}>
+            <td
+              className={`${style[item.status_className]} ${
+                item.status !== "unattempted" ? style.hover : ""
+              }`}
+              onClick={() => {
+                if (item.status === "unattempted") {
+                  return;
+                }
+
+                _this.setState({
+                  statusModalVisible: true,
+                  statusModalUsername: username,
+                  statusModalProblemId: index,
+                });
+              }}
+            >
               {ch_status}
               {item.status === "pending" && [" ", item["pending_num"]].join("")}
+
               <br />
+
               {item.attempt_num ? parseInt(item.attempt_num) : ""}
+
               {_this.state.contest_config?.status_time_display[item.status] ===
                 1 &&
               (item.time || item.time === 0)
@@ -457,6 +483,9 @@ class Standings extends React.Component {
     loaded: false,
     filter: true,
     concerned: new Set(),
+    statusModalVisible: false,
+    statusModalUsername: "",
+    statusModalProblemId: 0,
   };
 
   render() {
@@ -471,7 +500,7 @@ class Standings extends React.Component {
         {this.state.loaded === true && (
           <table style={{ marginTop: "5px" }} className={style.standings}>
             <thead>
-              <tr>
+              <tr key="table-header">
                 <th className={style.title} style={{ width: "3em" }}>
                   Place
                 </th>
@@ -612,7 +641,10 @@ class Standings extends React.Component {
                   },
                 ].map((item: any, index: number) => {
                   return (
-                    <tr className={style[["statistics", index % 2].join("-")]}>
+                    <tr
+                      key={`footer-${item.title}`}
+                      className={style[["statistics", index % 2].join("-")]}
+                    >
                       <td
                         className={style.empty}
                         colSpan={this.getInfoCol() - 1}
@@ -628,6 +660,39 @@ class Standings extends React.Component {
             </tbody>
           </table>
         )}
+
+        <Modal
+          width={960}
+          visible={this.state.statusModalVisible}
+          footer={null}
+          onCancel={() => {
+            this.setState({
+              statusModalVisible: false,
+            });
+          }}
+          bodyStyle={{
+            padding: "10px 5px",
+          }}
+          closable={false}
+          destroyOnClose={true}
+        >
+          <SubmissionInContestTable
+            username={this.state.statusModalUsername}
+            contestId={this.props.contest_config.contest_id}
+            problemId={
+              this.props.contest_config.origin_problem_id[
+                this.state.statusModalProblemId
+              ]
+            }
+            excludeColumns={["who"]}
+            scroll={{}}
+            // scroll={{ x: 780 }}
+            pagination={{
+              defaultPageSize: 8,
+              position: ["bottomRight"],
+            }}
+          />
+        </Modal>
       </>
     );
   }

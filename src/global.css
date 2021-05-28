@@ -40,3 +40,10 @@ a {
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
 }
+
+/*
+  https://github.com/ant-design/ant-design/issues/22333
+*/
+.ant-table-body .ant-table-measure-row {
+  visibility: collapse;
+}

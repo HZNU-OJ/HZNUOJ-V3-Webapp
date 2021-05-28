@@ -238,6 +238,7 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = (props) => {
         });
       });
       setTableData(_tableData);
+      console.log(_tableData);
       if (
         _tableData.some((data) =>
           ["Preparing", "Compiling", "Running", "Waiting"].includes(
