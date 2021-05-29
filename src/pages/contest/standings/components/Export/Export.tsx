@@ -167,27 +167,36 @@ class Export extends React.Component {
 
   getResolverJson() {
     var data = {};
+
     data["contest_name"] = this.contest_config["contest_name"];
     data["problem_count"] = this.contest_config["problem_id"].length;
+
     data["frozen_seconds"] =
       this.contest_config["end_time"] -
       this.contest_config["frozen_time"] -
       this.contest_config["start_time"];
+
     data["solutions"] = {};
     data["users"] = {};
 
+    var m = new Map();
+
+    var _team_index = 1;
+
     for (var key in this.team) {
-      data["users"][key] = {
+      m.set("" + key, "" + _team_index);
+      ++_team_index;
+      data["users"][m.get(key)] = {
         name: this.team[key]["name"],
         college: this.team[key]["organization"],
         is_exclude: this.team[key]["unofficial"] === 1,
       };
     }
 
-    this.run.forEach((run) => {
-      data["solutions"][run.team_id] = {
-        user_id: run.team_id,
-        problem_index: run.problem_id + 1,
+    this.run.forEach((run, index) => {
+      data["solutions"][index + 1] = {
+        user_id: m.get("" + run.team_id),
+        problem_index: "" + (run.problem_id + 1),
         verdict: run.status === "correct" ? "AC" : "WA",
         submitted_seconds: run.timestamp,
       };
