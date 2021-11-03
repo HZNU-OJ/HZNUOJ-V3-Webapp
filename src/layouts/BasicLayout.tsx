@@ -156,7 +156,7 @@ const Header: React.FC<HeaderProps> = (props) => {
   return (
     <div
       dangerouslySetInnerHTML={topBar(
-        "HZNU Online Judge",
+        "JudgeQ",
         props.current,
         props.username,
         props.id,

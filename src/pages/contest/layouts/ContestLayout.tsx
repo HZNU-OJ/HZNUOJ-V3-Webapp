@@ -253,7 +253,7 @@ const ContestLayout: React.FC<ContestLayoutProps> = (props) => {
   return (
     <>
       <Helmet>
-        <title>{`${contest?.contestMeta?.contestName} - HZNU Online Judge`}</title>
+        <title>{`${contest?.contestMeta?.contestName} - JudgeQ`}</title>
       </Helmet>
       {loading ||
         (fetchDataLoading && (

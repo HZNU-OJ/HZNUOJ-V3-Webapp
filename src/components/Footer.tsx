@@ -21,7 +21,7 @@ const Footer: React.FC<{}> = (props) => {
 
   return (
     <footer className={style.footer}>
-      <div className={style.name}>Hangzhou Normal U Online Judge V3</div>
+      <div className={style.name}>Powered By JudgeQ</div>
       <div className={style.version}>
         WebApp: {packages.version} | API: {apiVersion}
       </div>
@@ -31,7 +31,7 @@ const Footer: React.FC<{}> = (props) => {
           title="GitHub"
           target="_blank"
           rel="noreferrer noopener"
-          href="https://github.com/HZNU-OJ/HZNUOJ"
+          href="https://github.com/JudgeQ-Dev/JudgeQ"
         >
           <GithubIcon />
         </a>

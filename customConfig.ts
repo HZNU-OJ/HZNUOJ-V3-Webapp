@@ -5,7 +5,7 @@ export default {
     baidu: "",
   },
   favicon: "/favicon.png",
-  title: "HZNU Online Judge",
+  title: "JudgeQ",
   base: "/",
   metas: [
     {
@@ -14,12 +14,11 @@ export default {
     },
     {
       name: "description",
-      content: "HZNU Online Judge",
+      content: "JudgeQ",
     },
   ],
   apiEndpoint: "/",
-  api_proxy_target: "https://v3.hznuoj.com",
-  // api_proxy_target: "http://127.0.0.1:3000",
+  api_proxy_target: "http://127.0.0.1:3000",
   monacoEditorSupportedLanguages: [
     "abap",
     "apex",

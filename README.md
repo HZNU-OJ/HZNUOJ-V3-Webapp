@@ -6,7 +6,8 @@
 [![License](https://img.shields.io/github/license/JudgeQ-Dev/JudgeQ-WebApp?style=flat-square)](LICENSE)
 [![jsDelivr](https://data.jsdelivr.com/v1/package/gh/JudgeQ-Dev/JudgeQ-WebApp/badge)](https://www.jsdelivr.com/package/gh/JudgeQ-Dev/JudgeQ-WebApp)
 
-The webapp of 3th generation HZNUOJ.
+The webapp of JudgeQ.
+
 ## Getting Started
 
 Install dependencies,
