@@ -1,10 +1,10 @@
 {
-  "name": "hznuoj-v3-webapp",
+  "name": "judgeq-webapp",
   "version": "0.0.74.8",
-  "description": "The WebApp of HZNUOJ V3",
-  "repository": "https://github.com/HZNU-OJ/HZNUOJ-V3-WebApp",
+  "description": "The WebApp of JudgeQ",
+  "repository": "https://github.com/JudgeQ-Dev/JudgeQ-WebApp",
   "author": "Dup4",
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "scripts": {
     "start": "cross-env umi dev",
     "start:no-mock": "cross-env MOCK=none umi dev",
@@ -100,6 +100,6 @@
     "yorkie": "^2.0.0"
   },
   "engines": {
-    "node": ">=14.15.5"
+    "node": ">=16.11.0"
   }
 }
