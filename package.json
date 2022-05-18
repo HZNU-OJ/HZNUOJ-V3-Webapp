@@ -1,5 +1,5 @@
 {
-  "name": "judgeq-webapp",
+  "name": "@judgeq/ui",
   "version": "0.0.74.18",
   "description": "The WebApp of JudgeQ",
   "repository": "https://github.com/JudgeQ-Dev/JudgeQ-WebApp",
