@@ -11,7 +11,7 @@
         "start:no-ui": "cross-env UMI_UI=none umi dev",
         "build": "cross-env NODE_OPTIONS=--max-old-space-size=4096 umi build",
         "generate-api": "node scripts/generate-api.js http://localhost:3000/api/docs-json",
-        "postinstall": "bash scripts/get_amazeui.sh && umi generate tmp",
+        "postinstall": "bash scripts/get_public_assets.sh && umi generate tmp",
         "prettier": "prettier --write 'src/**/*.{js,jsx,tsx,less,md,json}' && prettier --write --parser=typescript 'src/**/*.ts?(x)'",
         "test": "umi-test",
         "test:coverage": "umi-test --coverage"
