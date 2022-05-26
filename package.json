@@ -2,7 +2,7 @@
     "name": "@judgeq/ui",
     "version": "0.0.74.18",
     "description": "The WebApp of JudgeQ",
-    "repository": "https://github.com/JudgeQ-Dev/JudgeQ-WebApp",
+    "repository": "https://github.com/JudgeQ-Dev/ui",
     "author": "Dup4",
     "license": "AGPL-3.0",
     "engines": {
