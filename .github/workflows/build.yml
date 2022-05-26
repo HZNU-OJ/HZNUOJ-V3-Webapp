@@ -26,6 +26,6 @@ jobs:
           yarn build
 
       - name: Minify HTML Index
-        uses: Dup4/minify-html-action@v9
+        uses: Dup4/minify-html-action@v1
         with:
           src: './dist/index.html'
