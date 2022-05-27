@@ -12,6 +12,9 @@
 /scripts
 /node_modules
 
-package.json
+.github
+.vscode
+
+*.json
 *.yml
 *.yaml
