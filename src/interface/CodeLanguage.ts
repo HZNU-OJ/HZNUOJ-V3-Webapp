@@ -50,158 +50,165 @@ export function checkCodeFileExtension(
   );
 }
 
-export const compileAndRunOptions: Record<
-  CodeLanguage,
-  CodeLanguageOption[]
-> = {
-  [CodeLanguage.Cpp]: [
-    {
-      name: "compiler",
-      type: CodeLanguageOptionType.Select,
-      values: ["g++", "clang++"],
-      defaultValue: "g++",
-    },
-    {
-      name: "std",
-      type: CodeLanguageOptionType.Select,
-      values: [
-        "c++03",
-        "c++11",
-        "c++14",
-        "c++17",
-        "c++20",
-        "gnu++03",
-        "gnu++11",
-        "gnu++14",
-        "gnu++17",
-        "gnu++20",
-      ],
-      defaultValue: "c++11",
-    },
-    {
-      name: "O",
-      type: CodeLanguageOptionType.Select,
-      values: ["0", "1", "2", "3", "fast"],
-      defaultValue: "2",
-    },
-    {
-      name: "m",
-      type: CodeLanguageOptionType.Select,
-      values: ["64", "32", "x32"],
-      defaultValue: "64",
-    },
-  ],
-  [CodeLanguage.C]: [
-    {
-      name: "compiler",
-      type: CodeLanguageOptionType.Select,
-      values: ["gcc", "clang"],
-      defaultValue: "gcc",
-    },
-    {
-      name: "std",
-      type: CodeLanguageOptionType.Select,
-      values: ["c89", "c99", "c11", "c17", "gnu89", "gnu99", "gnu11", "gnu17"],
-      defaultValue: "c11",
-    },
-    {
-      name: "O",
-      type: CodeLanguageOptionType.Select,
-      values: ["0", "1", "2", "3", "fast"],
-      defaultValue: "2",
-    },
-    {
-      name: "m",
-      type: CodeLanguageOptionType.Select,
-      values: ["64", "32", "x32"],
-      defaultValue: "64",
-    },
-  ],
-  [CodeLanguage.Java]: [],
-  [CodeLanguage.Kotlin]: [
-    {
-      name: "version",
-      type: CodeLanguageOptionType.Select,
-      values: ["1.3", "1.4", "1.5"],
-      defaultValue: "1.4",
-    },
-    {
-      name: "platform",
-      type: CodeLanguageOptionType.Select,
-      values: ["jvm"],
-      defaultValue: "jvm",
-    },
-  ],
-  [CodeLanguage.Pascal]: [
-    {
-      name: "optimize",
-      type: CodeLanguageOptionType.Select,
-      values: ["-", "1", "2", "3", "4"],
-      defaultValue: "2",
-    },
-  ],
-  [CodeLanguage.Python]: [
-    {
-      name: "version",
-      type: CodeLanguageOptionType.Select,
-      values: ["2.7", "3.6", "3.9"],
-      defaultValue: "3.9",
-    },
-  ],
-  [CodeLanguage.Rust]: [
-    {
-      name: "version",
-      type: CodeLanguageOptionType.Select,
-      values: ["2015", "2018"],
-      defaultValue: "2018",
-    },
-    {
-      name: "optimize",
-      type: CodeLanguageOptionType.Select,
-      values: ["0", "1", "2", "3"],
-      defaultValue: "3",
-    },
-  ],
-  [CodeLanguage.Swift]: [
-    {
-      name: "version",
-      type: CodeLanguageOptionType.Select,
-      values: ["4.2", "5"],
-      defaultValue: "5",
-    },
-    {
-      name: "optimize",
-      type: CodeLanguageOptionType.Select,
-      values: ["Onone", "O", "Ounchecked"],
-      defaultValue: "O",
-    },
-  ],
-  [CodeLanguage.Go]: [
-    {
-      name: "version",
-      type: CodeLanguageOptionType.Select,
-      values: ["1.x"],
-      defaultValue: "1.x",
-    },
-  ],
-  [CodeLanguage.Haskell]: [
-    {
-      name: "version",
-      type: CodeLanguageOptionType.Select,
-      values: ["98", "2010"],
-      defaultValue: "2010",
-    },
-  ],
-  [CodeLanguage.CSharp]: [
-    {
-      name: "version",
-      type: CodeLanguageOptionType.Select,
-      values: ["7.3", "8"],
-      defaultValue: "8",
-    },
-  ],
-  [CodeLanguage.FSharp]: [],
-};
+export const compileAndRunOptions: Record<CodeLanguage, CodeLanguageOption[]> =
+  {
+    [CodeLanguage.Cpp]: [
+      {
+        name: "compiler",
+        type: CodeLanguageOptionType.Select,
+        values: ["g++", "clang++"],
+        defaultValue: "g++",
+      },
+      {
+        name: "std",
+        type: CodeLanguageOptionType.Select,
+        values: [
+          "c++03",
+          "c++11",
+          "c++14",
+          "c++17",
+          "c++20",
+          "gnu++03",
+          "gnu++11",
+          "gnu++14",
+          "gnu++17",
+          "gnu++20",
+        ],
+        defaultValue: "c++11",
+      },
+      {
+        name: "O",
+        type: CodeLanguageOptionType.Select,
+        values: ["0", "1", "2", "3", "fast"],
+        defaultValue: "2",
+      },
+      {
+        name: "m",
+        type: CodeLanguageOptionType.Select,
+        values: ["64", "32", "x32"],
+        defaultValue: "64",
+      },
+    ],
+    [CodeLanguage.C]: [
+      {
+        name: "compiler",
+        type: CodeLanguageOptionType.Select,
+        values: ["gcc", "clang"],
+        defaultValue: "gcc",
+      },
+      {
+        name: "std",
+        type: CodeLanguageOptionType.Select,
+        values: [
+          "c89",
+          "c99",
+          "c11",
+          "c17",
+          "gnu89",
+          "gnu99",
+          "gnu11",
+          "gnu17",
+        ],
+        defaultValue: "c11",
+      },
+      {
+        name: "O",
+        type: CodeLanguageOptionType.Select,
+        values: ["0", "1", "2", "3", "fast"],
+        defaultValue: "2",
+      },
+      {
+        name: "m",
+        type: CodeLanguageOptionType.Select,
+        values: ["64", "32", "x32"],
+        defaultValue: "64",
+      },
+    ],
+    [CodeLanguage.Java]: [],
+    [CodeLanguage.Kotlin]: [
+      {
+        name: "version",
+        type: CodeLanguageOptionType.Select,
+        values: ["1.3", "1.4", "1.5"],
+        defaultValue: "1.4",
+      },
+      {
+        name: "platform",
+        type: CodeLanguageOptionType.Select,
+        values: ["jvm"],
+        defaultValue: "jvm",
+      },
+    ],
+    [CodeLanguage.Pascal]: [
+      {
+        name: "optimize",
+        type: CodeLanguageOptionType.Select,
+        values: ["-", "1", "2", "3", "4"],
+        defaultValue: "2",
+      },
+    ],
+    [CodeLanguage.Python]: [
+      {
+        name: "version",
+        type: CodeLanguageOptionType.Select,
+        values: ["2.7", "3.6", "3.9"],
+        defaultValue: "3.9",
+      },
+    ],
+    [CodeLanguage.Rust]: [
+      {
+        name: "version",
+        type: CodeLanguageOptionType.Select,
+        values: ["2015", "2018"],
+        defaultValue: "2018",
+      },
+      {
+        name: "optimize",
+        type: CodeLanguageOptionType.Select,
+        values: ["0", "1", "2", "3"],
+        defaultValue: "3",
+      },
+    ],
+    [CodeLanguage.Swift]: [
+      {
+        name: "version",
+        type: CodeLanguageOptionType.Select,
+        values: ["4.2", "5"],
+        defaultValue: "5",
+      },
+      {
+        name: "optimize",
+        type: CodeLanguageOptionType.Select,
+        values: ["Onone", "O", "Ounchecked"],
+        defaultValue: "O",
+      },
+    ],
+    [CodeLanguage.Go]: [
+      {
+        name: "version",
+        type: CodeLanguageOptionType.Select,
+        values: ["1.x"],
+        defaultValue: "1.x",
+      },
+    ],
+    [CodeLanguage.Haskell]: [
+      {
+        name: "version",
+        type: CodeLanguageOptionType.Select,
+        values: ["98", "2010"],
+        defaultValue: "2010",
+      },
+    ],
+    [CodeLanguage.CSharp]: [
+      {
+        name: "version",
+        type: CodeLanguageOptionType.Select,
+        values: ["7.3", "8"],
+        defaultValue: "8",
+      },
+    ],
+    [CodeLanguage.FSharp]: [],
+  };
 
 export const getDefaultCompileAndRunOptions = (
   codeLanguage: CodeLanguage,

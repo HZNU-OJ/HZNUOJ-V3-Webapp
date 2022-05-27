@@ -174,12 +174,10 @@ const UserPage: React.FC<{}> = (props) => {
 
   const [notificationUserLoading, setNotificationUserLoading] = useState(false);
   async function onNotificationUser() {
-    const {
-      requestError,
-      response,
-    } = await api.contest.sendContestNotification({
-      contestId: parseInt(params.id),
-    });
+    const { requestError, response } =
+      await api.contest.sendContestNotification({
+        contestId: parseInt(params.id),
+      });
 
     if (requestError) {
       message.error(requestError);

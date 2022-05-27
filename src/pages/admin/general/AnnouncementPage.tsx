@@ -47,10 +47,8 @@ enum AnnouncementHeadTitle {
 }
 
 const AnnouncementPage: React.FC<{}> = (props) => {
-  const [
-    addAnnouncementModelVisible,
-    setAddAnnouncementModelVisible,
-  ] = useState(false);
+  const [addAnnouncementModelVisible, setAddAnnouncementModelVisible] =
+    useState(false);
 
   const [tableData, setTableData] = useState([]);
   const [fetchDataLoading, setFetchDataLoading] = useState(true);
@@ -245,13 +243,11 @@ const AnnouncementPage: React.FC<{}> = (props) => {
       const orginId = tableData[dragIndex].id;
       const newId = tableData[hoverIndex].id;
 
-      const {
-        requestError,
-        response,
-      } = await api.homepage.swapTwoAnnouncementOrder({
-        announcementOrginId: orginId,
-        announcementNewId: newId,
-      });
+      const { requestError, response } =
+        await api.homepage.swapTwoAnnouncementOrder({
+          announcementOrginId: orginId,
+          announcementNewId: newId,
+        });
 
       if (requestError) {
         message.error(requestError);

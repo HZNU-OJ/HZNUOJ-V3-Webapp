@@ -218,30 +218,26 @@ const FileUpload: React.FC<FileUploadProps> = (props) => {
     const uploadTasks: Array<() => Promise<void>> = [];
     for (const item of uploadingFileList) {
       uploadTasks.push(async () => {
-        const {
-          uploadCancelled,
-          uploadError,
-          requestError,
-          response,
-        } = await callApiWithFileUpload(
-          api.problem.addProblemFile,
-          {
-            problemId: props.id,
-            type: props.type,
-            filename: item.filename,
-          },
-          () => recaptcha("AddProblemFile"),
-          item.action.upload.file,
-          (progress) =>
-            updateFileUploadInfo(item.uuid, {
-              progressType: progress.status,
-              progress: progress.progress * 100,
-            }),
-          (cancelFunction) =>
-            updateFileUploadInfo(item.uuid, {
-              cancel: cancelFunction,
-            }),
-        );
+        const { uploadCancelled, uploadError, requestError, response } =
+          await callApiWithFileUpload(
+            api.problem.addProblemFile,
+            {
+              problemId: props.id,
+              type: props.type,
+              filename: item.filename,
+            },
+            () => recaptcha("AddProblemFile"),
+            item.action.upload.file,
+            (progress) =>
+              updateFileUploadInfo(item.uuid, {
+                progressType: progress.status,
+                progress: progress.progress * 100,
+              }),
+            (cancelFunction) =>
+              updateFileUploadInfo(item.uuid, {
+                cancel: cancelFunction,
+              }),
+          );
 
         if (uploadCancelled) {
           updateFileUploadInfo(item.uuid, {

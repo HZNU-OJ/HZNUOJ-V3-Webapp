@@ -39,15 +39,13 @@ const DiscussionViewPage: React.FC<{}> = (props) => {
   const [editorValue, setEditorValue] = useState("");
 
   async function fetchDiscussion() {
-    const {
-      requestError,
-      response,
-    } = await api.discussion.getDiscussionAndReplies({
-      locale: "en_US",
-      discussionId: parseInt(params.id),
-      getDiscussion: true,
-      queryRepliesType: "HeadTail",
-    });
+    const { requestError, response } =
+      await api.discussion.getDiscussionAndReplies({
+        locale: "en_US",
+        discussionId: parseInt(params.id),
+        getDiscussion: true,
+        queryRepliesType: "HeadTail",
+      });
 
     if (requestError) {
       message.error(requestError);
@@ -69,17 +67,15 @@ const DiscussionViewPage: React.FC<{}> = (props) => {
 
   async function onReply() {
     setSubmitLoading(true);
-    const {
-      requestError,
-      response,
-    } = await api.discussion.createDiscussionReply(
-      {
-        discussionId: parseInt(params.id),
-        content: editorValue,
-        isPublic: true,
-      },
-      recaptcha("createDiscussionReply"),
-    );
+    const { requestError, response } =
+      await api.discussion.createDiscussionReply(
+        {
+          discussionId: parseInt(params.id),
+          content: editorValue,
+          isPublic: true,
+        },
+        recaptcha("createDiscussionReply"),
+      );
 
     if (requestError) message.error(requestError);
     else if (response.error) message.error(response.error);

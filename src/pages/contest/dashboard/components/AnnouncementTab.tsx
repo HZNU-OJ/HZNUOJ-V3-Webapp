@@ -14,14 +14,12 @@ const AnnouncementTab: React.FC<{}> = (props) => {
 
   const [fetchDataLoading, setFetchDataLoading] = useState(true);
   async function fetchData() {
-    const {
-      requestError,
-      response,
-    } = await api.discussion.getDiscussionAndReplies({
-      locale: "en_US",
-      discussionId: 3,
-      getDiscussion: true,
-    });
+    const { requestError, response } =
+      await api.discussion.getDiscussionAndReplies({
+        locale: "en_US",
+        discussionId: 3,
+        getDiscussion: true,
+      });
 
     if (requestError) {
       message.error(requestError);

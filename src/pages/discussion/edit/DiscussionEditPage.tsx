@@ -29,14 +29,12 @@ const DiscussionEditPage: React.FC<{}> = (props) => {
   const history = useHistory();
 
   async function fetchDate() {
-    const {
-      requestError,
-      response,
-    } = await api.discussion.getDiscussionAndReplies({
-      locale: "en_US",
-      discussionId: parseInt(params.id),
-      getDiscussion: true,
-    });
+    const { requestError, response } =
+      await api.discussion.getDiscussionAndReplies({
+        locale: "en_US",
+        discussionId: parseInt(params.id),
+        getDiscussion: true,
+      });
 
     if (requestError) {
       message.error(requestError);

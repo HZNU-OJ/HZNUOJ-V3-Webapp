@@ -166,15 +166,7 @@ const RatingGraph: React.FC<{}> = (props) => {
     const userRating: UserRating[] = ratingData.result as UserRating[];
     let optionsData: Data[] = [];
     let tickPositionsAll = [
-      1200,
-      1400,
-      1600,
-      1900,
-      2100,
-      2300,
-      2400,
-      2600,
-      3000,
+      1200, 1400, 1600, 1900, 2100, 2300, 2400, 2600, 3000,
     ];
     let maxRating = 0;
     let minRating = 1200;

@@ -19,7 +19,7 @@ export async function callApiWithFileUpload<
   Response extends {
     error?: string;
     signedUploadRequest?: ApiTypes.SignedFileUploadRequestDto;
-  }
+  },
 >(
   api: (
     request: Request,

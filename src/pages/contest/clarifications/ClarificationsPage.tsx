@@ -17,10 +17,8 @@ const ClarificationsPage: React.FC<{}> = (props) => {
   const isMobile = useScreenWidthWithin(0, 577);
 
   const [editorValue, setEditorValue] = useState("");
-  const [
-    onClarificationSubmitLoading,
-    setOnClarificationSubmitLoading,
-  ] = useState(false);
+  const [onClarificationSubmitLoading, setOnClarificationSubmitLoading] =
+    useState(false);
   const [createClarificationsCount, setCreateClarificationsCount] = useState(0);
   const [clarifications, setClarifications] = useState(
     [] as ApiTypes.ClarificationMetaDto[],

@@ -40,9 +40,8 @@ const LoginPage: React.FC<{}> = () => {
 
   async function loginAction(formProps: LoginFormProps) {
     const { requestError, response } = await api.auth.login({
-      [isEmail(formProps.usernameOrEmail)
-        ? "email"
-        : "username"]: formProps.usernameOrEmail,
+      [isEmail(formProps.usernameOrEmail) ? "email" : "username"]:
+        formProps.usernameOrEmail,
       password: formProps.password,
     });
 

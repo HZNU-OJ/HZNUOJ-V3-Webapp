@@ -35,9 +35,8 @@ const StatementPage: React.FC<{}> = (props) => {
   );
   const [orderIdList, setOrderIdList] = useState([] as number[]);
   const [addSectionVisible, setAddSectionVisible] = useState(false);
-  const [changeSectionOrderVisible, setChangeSectionOrderVisible] = useState(
-    false,
-  );
+  const [changeSectionOrderVisible, setChangeSectionOrderVisible] =
+    useState(false);
 
   const [fetchLoaded, setFetchLoaded] = useState(false);
   async function fetchData() {
@@ -135,9 +134,8 @@ const StatementPage: React.FC<{}> = (props) => {
 
   function getOnEditOk(index: number) {
     return (sectionName: string) => {
-      let _contentSections: ApiTypes.ProblemContentSectionDto[] = deepCopy(
-        contentSections,
-      );
+      let _contentSections: ApiTypes.ProblemContentSectionDto[] =
+        deepCopy(contentSections);
       _contentSections[orderIdList[index]].sectionTitle = sectionName;
       setContentSections(_contentSections);
     };
@@ -221,16 +219,14 @@ const StatementPage: React.FC<{}> = (props) => {
                       }
                       onInputChange={(value) => {
                         let _samples = deepCopy(samples);
-                        _samples[
-                          contentSections[orderId].sampleId
-                        ].inputData = value;
+                        _samples[contentSections[orderId].sampleId].inputData =
+                          value;
                         setSamples(_samples);
                       }}
                       onOutputChange={(value) => {
                         let _samples = deepCopy(samples);
-                        _samples[
-                          contentSections[orderId].sampleId
-                        ].outputData = value;
+                        _samples[contentSections[orderId].sampleId].outputData =
+                          value;
                         setSamples(_samples);
                       }}
                     />

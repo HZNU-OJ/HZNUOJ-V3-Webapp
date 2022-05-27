@@ -84,10 +84,8 @@ enum JudgeMachineHeadTitle {
 }
 
 const JudgeMachinePage: React.FC<{}> = (props) => {
-  const [
-    addJudgeMachineModalVisible,
-    setAddJudgeMachineModalVisible,
-  ] = useState(false);
+  const [addJudgeMachineModalVisible, setAddJudgeMachineModalVisible] =
+    useState(false);
   const [tableData, setTableData] = useState([]);
 
   function getCpu(judgeClient: ApiTypes.JudgeClientInfoDto) {
