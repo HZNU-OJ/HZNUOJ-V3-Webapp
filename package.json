@@ -9,6 +9,10 @@
     "engines": {
         "node": ">=16.11.0"
     },
+    "files": [
+        "src",
+        "dist"
+    ],
     "scripts": {
         "start": "cross-env umi dev",
         "start:no-mock": "cross-env MOCK=none umi dev",
