@@ -10,7 +10,8 @@ if [ -z "${PUBLIC_PATH}" ]; then
   PUBLIC_PATH=""
 fi
 
-sed -i "s|__PUBLIC_PATH__|${PUBLIC_PATH}|g" /app/ui/dist/*
+sed -i "s|__PUBLIC_PATH__|${PUBLIC_PATH}|g" /app/ui/dist/*.html
+sed -i "s|__PUBLIC_PATH__|${PUBLIC_PATH}|g" /app/ui/dist/*.js
 
 if [ -n "${__API_ENDPOINT__}" ]; then
   sed -i "s|__API_ENDPOINT__|\"${__API_ENDPOINT__}\"|g" /app/ui/dist/*.html
