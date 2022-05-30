@@ -8,9 +8,17 @@
     "jsx": "react-jsx",
     "esModuleInterop": true,
     "sourceMap": true,
-    "baseUrl": "./",
-    "strict": true,
+    "strict": false,
     "allowJs": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "noFallthroughCasesInSwitch": false,
+    "strictBindCallApply": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "baseUrl": "./",
     "paths": {
       "@/*": [
         "src/*"
@@ -19,8 +27,6 @@
         "src/.umi/*"
       ]
     },
-    "allowSyntheticDefaultImports": true,
-    "suppressImplicitAnyIndexErrors": true
   },
   "include": [
     "mock/**/*",

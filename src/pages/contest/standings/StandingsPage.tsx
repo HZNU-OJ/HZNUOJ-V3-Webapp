@@ -1,13 +1,11 @@
 import React, { useContext } from "react";
 import { useParams, useLocation, useHistory } from "umi";
 import { ContestContext } from "@/pages/contest/layouts/ContestLayout";
-import { message } from "antd";
 import { Loading } from "@/components/Loading";
 import { SecondLevelMenu } from "./components/SecondLevelMenu";
 import { Standings } from "./components/Standings";
 import { Statistics } from "./components/Statistics";
 import { Selected } from "./components/Selected";
-import style from "./StandingsPage.module.less";
 import {
   fetchIntervalTime,
   getData,
@@ -23,6 +21,9 @@ import {
 import { throttle, debounce } from "lodash";
 import { Balloon } from "./components/Balloon";
 import { Export } from "./components/Export";
+
+import "./components/Standings/Standings.less";
+import style from "./StandingsPage.module.less";
 
 import api from "@/api";
 
