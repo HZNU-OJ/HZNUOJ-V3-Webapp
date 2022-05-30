@@ -1,4 +1,4 @@
-# JudgeQ WebApp 
+# JudgeQ UI
 
 [![Build Status](https://img.shields.io/github/workflow/status/JudgeQ-Dev/JudgeQ-WebApp/Build?style=flat-square)](https://github.com/JudgeQ-Dev/JudgeQ-WebApp/actions?query=workflow%3ACI)
 [![Dependencies](https://img.shields.io/david/JudgeQ-Dev/JudgeQ-WebApp?style=flat-square)](https://david-dm.org/JudgeQ-Dev/JudgeQ-WebApp)
@@ -13,11 +13,11 @@ The webapp of JudgeQ.
 Install dependencies,
 
 ```bash
-$ yarn
+$ pnpm
 ```
 
 Start the dev server,
 
 ```bash
-$ yarn start
+$ pnpm start
 ```
