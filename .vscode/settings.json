@@ -7,6 +7,8 @@
   "files.trimFinalNewlines": true,
   "cSpell.words": [
     "antd",
+    "buildx",
+    "DOCKERHUB",
     "judgeq",
     "pnpm",
     "prismjs"
