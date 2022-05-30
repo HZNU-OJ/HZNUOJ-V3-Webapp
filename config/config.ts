@@ -47,14 +47,16 @@ export default defineConfig({
         },
       },
     });
+
     //更多配置 https://github.com/Microsoft/monaco-editor-webpack-plugin#options
     config.plugin("monaco-editor-webpack-plugin").use(MonacoWebpackPlugin, [
-      // 按需配置
       {
-        languages: customConfig.monacoEditorSupportedLanguages as EditorLanguage[],
+        languages:
+          customConfig.monacoEditorSupportedLanguages as EditorLanguage[],
         publicPath: customConfig.publicPath,
       },
     ]);
+
     return config;
   },
   extraBabelPlugins: [
