@@ -12,9 +12,10 @@ export default defineConfig({
   polyfill: {
     imports: ["core-js/stable"],
   },
-  dynamicImport: {
-    loading: "@/components/GlobalLoading",
-  },
+  // dynamicImport: {
+  //   loading: "@/components/GlobalLoading",
+  // },
+  dynamicImportSyntax: {},
   chunks: ["basic", "vendors.umi", "umi"],
   chainWebpack: (config, { webpack }) => {
     config.merge({
