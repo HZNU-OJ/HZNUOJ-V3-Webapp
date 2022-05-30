@@ -1,6 +1,5 @@
 import { parse } from "querystring";
 import request from "./request";
-import customConfig from "@/../customConfig";
 
 export const getPageQuery = () => parse(window.location.href.split("?")[1]);
 
@@ -21,7 +20,7 @@ export const getJSON = (url: string) => {
 };
 
 export const getCustomTitle = (prefix: string): string => {
-  return [prefix, customConfig.title].join(" - ");
+  return [prefix, window.defaultTitle].join(" - ");
 };
 
 export function timeFormat(timeStamp: number) {

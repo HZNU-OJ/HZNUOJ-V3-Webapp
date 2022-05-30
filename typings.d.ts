@@ -11,4 +11,7 @@ declare module "*.svg" {
 
 declare interface Window {
   $: (selector: string) => any;
+  defaultTitle: string;
+  apiEndpoint: string;
+  publicPath: string;
 }

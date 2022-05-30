@@ -1,8 +1,6 @@
-import customConfig from "../customConfig";
-
 export default {
   "/api": {
-    target: customConfig.api_proxy_target,
+    target: "http://127.0.0.1:3000",
     changeOrigin: true,
   },
 };

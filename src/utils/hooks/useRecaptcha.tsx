@@ -1,7 +1,6 @@
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import customConfig from "@/../customConfig";
 
-const copyRight = customConfig.title;
+const copyRight = window.defaultTitle;
 
 export function useRecaptcha() {
   const { executeRecaptcha } = useGoogleReCaptcha();

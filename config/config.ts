@@ -1,12 +1,80 @@
 import { defineConfig } from "umi";
 
-import customConfig from "../customConfig";
-
 import routes from "./routes";
 import proxy from "./proxy";
 
 import { EditorLanguage } from "monaco-editor-webpack-plugin/out/languages";
 import MonacoWebpackPlugin from "monaco-editor-webpack-plugin";
+
+const monacoEditorSupportedLanguages = [
+  "abap",
+  "apex",
+  "azcli",
+  "bat",
+  "cameligo",
+  "clojure",
+  "coffee",
+  "cpp",
+  "csharp",
+  "csp",
+  "css",
+  "dart",
+  "dockerfile",
+  "fsharp",
+  "go",
+  "graphql",
+  "handlebars",
+  "hcl",
+  "html",
+  "ini",
+  "java",
+  "javascript",
+  "json",
+  "julia",
+  "kotlin",
+  "less",
+  "lexon",
+  "lua",
+  "markdown",
+  "mips",
+  "msdax",
+  "mysql",
+  "objective-c",
+  "pascal",
+  "pascaligo",
+  "perl",
+  "pgsql",
+  "php",
+  "postiats",
+  "powerquery",
+  "powershell",
+  "pug",
+  "python",
+  "r",
+  "razor",
+  "redis",
+  "redshift",
+  "restructuredtext",
+  "ruby",
+  "rust",
+  "sb",
+  "scala",
+  "scheme",
+  "scss",
+  "shell",
+  "solidity",
+  "sophia",
+  "sql",
+  "st",
+  "swift",
+  "systemverilog",
+  "tcl",
+  "twig",
+  "typescript",
+  "vb",
+  "xml",
+  "yaml",
+];
 
 export default defineConfig({
   polyfill: {
@@ -52,9 +120,10 @@ export default defineConfig({
     //更多配置 https://github.com/Microsoft/monaco-editor-webpack-plugin#options
     config.plugin("monaco-editor-webpack-plugin").use(MonacoWebpackPlugin, [
       {
-        languages:
-          customConfig.monacoEditorSupportedLanguages as EditorLanguage[],
-        publicPath: customConfig.publicPath,
+        languages: monacoEditorSupportedLanguages as EditorLanguage[],
+        // After setting `config.publicPath`,
+        // there is no need to set it separately in the plugin
+        // publicPath: "__PUBLIC_PATH__",
       },
     ]);
 
@@ -79,21 +148,26 @@ export default defineConfig({
     port: 8000,
     host: "0.0.0.0",
   },
-  base: customConfig.base,
   nodeModulesTransform: {
     type: "none",
   },
-  metas: customConfig.metas,
+  metas: [
+    {
+      name: "keywords",
+      content: "icpc, ccpc, online-judge",
+    },
+    {
+      name: "description",
+      content: "Online Judge",
+    },
+  ],
+  hash: true,
+  fastRefresh: {},
   // use helmet to set title
   title: false,
-  analytics: customConfig.analytics,
-  hash: true,
-  favicon: customConfig.favicon,
-  fastRefresh: {},
-  publicPath: customConfig.publicPath,
+  publicPath: "/",
+  runtimePublicPath: true,
+  favicon: "/favicon.png",
   routes: routes,
   proxy: proxy,
-  define: {
-    HTML_TITLE: customConfig.title,
-  },
 });

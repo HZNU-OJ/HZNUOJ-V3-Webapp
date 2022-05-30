@@ -1,14 +1,10 @@
 import axios from "axios";
 
-import customConfig from "@/../customConfig";
-
-// import _request from "@/utils/request";
-
 import { useAuthToken } from "@/utils/hooks";
 
 import { message } from "antd";
 
-const apiEndpoint = customConfig.apiEndpoint;
+const apiEndpoint = window.apiEndpoint;
 
 const requestError = {
   400: "Invalid request.",
@@ -69,7 +65,7 @@ async function request<T>(
     //   })
     // })();
 
-    response = await axios(apiEndpoint + "api/" + path, {
+    response = await axios(apiEndpoint + path, {
       method: method,
       params: params,
       data: body && JSON.stringify(body),
@@ -80,10 +76,10 @@ async function request<T>(
       },
       validateStatus: () => true,
     });
-  } catch (e) {
+  } catch (e: any) {
     console.error(e);
     return {
-      requestError: makeErrorText("unknown", e.message),
+      requestError: makeErrorText("unknown", e?.message),
     };
   }
 
@@ -150,7 +146,7 @@ export function createPostApi<BodyType, ResponseType>(
   ): Promise<ApiResponse<ResponseType>> => {
     let recaptchaToken: string;
     try {
-      recaptchaToken = await recaptchaTokenPromise;
+      recaptchaToken = (await recaptchaTokenPromise) as string;
     } catch (e) {
       return {
         requestError: makeErrorText("401"),
