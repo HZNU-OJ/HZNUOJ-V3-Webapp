@@ -10,6 +10,7 @@
     "buildx",
     "DOCKERHUB",
     "judgeq",
+    "mathjax",
     "pnpm",
     "prismjs"
   ],

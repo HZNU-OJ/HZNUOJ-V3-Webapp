@@ -19,7 +19,10 @@
       ],
       "@@/*": [
         "src/.umi/*"
-      ]
+      ],
+      "mathjax-render": [
+        "node_modules/mathjax-render/dist/esm/browser"
+      ],
     },
   },
   "include": [

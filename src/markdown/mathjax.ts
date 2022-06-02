@@ -7,7 +7,6 @@ export function renderMath(math: string, display: boolean) {
     display ? mathJaxStyle.block : mathJaxStyle.inline,
   ];
 
-  // @ts-ignore
   return Tex2SVG(math, display, {
     nodeClassNameList,
   });
